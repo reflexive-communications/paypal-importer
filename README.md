@@ -1,8 +1,6 @@
 # paypal-importer
 
-![Screenshot](/images/screenshot.png)
-
-(*FIXME: In one or two paragraphs, describe what the extension does and why one would download it. *)
+This module provides paypal data import functionality.
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
@@ -10,20 +8,6 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 * PHP v7.2+
 * CiviCRM (*FIXME: Version number*)
-
-## Installation (Web UI)
-
-Learn more about installing CiviCRM extensions in the [CiviCRM Sysadmin Guide](https://docs.civicrm.org/sysadmin/en/latest/customize/extensions/).
-
-## Installation (CLI, Zip)
-
-Sysadmins and developers may download the `.zip` file for this extension and
-install it with the command-line tool [cv](https://github.com/civicrm/cv).
-
-```bash
-cd <extension-dir>
-cv dl paypal-importer@https://github.com/FIXME/paypal-importer/archive/master.zip
-```
 
 ## Installation (CLI, Git)
 
@@ -34,11 +18,3 @@ install it with the command-line tool [cv](https://github.com/civicrm/cv).
 git clone https://github.com/FIXME/paypal-importer.git
 cv en paypal_importer
 ```
-
-## Getting Started
-
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
-
-## Known Issues
-
-(* FIXME *)
