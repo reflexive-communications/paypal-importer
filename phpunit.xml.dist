@@ -8,6 +8,13 @@
   <filter>
     <whitelist>
       <directory suffix=".php">./</directory>
+      <exclude>
+        <!-- Skip the test directory -->
+        <directory>./tests</directory>
+        <!-- Skip the generated files -->
+        <file>./paypal_importer.php</file>
+        <file>./paypal_importer.civix.php</file>
+      </exclude>
     </whitelist>
   </filter>
   <listeners>
