@@ -47,12 +47,12 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase 
             ->apply(true);
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -127,7 +127,7 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase 
         self::assertTrue($config->update($cfg), "Update config has to be successful.");
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, "Invalid updated configuration.");
-        $otherConfig = new CRM_PaypalImporter_Config("civalpa_test");
+        $otherConfig = new CRM_PaypalImporter_Config("paypal_test");
         self::assertEmpty($otherConfig->load(), "Load result supposed to be empty.");
 
         $cfgLoaded = $otherConfig->get();
