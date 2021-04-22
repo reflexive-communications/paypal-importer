@@ -7,6 +7,33 @@ use CRM_PaypalImporter_ExtensionUtil as E;
 class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
 {
 
+    /**
+     * Install process. Init database.
+     *
+     * @throws CRM_Core_Exception
+     */
+    public function install()
+    {
+        $config = new CRM_PaypalImporter_Config($this->extensionName);
+        // Create default configs
+        if (!$config->create()) {
+            throw new CRM_Core_Exception($this->extensionName.ts(' could not create configs in database'));
+        }
+    }
+
+    /**
+     * Uninstall process. Clean database.
+     *
+     * @throws CRM_Core_Exception
+     */
+    public function uninstall()
+    {
+        $config = new CRM_PaypalImporter_Config($this->extensionName);
+        // delete current configs
+        if (!$config->remove()) {
+            throw new CRM_Core_Exception($this->extensionName.ts(' could not remove configs from database'));
+        }
+    }
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
