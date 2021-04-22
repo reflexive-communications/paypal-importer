@@ -10,15 +10,16 @@ use Civi\Test\TransactionalInterface;
  *
  * @group headless
  */
-class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
-
-  public function setUpHeadless() {
-    return \Civi\Test::headless()
+class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface
+{
+    public function setUpHeadless()
+    {
+        return \Civi\Test::headless()
       ->installMe(__DIR__)
       ->apply();
-  }
+    }
 
-      /**
+    /**
      * Apply a forced rebuild of DB, thus
      * create a clean DB before running tests
      *
@@ -33,7 +34,7 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase 
             ->apply(true);
     }
 
-      /**
+    /**
      * Create a clean DB before running tests
      *
      * @throws CRM_Extension_Exception_ParseException
@@ -46,13 +47,15 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends \PHPUnit\Framework\TestCase 
             ->apply(true);
     }
 
-  public function setUp() {
-    parent::setUp();
-  }
+    public function setUp()
+    {
+        parent::setUp();
+    }
 
-  public function tearDown() {
-    parent::tearDown();
-  }
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
     /**
      * It checks that the create function works well.
      */

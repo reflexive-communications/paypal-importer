@@ -3,6 +3,7 @@
 require_once 'paypal_importer.civix.php';
 // phpcs:disable
 use CRM_PaypalImporter_ExtensionUtil as E;
+
 // phpcs:enable
 
 /**
@@ -10,8 +11,9 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function paypal_importer_civicrm_config(&$config) {
-  _paypal_importer_civix_civicrm_config($config);
+function paypal_importer_civicrm_config(&$config)
+{
+    _paypal_importer_civix_civicrm_config($config);
 }
 
 /**
@@ -19,8 +21,9 @@ function paypal_importer_civicrm_config(&$config) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_xmlMenu
  */
-function paypal_importer_civicrm_xmlMenu(&$files) {
-  _paypal_importer_civix_civicrm_xmlMenu($files);
+function paypal_importer_civicrm_xmlMenu(&$files)
+{
+    _paypal_importer_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -28,8 +31,9 @@ function paypal_importer_civicrm_xmlMenu(&$files) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function paypal_importer_civicrm_install() {
-  _paypal_importer_civix_civicrm_install();
+function paypal_importer_civicrm_install()
+{
+    _paypal_importer_civix_civicrm_install();
 }
 
 /**
@@ -37,8 +41,9 @@ function paypal_importer_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
  */
-function paypal_importer_civicrm_postInstall() {
-  _paypal_importer_civix_civicrm_postInstall();
+function paypal_importer_civicrm_postInstall()
+{
+    _paypal_importer_civix_civicrm_postInstall();
 }
 
 /**
@@ -46,8 +51,9 @@ function paypal_importer_civicrm_postInstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
  */
-function paypal_importer_civicrm_uninstall() {
-  _paypal_importer_civix_civicrm_uninstall();
+function paypal_importer_civicrm_uninstall()
+{
+    _paypal_importer_civix_civicrm_uninstall();
 }
 
 /**
@@ -55,8 +61,9 @@ function paypal_importer_civicrm_uninstall() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function paypal_importer_civicrm_enable() {
-  _paypal_importer_civix_civicrm_enable();
+function paypal_importer_civicrm_enable()
+{
+    _paypal_importer_civix_civicrm_enable();
 }
 
 /**
@@ -64,8 +71,9 @@ function paypal_importer_civicrm_enable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
  */
-function paypal_importer_civicrm_disable() {
-  _paypal_importer_civix_civicrm_disable();
+function paypal_importer_civicrm_disable()
+{
+    _paypal_importer_civix_civicrm_disable();
 }
 
 /**
@@ -73,8 +81,9 @@ function paypal_importer_civicrm_disable() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
  */
-function paypal_importer_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _paypal_importer_civix_civicrm_upgrade($op, $queue);
+function paypal_importer_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
+{
+    return _paypal_importer_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -85,8 +94,9 @@ function paypal_importer_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_managed
  */
-function paypal_importer_civicrm_managed(&$entities) {
-  _paypal_importer_civix_civicrm_managed($entities);
+function paypal_importer_civicrm_managed(&$entities)
+{
+    _paypal_importer_civix_civicrm_managed($entities);
 }
 
 /**
@@ -98,8 +108,9 @@ function paypal_importer_civicrm_managed(&$entities) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_caseTypes
  */
-function paypal_importer_civicrm_caseTypes(&$caseTypes) {
-  _paypal_importer_civix_civicrm_caseTypes($caseTypes);
+function paypal_importer_civicrm_caseTypes(&$caseTypes)
+{
+    _paypal_importer_civix_civicrm_caseTypes($caseTypes);
 }
 
 /**
@@ -112,8 +123,9 @@ function paypal_importer_civicrm_caseTypes(&$caseTypes) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_angularModules
  */
-function paypal_importer_civicrm_angularModules(&$angularModules) {
-  _paypal_importer_civix_civicrm_angularModules($angularModules);
+function paypal_importer_civicrm_angularModules(&$angularModules)
+{
+    _paypal_importer_civix_civicrm_angularModules($angularModules);
 }
 
 /**
@@ -121,8 +133,9 @@ function paypal_importer_civicrm_angularModules(&$angularModules) {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_alterSettingsFolders
  */
-function paypal_importer_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _paypal_importer_civix_civicrm_alterSettingsFolders($metaDataFolders);
+function paypal_importer_civicrm_alterSettingsFolders(&$metaDataFolders = null)
+{
+    _paypal_importer_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**
@@ -132,15 +145,17 @@ function paypal_importer_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) 
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
  */
-function paypal_importer_civicrm_entityTypes(&$entityTypes) {
-  _paypal_importer_civix_civicrm_entityTypes($entityTypes);
+function paypal_importer_civicrm_entityTypes(&$entityTypes)
+{
+    _paypal_importer_civix_civicrm_entityTypes($entityTypes);
 }
 
 /**
  * Implements hook_civicrm_themes().
  */
-function paypal_importer_civicrm_themes(&$themes) {
-  _paypal_importer_civix_civicrm_themes($themes);
+function paypal_importer_civicrm_themes(&$themes)
+{
+    _paypal_importer_civix_civicrm_themes($themes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
