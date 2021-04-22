@@ -9,74 +9,90 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  */
 class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
 {
-    public function buildQuickForm()
+    /**
+     * Configdb
+     *
+     * @var CRM_PaypalImporter_Config
+     */
+    private $config;
+
+    /**
+     * Preprocess form
+     *
+     * @throws CRM_Core_Exception
+     */
+    public function preProcess()
     {
-
-    // add form elements
-        $this->add(
-            'select', // field type
-      'favorite_color', // field name
-      'Favorite Color', // field label
-      $this->getColorOptions(), // list of options
-      true // is required
-        );
-        $this->addButtons(array(
-      array(
-        'type' => 'submit',
-        'name' => E::ts('Submit'),
-        'isDefault' => true,
-      ),
-    ));
-
-        // export form elements
-        $this->assign('elementNames', $this->getRenderableElementNames());
-        parent::buildQuickForm();
-    }
-
-    public function postProcess()
-    {
-        $values = $this->exportValues();
-        $options = $this->getColorOptions();
-        CRM_Core_Session::setStatus(E::ts('You picked color "%1"', array(
-      1 => $options[$values['favorite_color']],
-    )));
-        parent::postProcess();
-    }
-
-    public function getColorOptions()
-    {
-        $options = array(
-      '' => E::ts('- select -'),
-      '#f00' => E::ts('Red'),
-      '#0f0' => E::ts('Green'),
-      '#00f' => E::ts('Blue'),
-      '#f0f' => E::ts('Purple'),
-    );
-        foreach (array('1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e') as $f) {
-            $options["#{$f}{$f}{$f}"] = E::ts('Grey (%1)', array(1 => $f));
-        }
-        return $options;
+        // Get current settings
+        $this->config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $this->config->load();
     }
 
     /**
-     * Get the fields/elements defined in this form.
+     * Set default values
      *
-     * @return array (string)
+     * @return array
      */
-    public function getRenderableElementNames()
+    public function setDefaultValues()
     {
-        // The _elements list includes some items which should not be
-        // auto-rendered in the loop -- such as "qfKey" and "buttons".  These
-        // items don't have labels.  We'll identify renderable by filtering on
-        // the 'label'.
-        $elementNames = array();
-        foreach ($this->_elements as $element) {
-            /** @var HTML_QuickForm_Element $element */
-            $label = $element->getLabel();
-            if (!empty($label)) {
-                $elementNames[] = $element->getName();
+        $config = $this->config->get();
+        // Set defaults
+        $this->_defaults['apiKey'] = $config['api-key'];
+        $this->_defaults['importLimit'] = $config['import-limit'];
+
+        return $this->_defaults;
+    }
+
+    /**
+     * Register validation rules
+     * The import limit has to be numeric value. Client + server side validation.
+     */
+    public function addRules() {
+        $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric', null, 'client');
+        $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric');
+    }
+
+    /**
+     * Build form
+     */
+    public function buildQuickForm()
+    {
+        // get the current configuration object
+        $config = $this->config->get();
+        // Add form elements
+        $this->add('text', 'apiKey', ts('API key'), [], true);
+        $this->add('text', 'importLimit', ts('Import limit'), [], true);
+        // Submit button
+        $this->addButtons(
+            [
+                [
+                    'type' => 'submit',
+                    'name' => ts('Save'),
+                    'isDefault' => true,
+                ],
+            ]
+        );
+        $this->setTitle(ts('Paypal data importer'));
+    }
+
+    /**
+     * Process post data
+     */
+    public function postProcess()
+    {
+        $submitData = [
+            'api-key' => $this->_submitValues['apiKey'],
+            'import-limit' => intval($this->_submitValues['importLimit'], 10),
+        ];
+        try {
+            if (!$this->config->update($submitData)) {
+                CRM_Core_Session::setStatus(ts('Error during save process'), 'Paypal Importer', 'error');
+            } else {
+                CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000,]);
             }
+        } catch (CRM_Core_Exception $e) {
+            CRM_Core_Session::setStatus(ts($e->getMessage()), 'Paypal Importer', 'error');
         }
-        return $elementNames;
+        parent::postProcess();
     }
 }

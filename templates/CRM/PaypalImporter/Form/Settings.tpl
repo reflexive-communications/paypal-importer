@@ -1,27 +1,19 @@
-{* HEADER *}
-
-<div class="crm-submit-buttons">
-{include file="CRM/common/formButtons.tpl" location="top"}
-</div>
-
-{* FIELD EXAMPLE: OPTION 1 (AUTOMATIC LAYOUT) *}
-
-{foreach from=$elementNames item=elementName}
-  <div class="crm-section">
-    <div class="label">{$form.$elementName.label}</div>
-    <div class="content">{$form.$elementName.html}</div>
-    <div class="clear"></div>
-  </div>
-{/foreach}
-
-{* FIELD EXAMPLE: OPTION 2 (MANUAL LAYOUT)
-
-  <div>
-    <span>{$form.favorite_color.label}</span>
-    <span>{$form.favorite_color.html}</span>
-  </div>
-
-{* FOOTER *}
-<div class="crm-submit-buttons">
-{include file="CRM/common/formButtons.tpl" location="bottom"}
+<div class="crm-block crm-form-block">
+    <table class="form-layout">
+        <tr>
+            <td class="label">{$form.apiKey.label}</td>
+            <td class="content">{$form.apiKey.html}<br/>
+                <span class="description">{ts}API key for the Paypal business account{/ts}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">{$form.importLimit.label}</td>
+            <td class="content">{$form.importLimit.html}<br/>
+                <span class="description">{ts}The batch limit of the import process{/ts}</span>
+            </td>
+        </tr>
+    </table>
+    <div class="crm-submit-buttons">
+        {include file="CRM/common/formButtons.tpl" location="bottom"}
+    </div>
 </div>
