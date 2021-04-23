@@ -10,7 +10,10 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
     public function defaultConfiguration(): array
     {
         return [
-            "api-key" => "",
+            "client-id" => "",
+            "client-secret" => "",
+            "paypal-host" => "",
+            "start-date" => "",
             "import-limit" => 1,
         ];
     }

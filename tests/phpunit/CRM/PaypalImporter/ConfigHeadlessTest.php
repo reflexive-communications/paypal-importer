@@ -15,10 +15,16 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $config = new CRM_PaypalImporter_Config("paypal_test");
         self::assertTrue($config->create(), "Create config has to be successful.");
         $cfg = $config->get();
-        self::assertTrue(array_key_exists("api-key", $cfg), "api-key key is missing from the config.");
-        self::assertSame("", $cfg["api-key"], "Invalid api-key initial value.");
+        self::assertTrue(array_key_exists("client-id", $cfg), "client-id key is missing from the config.");
+        self::assertSame("", $cfg["client-id"], "Invalid client-id initial value.");
         self::assertTrue(array_key_exists("import-limit", $cfg), "import-limit key is missing from the config.");
         self::assertSame(1, $cfg["import-limit"], "Invalid import-limit initial value.");
+        self::assertTrue(array_key_exists("client-secret", $cfg), "client-secret key is missing from the config.");
+        self::assertSame("", $cfg["client-secret"], "Invalid client-secret initial value.");
+        self::assertTrue(array_key_exists("paypal-host", $cfg), "paypal-host key is missing from the config.");
+        self::assertSame("", $cfg["paypal-host"], "Invalid paypal-host initial value.");
+        self::assertTrue(array_key_exists("start-date", $cfg), "start-date key is missing from the config.");
+        self::assertSame("", $cfg["start-date"], "Invalid start-date initial value.");
 
         self::assertTrue($config->create(), "Create config has to be successful multiple times.");
     }
@@ -41,10 +47,16 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $config = new CRM_PaypalImporter_Config("paypal_test");
         self::assertTrue($config->create(), "Create config has to be successful.");
         $cfg = $config->get();
-        self::assertTrue(array_key_exists("api-key", $cfg), "api-key key is missing from the config.");
-        self::assertSame("", $cfg["api-key"], "Invalid api-key initial value.");
+        self::assertTrue(array_key_exists("client-id", $cfg), "client-id key is missing from the config.");
+        self::assertSame("", $cfg["client-id"], "Invalid client-id initial value.");
         self::assertTrue(array_key_exists("import-limit", $cfg), "import-limit key is missing from the config.");
         self::assertSame(1, $cfg["import-limit"], "Invalid import-limit initial value.");
+        self::assertTrue(array_key_exists("client-secret", $cfg), "client-secret key is missing from the config.");
+        self::assertSame("", $cfg["client-secret"], "Invalid client-secret initial value.");
+        self::assertTrue(array_key_exists("paypal-host", $cfg), "paypal-host key is missing from the config.");
+        self::assertSame("", $cfg["paypal-host"], "Invalid paypal-host initial value.");
+        self::assertTrue(array_key_exists("start-date", $cfg), "start-date key is missing from the config.");
+        self::assertSame("", $cfg["start-date"], "Invalid start-date initial value.");
 
         self::assertTrue($config->remove(), "Remove config has to be successful.");
         self::expectException(CRM_Core_Exception::class);
@@ -60,7 +72,7 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $config = new CRM_PaypalImporter_Config("paypal_test");
         self::assertTrue($config->create(), "Create config has to be successful.");
         $cfg = $config->get();
-        $cfg["api-key"] = "new-api-key";
+        $cfg["client-id"] = "new-client-id";
         self::assertTrue($config->update($cfg), "Update config has to be successful.");
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, "Invalid updated configuration.");
@@ -74,7 +86,7 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $config = new CRM_PaypalImporter_Config("paypal_test");
         self::assertTrue($config->create(), "Create config has to be successful.");
         $cfg = $config->get();
-        $cfg["api-key"] = "new-api-key";
+        $cfg["client-id"] = "new-client-id";
         self::assertTrue($config->update($cfg), "Update config has to be successful.");
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, "Invalid updated configuration.");
