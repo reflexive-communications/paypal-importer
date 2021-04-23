@@ -37,7 +37,10 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     {
         $config = $this->config->get();
         // Set defaults
-        $this->_defaults['apiKey'] = $config['api-key'];
+        $this->_defaults['clientId'] = $config['client-id'];
+        $this->_defaults['clientSecret'] = $config['client-secret'];
+        $this->_defaults['paypalHost'] = $config['paypal-host'];
+        $this->_defaults['startDate'] = $config['start-date'];
         $this->_defaults['importLimit'] = $config['import-limit'];
 
         return $this->_defaults;
@@ -60,7 +63,10 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         // get the current configuration object
         $config = $this->config->get();
         // Add form elements
-        $this->add('text', 'apiKey', ts('API key'), [], true);
+        $this->add('text', 'clientId', ts('Client ID'), [], true);
+        $this->add('text', 'clientSecret', ts('Client secret'), [], true);
+        $this->add('text', 'paypalHost', ts('Paypal environment host'), [], true);
+        $this->add('datepicker', 'startDate', ts('Transactions later than'), [], true, ['minDate' => date('Y-m-d', strtotime('-3 years', strtotime(date('Y-m-d')))), 'maxDate' => date('Y-m-d')]);
         $this->add('text', 'importLimit', ts('Import limit'), [], true);
         // Submit button
         $this->addButtons(
@@ -81,7 +87,10 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     public function postProcess()
     {
         $submitData = [
-            'api-key' => $this->_submitValues['apiKey'],
+            'client-id' => $this->_submitValues['clientId'],
+            'client-secret' => $this->_submitValues['clientSecret'],
+            'paypal-host' => $this->_submitValues['paypalHost'],
+            'start-date' => $this->_submitValues['startDate'],
             'import-limit' => intval($this->_submitValues['importLimit'], 10),
         ];
         try {
