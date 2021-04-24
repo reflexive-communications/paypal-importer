@@ -30,7 +30,7 @@ class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase im
     /**
      * The setup() method is executed before the test is executed (optional).
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -39,19 +39,8 @@ class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase im
      * The tearDown() method is executed after the test was executed (optional)
      * This can be used for cleanup.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
-    }
-
-    /**
-     * Simple example test case.
-     *
-     * Note how the function name begins with the word "test".
-     */
-    public function testApiExample()
-    {
-        $result = civicrm_api3('PaypalDataImport', 'process', array('magicword' => 'sesame'));
-        $this->assertEquals('Twelve', $result['values'][12]['name']);
     }
 }
