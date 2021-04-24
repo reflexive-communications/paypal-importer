@@ -24,4 +24,23 @@ class CRM_PaypalImporter_Transformer
 
         return $contactData;
     }
+
+    /**
+     * Transform paypal transaction data to civicrm email data
+     *
+     * @param array $transaction paypal transaction object
+     *
+     * @return array EmailData
+     */
+    public static function paypalTransactionToEmail(array $transaction): array
+    {
+        $emailData = [
+            'location_type_id' => CRM_RcBase_Api_Get::defaultLocationTypeID() ?? 1,
+        ];
+        if (isset($transaction['payer_info'])) {
+            $emailData['email'] = $transaction['payer_info']['email_address'] ?: '';
+        }
+
+        return $emailData;
+    }
 }
