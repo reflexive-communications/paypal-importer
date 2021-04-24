@@ -10,11 +10,31 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
     public function defaultConfiguration(): array
     {
         return [
-            "client-id" => "",
-            "client-secret" => "",
-            "paypal-host" => "",
-            "start-date" => "",
-            "import-limit" => 1,
+            'settings' => [
+                'client-id' => '',
+                'client-secret' => '',
+                'paypal-host' => '',
+                'start-date' => '',
+                'import-limit' => 1,
+            ],
         ];
+    }
+
+    /**
+     * Updates the settings.
+     *
+     * @param array $settings the data to save
+     *
+     * @return bool the status of the update process.
+     *
+     * @throws CRM_Core_Exception.
+     */
+    public function updateSettings(array $settings): bool
+    {
+        // load latest config
+        parent::load();
+        $configuration = parent::get();
+        $configuration['settings'] = $settings;
+        return parent::update($configuration);
     }
 }

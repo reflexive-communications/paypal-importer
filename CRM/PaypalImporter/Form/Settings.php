@@ -37,11 +37,11 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     {
         $config = $this->config->get();
         // Set defaults
-        $this->_defaults['clientId'] = $config['client-id'];
-        $this->_defaults['clientSecret'] = $config['client-secret'];
-        $this->_defaults['paypalHost'] = $config['paypal-host'];
-        $this->_defaults['startDate'] = $config['start-date'];
-        $this->_defaults['importLimit'] = $config['import-limit'];
+        $this->_defaults['clientId'] = $config['settings']['client-id'];
+        $this->_defaults['clientSecret'] = $config['settings']['client-secret'];
+        $this->_defaults['paypalHost'] = $config['settings']['paypal-host'];
+        $this->_defaults['startDate'] = $config['settings']['start-date'];
+        $this->_defaults['importLimit'] = $config['settings']['import-limit'];
 
         return $this->_defaults;
     }
@@ -95,7 +95,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             'import-limit' => intval($this->_submitValues['importLimit'], 10),
         ];
         try {
-            if (!$this->config->update($submitData)) {
+            if (!$this->config->updateSettings($submitData)) {
                 CRM_Core_Session::setStatus(ts('Error during save process'), 'Paypal Importer', 'error');
             } else {
                 CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000,]);
