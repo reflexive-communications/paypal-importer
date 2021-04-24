@@ -34,7 +34,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
             throw new CRM_Core_Exception($this->extensionName.ts(' could not remove configs from database'));
         }
     }
-  // By convention, functions that look like "function upgrade_NNNN()" are
+    // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
   /**

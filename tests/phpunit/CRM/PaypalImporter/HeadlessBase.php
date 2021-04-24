@@ -10,8 +10,8 @@ use Civi\Test\TransactionalInterface;
  *
  * @group headless
  */
-class CRM_PaypalImporter_HeadlessBase extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface {
-
+class CRM_PaypalImporter_HeadlessBase extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface
+{
     public function setUpHeadless()
     {
         return \Civi\Test::headless()

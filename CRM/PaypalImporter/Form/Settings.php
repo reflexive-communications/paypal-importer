@@ -50,7 +50,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
      * Register validation rules
      * The import limit has to be numeric value. Client + server side validation.
      */
-    public function addRules() {
+    public function addRules()
+    {
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric', null, 'client');
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric');
     }
