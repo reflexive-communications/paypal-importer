@@ -30,6 +30,8 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('', $cfg['settings']['financial-type-id'], 'Invalid financial-type-id initial value.');
         self::assertTrue(array_key_exists('payment-instrument-id', $cfg['settings']), 'payment-instrument-id key is missing from the config.');
         self::assertSame('', $cfg['settings']['payment-instrument-id'], 'Invalid payment-instrument-id initial value.');
+        self::assertTrue(array_key_exists('state', $cfg), 'state key is missing from the config.');
+        self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
 
         self::assertTrue($config->create(), 'Create config has to be successful multiple times.');
     }
@@ -67,6 +69,8 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('', $cfg['settings']['financial-type-id'], 'Invalid financial-type-id initial value.');
         self::assertTrue(array_key_exists('payment-instrument-id', $cfg['settings']), 'payment-instrument-id key is missing from the config.');
         self::assertSame('', $cfg['settings']['payment-instrument-id'], 'Invalid payment-instrument-id initial value.');
+        self::assertTrue(array_key_exists('state', $cfg), 'state key is missing from the config.');
+        self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
 
         self::assertTrue($config->remove(), 'Remove config has to be successful.');
         self::expectException(CRM_Core_Exception::class);
