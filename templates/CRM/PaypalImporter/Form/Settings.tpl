@@ -30,6 +30,18 @@
                 <span class="description">{ts}The batch limit of the import process{/ts}</span>
             </td>
         </tr>
+        <tr>
+            <td class="label">{$form.paymentInstrumentId.label}</td>
+            <td class="content">{$form.paymentInstrumentId.html}<br/>
+                <span class="description">{ts}Payment Method{/ts}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">{$form.financialTypeId.label}</td>
+            <td class="content">{$form.financialTypeId.html}<br/>
+                <span class="description">{ts}Financial Type{/ts}</span>
+            </td>
+        </tr>
     </table>
     <div class="crm-submit-buttons">
         {include file="CRM/common/formButtons.tpl" location="bottom"}
