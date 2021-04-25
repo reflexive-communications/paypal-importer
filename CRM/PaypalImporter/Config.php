@@ -16,6 +16,8 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
                 'paypal-host' => '',
                 'start-date' => '',
                 'import-limit' => 1,
+                'financial-type-id' => '',
+                'payment-instrument-id' => '',
             ],
         ];
     }
