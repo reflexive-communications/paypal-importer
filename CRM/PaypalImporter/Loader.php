@@ -1,5 +1,7 @@
 <?php
 
+use Civi\Api4\Contribution;
+
 class CRM_PaypalImporter_Loader
 {
     /**
@@ -43,6 +45,19 @@ class CRM_PaypalImporter_Loader
      */
     public static function contribution(int $contactId, array $contributionData): int
     {
-        return CRM_RcBase_Api_Create::contribution($contactId, $contributionData, false);
+        $contributions = Contribution::get(false)
+            ->addSelect('contribution_id')
+            ->addWhere('trxn_id', '=', $contributionData['trxn_id'])
+            ->setLimit(1)
+            ->execute();
+        // Get first result row
+        $contribution = $contributions->first();
+        if (!is_array($contribution)) {
+            // Question: What should we do if the transaction is active in paypal, but refunded in civi?
+            return CRM_RcBase_Api_Create::contribution($contactId, $contributionData, false);
+        } else {
+            CRM_RcBase_Api_Update::entity('Contribution', $contribution['id'], $contributionData, false);
+            return $contribution['id'];
+        }
     }
 }

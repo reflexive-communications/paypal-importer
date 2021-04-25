@@ -62,8 +62,51 @@ class CRM_PaypalImporter_Transformer
             'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
             'invoice_number' => $transaction['transaction_info']['invoice_id'],
             'source' => $transaction['cart_info']['item_details'][0]['item_name'] ?: '' ,
+            'contribution_status_id' => self::paypalTransactionStatusToCivicrmContributionStatus($transaction['transaction_info']['transaction_status']),
         ];
+        // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
+        if ($contributionData['contribution_status_id'] === self::mapCivicrmContributionLabelToStatus('Refunded')) {
+            $contributionData['contribution_cancel_date'] = $transaction['transaction_info']['transaction_updated_date'];
+        }
 
         return $contributionData;
+    }
+
+    /**
+     * Map paypal transaction status to civicrm contribution status.
+     *
+     * @param string $status paypal transaction status
+     *
+     * @return int civicrm contribution status id
+    */
+    private static function paypalTransactionStatusToCivicrmContributionStatus(string $status): int
+    {
+        $statusMapping = [
+            'D' => 'Failed',
+            'F' => 'Refunded',
+            'P' => 'Pending',
+            'S' => 'Completed',
+            'V' => 'Refunded',
+        ];
+        return self::mapCivicrmContributionLabelToStatus($statusMapping[$status]);
+    }
+
+    /**
+     * Map civicrm contribution label to contribution status id.
+     *
+     * @param string $label contribution label
+     *
+     * @return int civicrm contribution status id
+    */
+    private static function mapCivicrmContributionLabelToStatus(string $label): int
+    {
+        $contributionStatuses = CRM_Contribute_PseudoConstant::contributionStatus();
+        foreach ($contributionStatuses as $id => $l) {
+            if ($l === $label) {
+                return $id;
+            }
+        }
+        // return invalid id
+        return 0;
     }
 }
