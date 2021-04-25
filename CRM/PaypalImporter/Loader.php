@@ -1,11 +1,11 @@
 <?php
 
-class CRM_PaypalImporter_Inserter
+class CRM_PaypalImporter_Loader
 {
     /**
      * Import new contact
      *
-     * @param array $values Contact data
+     * @param array $contactData Contact data
      *
      * @return int Contact ID
      *
@@ -20,7 +20,7 @@ class CRM_PaypalImporter_Inserter
      * Import new email
      *
      * @param int Contact ID
-     * @param array $values email data
+     * @param array $emailData email data
      *
      * @return int Email ID
      *
@@ -29,5 +29,20 @@ class CRM_PaypalImporter_Inserter
     public static function email(int $contactId, array $emailData): int
     {
         return CRM_RcBase_Api_Create::email($contactId, $emailData, false);
+    }
+
+    /**
+     * Import new contribution
+     *
+     * @param int Contact ID
+     * @param array $contributionData contribution data
+     *
+     * @return int Contribution ID
+     *
+     * @throws CRM_Core_Exception
+     */
+    public static function contribution(int $contactId, array $contributionData): int
+    {
+        return CRM_RcBase_Api_Create::contribution($contactId, $contributionData, false);
     }
 }
