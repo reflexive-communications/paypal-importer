@@ -169,19 +169,20 @@ function paypal_importer_civicrm_themes(&$themes)
 //
 //}
 
+// The functions below are changed or added by us.
+
 /**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-//function paypal_importer_civicrm_navigationMenu(&$menu) {
-//  _paypal_importer_civix_insert_navigation_menu($menu, 'Mailings', array(
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ));
-//  _paypal_importer_civix_navigationMenu($menu);
-//}
+function paypal_importer_civicrm_navigationMenu(&$menu) {
+    _paypal_importer_civix_insert_navigation_menu($menu, 'Contributions', [
+        "label" => E::ts('Paypal Importer'),
+        "name" => "paypal_importer",
+        "url" => "civicrm/contribute/paypal-import",
+        "permission" => "administer CiviCRM",
+        "separator" => 0,
+    ]);
+    _paypal_importer_civix_navigationMenu($menu);
+}
