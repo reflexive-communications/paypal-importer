@@ -73,6 +73,19 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->add('text', 'importLimit', ts('Import limit'), [], true);
         $this->add('select', 'paymentInstrumentId', ts( 'Payment method' ), [''=>ts( '- select -' )] + CRM_Contribute_PseudoConstant::paymentInstrument(), true);
         $this->add('select', 'financialTypeId', ts( 'Financial Type' ), [''=>ts( '- select -' )] + CRM_Contribute_PseudoConstant::financialType(), true);
+        // checkbox for triggering the state change of the application.
+        // - if current state is do-nothing, start action, if set bumps the state to import-init
+        if ($config['state'] == 'do-nothing') {
+            $this->add('checkbox', 'action', ts('Start Import'), [], false);
+        }
+        // - if the current state is import(-init)? sync stop action, if set bumps the state back to do-nothing
+        if ($config['state'] == 'import' || $config['state'] == 'import-init' || $config['state'] == 'sync') {
+            $this->add('checkbox', 'action', ts('Stop Import'), [], false);
+        }
+        // - if the state error, confirm action, it sets the state back to do-nothing
+        if ($config['state'] == 'error') {
+            $this->add('checkbox', 'action', ts('Confirm Error'), [], false);
+        }
 
         // Submit button
         $this->addButtons(
@@ -106,6 +119,18 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
                 CRM_Core_Session::setStatus(ts('Error during save process'), 'Paypal Importer', 'error');
             } else {
                 CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000,]);
+                // on case of the action is selected, handle it. if the current state is do-nothing, push it to import-init
+                // else setup the do-nothing state.
+                if ($this->_submitValues['action']) {
+                    // get the current configuration object
+                    $this->config->load();
+                    $config = $this->config->get();
+                    if ($config['state'] == 'do-nothing') {
+                        $this->config->updateState('import-init');
+                    } else {
+                        $this->config->updateState('do-nothing');
+                    }
+                }
             }
         } catch (CRM_Core_Exception $e) {
             CRM_Core_Session::setStatus(ts($e->getMessage()), 'Paypal Importer', 'error');

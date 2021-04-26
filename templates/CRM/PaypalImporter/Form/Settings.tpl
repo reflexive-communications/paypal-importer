@@ -42,6 +42,10 @@
                 <span class="description">{ts}Financial Type{/ts}</span>
             </td>
         </tr>
+        <tr>
+            <td class="label">{$form.action.label}</td>
+            <td class="content">{$form.action.html}</td>
+        </tr>
     </table>
     <div class="crm-submit-buttons">
         {include file="CRM/common/formButtons.tpl" location="bottom"}
