@@ -60,4 +60,22 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         $configuration['state'] = $state;
         return parent::update($configuration);
     }
+
+    /**
+     * Updates the import-params.
+     *
+     * @param array $params the data to save
+     *
+     * @return bool the status of the update process.
+     *
+     * @throws CRM_Core_Exception.
+     */
+    public function updateImportParams(array $params): bool
+    {
+        // load latest config
+        parent::load();
+        $configuration = parent::get();
+        $configuration['import-params'] = $params;
+        return parent::update($configuration);
+    }
 }
