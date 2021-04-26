@@ -27,10 +27,15 @@ function _civicrm_api3_paypal_data_import_Process_spec(&$spec)
  */
 function civicrm_api3_paypal_data_import_Process($params)
 {
+    // For calculating the execution time that we insert to the stats.
+    $executionStartTime = microtime(true);
+
     // Load configuration
     $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
     $config->load();
     $cfg = $config->get();
+    // purge last stats
+    $config->updateImportStats([]);
 
     // Check the config. if the state is do-nothing or error, return.
     if ($cfg['state'] == 'do-nothing' || $cfg['state'] == 'error') {
@@ -49,7 +54,7 @@ function civicrm_api3_paypal_data_import_Process($params)
     }
 
     // Authenticate - get access token
-    $authData = authenticate($cfg['settings']);
+    $authData = authenticate($config);
 
     // Setup search parameters
     $transactionSearchParams = [
@@ -118,29 +123,33 @@ function civicrm_api3_paypal_data_import_Process($params)
         }
         $numberOfRequests += 1;
     }
+    $executionEndTime = microtime(true);
+    $stats['execution-time'] = $executionEndTime - $executionStartTime;
+    $config->updateImportStats($stats);
     return civicrm_api3_create_success(['stats' => $stats], $params, 'PaypalDataImport', 'Process');
 }
 
 /**
  * authenticate function.
  *
- * @param array $cfg the settigs configuration
+ * @param CRM_PaypalImporter_Config $config the settigs configuration
  *
  * @return array the received authentication data
  *
  * @throws API_Exception
  */
-function authenticate(array $cfg): array
+function authenticate(CRM_PaypalImporter_Config $config): array
 {
+    $cfg = $config->get();
     // Authenticate - get access token
-    $authReq = new CRM_PaypalImporter_Request_Auth($cfg['paypal-host'], $cfg['client-id'], $cfg['client-secret']);
+    $authReq = new CRM_PaypalImporter_Request_Auth($cfg['settings']['paypal-host'], $cfg['settings']['client-id'], $cfg['settings']['client-secret']);
     $authReq->post();
     $authResponse = $authReq->getResponse();
     $authData = json_decode($authResponse['data'], true);
     // check response code. if not 200 or the token is missing from the response,
     // push state to error, add log: authentication failed.
     if (intval($authResponse['code']) !== 200 || empty($authData['access_token'])) {
-        $cfg->updateState('error');
+        $config->updateState('error');
         throw new API_Exception('Paypal authentication failure', 'paypal_auth_failure');
     }
     return $authData;
