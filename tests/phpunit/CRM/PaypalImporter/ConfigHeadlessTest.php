@@ -30,6 +30,8 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('', $cfg['settings']['financial-type-id'], 'Invalid financial-type-id initial value.');
         self::assertTrue(array_key_exists('payment-instrument-id', $cfg['settings']), 'payment-instrument-id key is missing from the config.');
         self::assertSame('', $cfg['settings']['payment-instrument-id'], 'Invalid payment-instrument-id initial value.');
+        self::assertTrue(array_key_exists('request-limit', $cfg['settings']), 'request-limit key is missing from the config.');
+        self::assertSame(1, $cfg['settings']['request-limit'], 'Invalid request-limit initial value.');
         self::assertTrue(array_key_exists('state', $cfg), 'state key is missing from the config.');
         self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
         self::assertTrue(array_key_exists('import-params', $cfg), 'import-params key is missing from the config.');
@@ -71,6 +73,8 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('', $cfg['settings']['financial-type-id'], 'Invalid financial-type-id initial value.');
         self::assertTrue(array_key_exists('payment-instrument-id', $cfg['settings']), 'payment-instrument-id key is missing from the config.');
         self::assertSame('', $cfg['settings']['payment-instrument-id'], 'Invalid payment-instrument-id initial value.');
+        self::assertTrue(array_key_exists('request-limit', $cfg['settings']), 'request-limit key is missing from the config.');
+        self::assertSame(1, $cfg['settings']['request-limit'], 'Invalid request-limit initial value.');
         self::assertTrue(array_key_exists('state', $cfg), 'state key is missing from the config.');
         self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
         self::assertTrue(array_key_exists('import-params', $cfg), 'import-params key is missing from the config.');
