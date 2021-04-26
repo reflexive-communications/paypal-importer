@@ -31,6 +31,12 @@
             </td>
         </tr>
         <tr>
+            <td class="label">{$form.requestLimit.label}</td>
+            <td class="content">{$form.requestLimit.html}<br/>
+                <span class="description">{ts}The limit of the requests{/ts}</span>
+            </td>
+        </tr>
+        <tr>
             <td class="label">{$form.paymentInstrumentId.label}</td>
             <td class="content">{$form.paymentInstrumentId.html}<br/>
                 <span class="description">{ts}Payment Method{/ts}</span>

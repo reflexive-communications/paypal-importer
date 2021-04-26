@@ -42,6 +42,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->_defaults['paypalHost'] = $config['settings']['paypal-host'];
         $this->_defaults['startDate'] = $config['settings']['start-date'];
         $this->_defaults['importLimit'] = $config['settings']['import-limit'];
+        $this->_defaults['requestLimit'] = $config['settings']['request-limit'];
         $this->_defaults['paymentInstrumentId'] = $config['settings']['payment-instrument-id'];
         $this->_defaults['financialTypeId'] = $config['settings']['financial-type-id'];
 
@@ -56,6 +57,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     {
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric', null, 'client');
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric');
+        $this->addRule('requestLimit', ts('The request limit has to be numeric.'), 'numeric', null, 'client');
+        $this->addRule('requestLimit', ts('The request limit has to be numeric.'), 'numeric');
     }
 
     /**
@@ -71,6 +74,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->add('text', 'paypalHost', ts('Paypal environment host'), [], true);
         $this->add('datepicker', 'startDate', ts('Transactions later than'), [], true, ['minDate' => date('Y-m-d', strtotime('-3 years', strtotime(date('Y-m-d')))), 'maxDate' => date('Y-m-d')]);
         $this->add('text', 'importLimit', ts('Import limit'), [], true);
+        $this->add('text', 'requestLimit', ts('Request limit'), [], true);
         $this->add('select', 'paymentInstrumentId', ts( 'Payment method' ), [''=>ts( '- select -' )] + CRM_Contribute_PseudoConstant::paymentInstrument(), true);
         $this->add('select', 'financialTypeId', ts( 'Financial Type' ), [''=>ts( '- select -' )] + CRM_Contribute_PseudoConstant::financialType(), true);
         // checkbox for triggering the state change of the application.
@@ -111,6 +115,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             'paypal-host' => $this->_submitValues['paypalHost'],
             'start-date' => $this->_submitValues['startDate'],
             'import-limit' => intval($this->_submitValues['importLimit'], 10),
+            'request-limit' => intval($this->_submitValues['requestLimit'], 10),
             'payment-instrument-id' => intval($this->_submitValues['paymentInstrumentId'], 10),
             'financial-type-id' => intval($this->_submitValues['financialTypeId'], 10),
         ];
