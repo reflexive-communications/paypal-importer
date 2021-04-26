@@ -20,6 +20,8 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
                 'payment-instrument-id' => '',
             ],
             'state' => 'do-nothing',
+            'import-params' => [
+            ],
         ];
     }
 
