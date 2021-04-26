@@ -23,6 +23,9 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
             'state' => 'do-nothing',
             'import-params' => [
             ],
+            'import-stats' => [
+            ],
+            'import-error' => '',
         ];
     }
 
@@ -77,6 +80,42 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['import-params'] = $params;
+        return parent::update($configuration);
+    }
+
+    /**
+     * Updates the import-stats.
+     *
+     * @param array $stats the data to save
+     *
+     * @return bool the status of the update process.
+     *
+     * @throws CRM_Core_Exception.
+     */
+    public function updateImportStats(array $stats): bool
+    {
+        // load latest config
+        parent::load();
+        $configuration = parent::get();
+        $configuration['import-stats'] = $stats;
+        return parent::update($configuration);
+    }
+
+    /**
+     * Updates the import-error.
+     *
+     * @param string $error the data to save
+     *
+     * @return bool the status of the update process.
+     *
+     * @throws CRM_Core_Exception.
+     */
+    public function updateImportError(string $error): bool
+    {
+        // load latest config
+        parent::load();
+        $configuration = parent::get();
+        $configuration['import-error'] = $error;
         return parent::update($configuration);
     }
 }

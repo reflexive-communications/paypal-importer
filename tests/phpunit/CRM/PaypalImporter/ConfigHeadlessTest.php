@@ -36,6 +36,10 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
         self::assertTrue(array_key_exists('import-params', $cfg), 'import-params key is missing from the config.');
         self::assertSame([], $cfg['import-params'], 'Invalid import-params initial value.');
+        self::assertTrue(array_key_exists('import-stats', $cfg), 'import-stats key is missing from the config.');
+        self::assertSame([], $cfg['import-stats'], 'Invalid import-stats initial value.');
+        self::assertTrue(array_key_exists('import-error', $cfg), 'import-error key is missing from the config.');
+        self::assertSame('', $cfg['import-error'], 'Invalid import-error initial value.');
 
         self::assertTrue($config->create(), 'Create config has to be successful multiple times.');
     }
@@ -79,6 +83,10 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame('do-nothing', $cfg['state'], 'Invalid state initial value.');
         self::assertTrue(array_key_exists('import-params', $cfg), 'import-params key is missing from the config.');
         self::assertSame([], $cfg['import-params'], 'Invalid import-params initial value.');
+        self::assertTrue(array_key_exists('import-stats', $cfg), 'import-stats key is missing from the config.');
+        self::assertSame([], $cfg['import-stats'], 'Invalid import-stats initial value.');
+        self::assertTrue(array_key_exists('import-error', $cfg), 'import-error key is missing from the config.');
+        self::assertSame('', $cfg['import-error'], 'Invalid import-error initial value.');
 
         self::assertTrue($config->remove(), 'Remove config has to be successful.');
         self::expectException(CRM_Core_Exception::class);
@@ -165,6 +173,38 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
             'start-date' => $cfg['settings']['start-date'],
         ];
         self::assertTrue($config->updateImportParams($cfg['import-params']), 'Update config has to be successful.');
+        $cfgUpdated = $config->get();
+        self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
+    }
+
+    /**
+     * It checks that the updateImportStats function works well.
+     */
+    public function testUpdateImportStats()
+    {
+        $config = new CRM_PaypalImporter_Config('paypal_test');
+        self::assertTrue($config->create(), 'Create config has to be successful.');
+        $cfg = $config->get();
+        $cfg['import-stats'] = [
+            'new-user' => 1,
+            'transaction' => 2,
+            'errors' => []
+        ];
+        self::assertTrue($config->updateImportStats($cfg['import-stats']), 'Update config has to be successful.');
+        $cfgUpdated = $config->get();
+        self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
+    }
+
+    /**
+     * It checks that the updateImportError function works well.
+     */
+    public function testUpdateImportError()
+    {
+        $config = new CRM_PaypalImporter_Config('paypal_test');
+        self::assertTrue($config->create(), 'Create config has to be successful.');
+        $cfg = $config->get();
+        $cfg['import-error'] = 'new-issue something went wrong.';
+        self::assertTrue($config->updateImportError($cfg['import-error']), 'Update config has to be successful.');
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
     }
