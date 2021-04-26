@@ -61,8 +61,12 @@ function civicrm_api3_paypal_data_import_Process($params)
     ];
     // loop until the next search start date is greater than now. or we reached the request limit.
     $numberOfRequests = 0;
-    $errors = [];
-    while ($numberOfRequests < 100) {
+    $stats = [
+        'new-user' => 0,
+        'transaction' => 0,
+        'errors' => [],
+    ];
+    while ($numberOfRequests < $cfg['settings']['request-limit']) {
         $transactionReq = new CRM_PaypalImporter_Request_Transactions($cfg['settings']['paypal-host'], $authData['access_token'], $transactionSearchParams);
         $transactionReq->get();
         $transactionResponse = $transactionReq->getResponse();
@@ -73,9 +77,13 @@ function civicrm_api3_paypal_data_import_Process($params)
         }
         $transactionData = json_decode($transactionResponse['data'], true);
         foreach ($transactionData['transaction_details'] as $transaction) {
-            $errors = array_merge($errors, processTransaction($cfg['settings'], $transaction));
+            $currentStat = processTransaction($cfg['settings'], $transaction);
+            $stats['new-user'] += $currentStat['new-user'];
+            $stats['transaction'] += $currentStat['transaction'];
+            $stats['errors'] = array_merge($stats['errors'], $currentStat['errors']);
         }
         // if we need paging (transaction total_pages > import-params.page), page increase, save import params.
+        // If we are on the last page, we increase the start date and end date and set the page to 1 for the next api call.
         if ($transactionData['total_pages'] > $cfg['import-params']['page']) {
             $importParams = [
                 'page' => $cfg['import-params']['page'] + 1,
@@ -84,9 +92,7 @@ function civicrm_api3_paypal_data_import_Process($params)
             $config->updateImportParams($importParams);
             $cfg = $config->get();
             $transactionSearchParams['page'] = $cfg['import-params']['page'];
-        }
-        // If the number of transactions is less than the page_size, we increase the start date and end date and set the page to 1 for the next api call.
-        if (count($transactionData['transaction_details']) < $transactionSearchParams['page_size']) {
+        } elseif ($transactionData['total_pages'] == $cfg['import-params']['page']) {
             // - On case of the end date of the current one is greater than now, set the start date (db import config) to the "last_refreshed_datetime": "2017-01-02T06:59:59+0000",
             // value. Set the state to sync, break loop.
             if ($transactionSearchParams['end_date'] > date(DATE_ISO8601, strtotime('now'))) {
@@ -112,7 +118,7 @@ function civicrm_api3_paypal_data_import_Process($params)
         }
         $numberOfRequests += 1;
     }
-    return civicrm_api3_create_success(['errors' => $errors, 'transactions' => $transactionData], $params, 'PaypalDataImport', 'Process');
+    return civicrm_api3_create_success(['stats' => $stats], $params, 'PaypalDataImport', 'Process');
 }
 
 /**
@@ -146,18 +152,22 @@ function authenticate(array $cfg): array
  * @param array $cfg the settigs configuration
  * @param array $transaction the paypal transaction
  *
- * @return array list of errors
+ * @return array stats of the current iteration
  *
  * @throws API_Exception
  */
 function processTransaction(array $cfg, array $transaction): array
 {
-    $errors = [];
+    $stats = [
+        'new-user' => 0,
+        'transaction' => 0,
+        'errors' => [],
+    ];
     // Check email first. If missing, the process will be skipped.
     $emailData = CRM_PaypalImporter_Transformer::paypalTransactionToEmail($transaction);
     if (empty($emailData['email'])) {
-        $errors[] = 'Skipping transaction due to missing email address.';
-        return $errors;
+        $stats['errors'][] = $transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.';
+        return $stats;
     }
     // Try to find a contact to the email. If not found, we have to insert a contact and also the email.
     $contactId = CRM_RcBase_Api_Get::contactIDFromEmail($emailData['email']);
@@ -166,8 +176,9 @@ function processTransaction(array $cfg, array $transaction): array
         try {
             $contactId = CRM_PaypalImporter_Loader::contact($contactData);
             CRM_PaypalImporter_Loader::email($contactId, $emailData);
+            $stats['new-user'] = 1;
         } catch (Exception $e) {
-            $errors[] = $e->getMessage();
+            $stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
         }
     }
     $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
@@ -176,8 +187,9 @@ function processTransaction(array $cfg, array $transaction): array
     $contributionData['source'] = "paypal-importer-extension - " . $contributionData['source'];
     try {
         CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
+        $stats['transaction'] = 1;
     } catch (Exception $e) {
-        $errors[] = $e->getMessage();
+        $stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
     }
-    return $errors;
+    return $stats;
 }
