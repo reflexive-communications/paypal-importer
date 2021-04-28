@@ -176,7 +176,8 @@ function paypal_importer_civicrm_themes(&$themes)
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
-function paypal_importer_civicrm_navigationMenu(&$menu) {
+function paypal_importer_civicrm_navigationMenu(&$menu)
+{
     _paypal_importer_civix_insert_navigation_menu($menu, 'Contributions', [
         "label" => E::ts('Paypal Importer'),
         "name" => "paypal_importer",
