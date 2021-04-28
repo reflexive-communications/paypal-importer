@@ -88,7 +88,10 @@ class CRM_PaypalImporter_Transformer
             'S' => 'Completed',
             'V' => 'Refunded',
         ];
-        return self::mapCivicrmContributionLabelToStatus($statusMapping[$status]);
+        if(array_key_exists($status, $statusMapping)) {
+            return self::mapCivicrmContributionLabelToStatus($statusMapping[$status]);
+        }
+        return 0;
     }
 
     /**
@@ -100,13 +103,14 @@ class CRM_PaypalImporter_Transformer
     */
     private static function mapCivicrmContributionLabelToStatus(string $label): int
     {
+        $statusId = 0;
         $contributionStatuses = CRM_Contribute_PseudoConstant::contributionStatus();
         foreach ($contributionStatuses as $id => $l) {
             if ($l === $label) {
-                return $id;
+                $statusId =  $id;
+                break;
             }
         }
-        // return invalid id
-        return 0;
+        return $id;
     }
 }
