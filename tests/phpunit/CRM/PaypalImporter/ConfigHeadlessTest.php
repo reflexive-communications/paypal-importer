@@ -208,4 +208,18 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
     }
+
+    /**
+     * It checks that the updateState function works well.
+     */
+    public function testUpdateState()
+    {
+        $config = new CRM_PaypalImporter_Config('paypal_test');
+        self::assertTrue($config->create(), 'Create config has to be successful.');
+        $cfg = $config->get();
+        $cfg['state'] = 'import';
+        self::assertTrue($config->updateState($cfg['state']), 'Update config has to be successful.');
+        $cfgUpdated = $config->get();
+        self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
+    }
 }
