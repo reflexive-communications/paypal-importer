@@ -88,7 +88,7 @@ class CRM_PaypalImporter_Transformer
             'S' => 'Completed',
             'V' => 'Refunded',
         ];
-        if(array_key_exists($status, $statusMapping)) {
+        if (array_key_exists($status, $statusMapping)) {
             return self::mapCivicrmContributionLabelToStatus($statusMapping[$status]);
         }
         return 0;

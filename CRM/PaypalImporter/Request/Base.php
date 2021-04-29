@@ -3,7 +3,7 @@
 /**
  * HTTP request class. It is responsible for the curl call. Based on the deprecated sdk.
  * https://github.com/paypal/PayPal-PHP-SDK/blob/1a2ed767bb09374a8a222069930e94fccf99009e/lib/PayPal/Core/PayPalHttpConnection.php
- * */
+ */
 class CRM_PaypalImporter_Request_Base
 {
     public const ACCEPT_HEADER = 'application/json';
@@ -11,42 +11,42 @@ class CRM_PaypalImporter_Request_Base
 
     /**
      * @var string hostname
-     * */
+     */
     private $host;
 
     /**
      * @var string endpoint
-     * */
+     */
     private $endpoint;
 
     /**
      * @var array curl options
-     * */
+     */
     private $options;
 
     /**
      * @var array request headers
-     * */
+     */
     private $requestHeaders;
 
     /**
      * @var array request data
-     * */
+     */
     private $requestData;
 
     /**
      * @var array response headers
-     * */
+     */
     private $responseHeaders;
 
     /**
      * @var array response data
-     * */
+     */
     private $responseData;
 
     /**
      * @var int response status code
-     * */
+     */
     private $responseStatusCode;
 
     /**
@@ -59,7 +59,7 @@ class CRM_PaypalImporter_Request_Base
      * @param array $data
      *
      * @throws Exception
-     * */
+     */
     public function __construct(string $host, string $endpoint = "", array $options = [], array $headers = [], array $data = [])
     {
         if (!function_exists("curl_init")) {
@@ -113,7 +113,7 @@ class CRM_PaypalImporter_Request_Base
      * Curl options for the requests.
      *
      * @return array
-     * */
+     */
     protected static function curlOptions(): array
     {
         return [
@@ -131,6 +131,9 @@ class CRM_PaypalImporter_Request_Base
         ];
     }
 
+    /**
+     * Performs a post request.
+     */
     public function post()
     {
         //Initialize Curl Options
@@ -152,6 +155,9 @@ class CRM_PaypalImporter_Request_Base
         curl_close($ch);
     }
 
+    /**
+     * Performs a get request.
+     */
     public function get()
     {
         //Initialize Curl Options
@@ -175,6 +181,11 @@ class CRM_PaypalImporter_Request_Base
         curl_close($ch);
     }
 
+    /**
+     * Returns the status code, headers, and data of the last executed request.
+     *
+     * @return array
+     */
     public function getResponse(): array
     {
         return [
