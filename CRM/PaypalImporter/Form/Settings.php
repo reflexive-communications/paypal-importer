@@ -45,6 +45,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->_defaults['requestLimit'] = $config['settings']['request-limit'];
         $this->_defaults['paymentInstrumentId'] = $config['settings']['payment-instrument-id'];
         $this->_defaults['financialTypeId'] = $config['settings']['financial-type-id'];
+        $this->_defaults['action'] = 0;
 
         return $this->_defaults;
     }
