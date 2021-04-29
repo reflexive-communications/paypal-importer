@@ -194,4 +194,54 @@ class CRM_PaypalImporter_Request_Base
             'data' => $this->responseData,
         ];
     }
+
+    /**
+     * Returns the host.
+     *
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
+    /**
+     * Returns the endpoint.
+     *
+     * @return string
+     */
+    public function getEndpoint(): string
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * Returns the options.
+     *
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * Returns the requestHeaders.
+     *
+     * @return array
+     */
+    public function getRequestHeaders(): array
+    {
+        return $this->requestHeaders;
+    }
+
+    /**
+     * Returns the requestData.
+     *
+     * @return array
+     */
+    public function getRequestData(): array
+    {
+        return $this->requestData;
+    }
 }
