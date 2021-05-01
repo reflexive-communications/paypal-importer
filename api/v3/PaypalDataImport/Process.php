@@ -27,6 +27,6 @@ function _civicrm_api3_paypal_data_import_Process_spec(&$spec)
  */
 function civicrm_api3_paypal_data_import_Process($params)
 {
-    $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME);
+    $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, CRM_PaypalImporter_Request_Auth::class, CRM_PaypalImporter_Request_Transactions::class);
     return $p->run($params);
 }
