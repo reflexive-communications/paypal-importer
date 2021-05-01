@@ -27,13 +27,21 @@ class CRM_PaypalImporter_ImportProcess
      * @var array searchParams
      */
     private $searchParams;
+    /**
+     * @var string authenticatorClass
+     */
+    private $authenticatorClass;
+    /**
+     * @var string authenticatorClass
+     */
+    private $transactionSearchClass;
 
     /**
      * Default Constructor
      *
      * @param string $configName
      */
-    public function __construct(string $configName)
+    public function __construct(string $configName, string $authenticatorClassName, string $transactionSearchClassName)
     {
         $this->config = new CRM_PaypalImporter_Config($configName);
         $this->numberOfRequests = 0;
@@ -42,6 +50,8 @@ class CRM_PaypalImporter_ImportProcess
             'transaction' => 0,
             'errors' => [],
         ];
+        $this->authenticatorClass = $authenticatorClassName;
+        $this->transactionSearchClass = $transactionSearchClassName;
     }
 
     /**
@@ -96,7 +106,7 @@ class CRM_PaypalImporter_ImportProcess
     {
         $cfg = $this->config->get();
         // Authenticate - get access token
-        $authReq = new CRM_PaypalImporter_Request_Auth($cfg['settings']['paypal-host'], $cfg['settings']['client-id'], $cfg['settings']['client-secret']);
+        $authReq = new $this->authenticatorClass($cfg['settings']['paypal-host'], $cfg['settings']['client-id'], $cfg['settings']['client-secret']);
         $authReq->post();
         $authResponse = $authReq->getResponse();
         $this->authData = json_decode($authResponse['data'], true);
@@ -133,7 +143,7 @@ class CRM_PaypalImporter_ImportProcess
     private function getTransactionData(): array
     {
         $cfg = $this->config->get();
-        $transactionReq = new CRM_PaypalImporter_Request_Transactions($cfg['settings']['paypal-host'], $this->authData['access_token'], $this->searchParams);
+        $transactionReq = new $this->transactionSearchClass($cfg['settings']['paypal-host'], $this->authData['access_token'], $this->searchParams);
         $transactionReq->get();
         $transactionResponse = $transactionReq->getResponse();
         // If the transaction search failed, set error state.
@@ -244,6 +254,15 @@ class CRM_PaypalImporter_ImportProcess
 
     /**
      * It starts the import process.
+     *
+     * @param array $params
+     *
+     * @return array
+     *   API result descriptor
+     *
+     * @see civicrm_api3_create_success
+     *
+     * @throws API_Exception
      */
     public function run($params)
     {
