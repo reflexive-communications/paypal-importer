@@ -279,6 +279,9 @@ class CRM_PaypalImporter_ImportProcess
         }
 
         $this->initImportParams();
+        $this->config->load();
+        $cfg = $this->config->get();
+        $this->stats['transaction-data'] = [];
 
         // Authenticate - get access token
         $this->authenticate();
@@ -290,9 +293,10 @@ class CRM_PaypalImporter_ImportProcess
             }
             // if we need paging (transaction total_pages > import-params.page), page increase, save import params.
             // If we are on the last page, we increase the start date and end date and set the page to 1 for the next api call.
+            $this->stats['transaction-data'][] = ['data' => $transactionData, 'import-params' => $cfg['import-params']];
             if ($transactionData['total_pages'] > $cfg['import-params']['page']) {
                 $this->searchParams['page'] = $this->pagingForTransactionSearch();
-            } elseif ($transactionData['total_pages'] == $cfg['import-params']['page']) {
+            } else {
                 // - On case of the end date of the current one is greater than now, set the start date (db import config) to the "last_refreshed_datetime": "2017-01-02T06:59:59+0000",
                 // value. Set the state to sync, break loop.
                 if ($this->searchParams['end_date'] > date(DATE_ISO8601, strtotime('now'))) {
@@ -306,6 +310,7 @@ class CRM_PaypalImporter_ImportProcess
             $this->numberOfRequests += 1;
         }
         $this->stats['execution-time'] = $this->getExecutionTime();
+        $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
         return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalDataImport', 'Process');
     }
