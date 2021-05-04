@@ -186,8 +186,13 @@ class CRM_PaypalImporter_ImportProcess
             $contactData = CRM_PaypalImporter_Transformer::paypalTransactionToContact($transaction);
             try {
                 $contactId = CRM_PaypalImporter_Loader::contact($contactData);
-                CRM_PaypalImporter_Loader::email($contactId, $emailData);
                 $this->stats['new-user'] += 1;
+            } catch (Exception $e) {
+                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                return;
+            }
+            try {
+                CRM_PaypalImporter_Loader::email($contactId, $emailData);
             } catch (Exception $e) {
                 $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
             }
