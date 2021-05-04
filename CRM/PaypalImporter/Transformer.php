@@ -104,7 +104,7 @@ class CRM_PaypalImporter_Transformer
     private static function mapCivicrmContributionLabelToStatus(string $label): int
     {
         $statusId = 0;
-        $contributionStatuses = CRM_Contribute_PseudoConstant::contributionStatus();
+        $contributionStatuses = CRM_Contribute_BAO_Contribution_Utils::getContributionStatuses();
         foreach ($contributionStatuses as $id => $l) {
             if ($l === $label) {
                 $statusId =  $id;
