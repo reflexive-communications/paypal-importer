@@ -111,6 +111,6 @@ class CRM_PaypalImporter_Transformer
                 break;
             }
         }
-        return $id;
+        return $statusId;
     }
 }
