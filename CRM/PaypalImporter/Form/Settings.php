@@ -45,6 +45,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->_defaults['requestLimit'] = $config['settings']['request-limit'];
         $this->_defaults['paymentInstrumentId'] = $config['settings']['payment-instrument-id'];
         $this->_defaults['financialTypeId'] = $config['settings']['financial-type-id'];
+        $this->_defaults['tagId'] = $config['settings']['tag-id'];
+        $this->_defaults['groupId'] = $config['settings']['group-id'];
         $this->_defaults['action'] = 0;
 
         return $this->_defaults;
@@ -121,6 +123,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             'request-limit' => intval($this->_submitValues['requestLimit'], 10),
             'payment-instrument-id' => intval($this->_submitValues['paymentInstrumentId'], 10),
             'financial-type-id' => intval($this->_submitValues['financialTypeId'], 10),
+            'tag-id' => intval($this->_submitValues['tagId'], 10),
+            'group-id' => intval($this->_submitValues['groupId'], 10),
         ];
         try {
             if (!$this->config->updateSettings($submitData)) {
