@@ -353,6 +353,9 @@ class CRM_PaypalImporter_ImportProcess
         $this->stats['execution-time'] = $this->getExecutionTime();
         $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
+        foreach ($this->stats['errors'] as $message) {
+            Civi::log()->info('Paypal-Importer | ' . $message);
+        }
         return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalDataImport', 'Process');
     }
 }
