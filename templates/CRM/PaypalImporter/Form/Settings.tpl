@@ -49,6 +49,18 @@
             </td>
         </tr>
         <tr>
+            <td class="label">{$form.tagId.label}</td>
+            <td class="content">{$form.tagId.html}<br/>
+                <span class="description">{ts}Optional tag that will be added to the new contacts.{/ts}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">{$form.groupId.label}</td>
+            <td class="content">{$form.groupId.html}<br/>
+                <span class="description">{ts}Optional group. The contact will be added to this group.{/ts}</span>
+            </td>
+        </tr>
+        <tr>
             <td class="label">{$form.action.label}</td>
             <td class="content">{$form.action.html}</td>
         </tr>
