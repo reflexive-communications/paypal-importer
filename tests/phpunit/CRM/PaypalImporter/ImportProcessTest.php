@@ -21,6 +21,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '',
             'payment-instrument-id' => '',
             'request-limit' => 1,
+            'tag-id' => '',
+            'group-id' => '',
         ],
         'state' => 'do-nothing',
         'import-params' => [
@@ -127,6 +129,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
+            'tag-id' => '',
+            'group-id' => '',
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsNoTransactionMock');
@@ -179,6 +183,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
+            'tag-id' => '',
+            'group-id' => '',
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMissingEmailMock');
@@ -221,6 +227,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
+            'tag-id' => '',
+            'group-id' => '',
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');

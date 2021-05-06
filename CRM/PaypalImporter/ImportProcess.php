@@ -1,5 +1,7 @@
 <?php
 
+use Civi\Api4\GroupContact;
+
 class CRM_PaypalImporter_ImportProcess
 {
 
@@ -159,6 +161,8 @@ class CRM_PaypalImporter_ImportProcess
      * is missing from the paypal transaction, it logs the error and returns.
      * Next it tries to find a contact with the given email. If not found a new
      * contact will be created and a new email record will be attached to it.
+     * The tag and group fields are optional, but if they set, the contact will be tagged
+     * and added to the group.
      * Finally the contribution will be created and attached to the user. Under the
      * hood it handles the contribution update also.
      *
@@ -197,6 +201,21 @@ class CRM_PaypalImporter_ImportProcess
                 $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
             }
         }
+        // Add the tag to the user and also subscribe it to the group.
+        if ($cfg['settings']['tag-id'] !== '') {
+            try {
+                CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
+            } catch (Exception $e) {
+                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+            }
+        }
+        if ($cfg['settings']['group-id'] !== '') {
+            try {
+                $this->groupContact($contactId, $cfg['settings']['group-id']);
+            } catch (Exception $e) {
+                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+            }
+        }
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
         $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
         $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
@@ -207,6 +226,21 @@ class CRM_PaypalImporter_ImportProcess
         } catch (Exception $e) {
             $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
         }
+    }
+
+    private function groupContact(int $contactId, int $groupId): void
+    {
+        $result = GroupContact::get(false)
+            ->addSelect('id')
+            ->addWhere('contact_id', '=', $contactId)
+            ->addWhere('group_id', '=', $groupId)
+            ->setLimit(1)
+            ->execute();
+        // already in the group, skip insert step.
+        if (is_array($result->first())) {
+            return;
+        }
+        CRM_RcBase_Api_Create::entity('GroupContact', ['contact_id' => $contactId, 'group_id' => $groupId, 'status' => 'Added'], false);
     }
 
     /**
