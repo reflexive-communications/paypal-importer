@@ -4,17 +4,22 @@
     </div>
 </div>
 <div class="crm-block crm-form-block">
-    {ts}Current state: {/ts} {$currentState} {if $currentState == 'error'}{$lastLogError}{/if}
+    {ts}Current state: {/ts} {$currentState} {if $currentState == 'error'}<b>{$lastLogError}</b>{/if}
 </div>
 <div class="crm-block crm-form-block">
     {if isset($lastStatsUser)}<div>{ts}Number of imported users in the last iteration:{/ts} {$lastStatsUser}</div>{/if}
     {if isset($lastStatsTransaction)}<div>{ts}Number of imported transactions in the last iteration:{/ts} {$lastStatsTransaction}</div>{/if}
+</div>
+{if count($lastStatsErrors) > 0}
+<div class="crm-block crm-form-block">
+    <h3>{ts}Issues durint the last iteration{/ts}</h3>
     <ul>
     {foreach from=$lastStatsErrors key=id item=error}
         <li>{$error}</li>
     {/foreach}
     </ul>
 </div>
+{/if}
 <div class="crm-block crm-form-block">
     <table class="form-layout">
         <tr>
