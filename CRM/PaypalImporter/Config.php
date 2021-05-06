@@ -19,6 +19,8 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
                 'financial-type-id' => '',
                 'payment-instrument-id' => '',
                 'request-limit' => 1,
+                'tag-id' => '',
+                'group-id' => '',
             ],
             'state' => 'do-nothing',
             'import-params' => [
