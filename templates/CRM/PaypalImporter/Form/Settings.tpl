@@ -1,4 +1,9 @@
 <div class="crm-block crm-form-block">
+    <div class="action-link">
+        <a class="button new-option" href="{$reloadPage}"><span><i class="crm-i fa-refresh"></i> {ts}Reload{/ts}</span></a>
+    </div>
+</div>
+<div class="crm-block crm-form-block">
     {ts}Current state: {/ts} {$currentState} {if $currentState == 'error'}{$lastLogError}{/if}
 </div>
 <div class="crm-block crm-form-block">

@@ -119,6 +119,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             $this->assign('lastStatsErrors', $config['import-stats']['errors']);
         }
         $this->assign('lastLogError', $config['import-error']);
+        $this->assign('reloadPage', CRM_Utils_System::url('civicrm/contribute/paypal-import'));
     }
 
     /**
