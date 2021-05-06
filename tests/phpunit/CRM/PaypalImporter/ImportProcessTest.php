@@ -209,13 +209,6 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
          * '5TY05013RG002845M | Failed to create Contribution, reason: Function money_format() is deprecated',
          * I'm thinking about something like i have in the local dev installer script.
          */
-        $results = civicrm_api4('Setting', 'set', [
-            'values' => [
-                'monetaryThousandSeparator' => '.',
-                'monetaryDecimalPoint' => ',',
-                'moneyformat' => '%a %c',
-            ],
-        ]);
         $this->setupTestConfig();
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         $config->updateState('import-init');
@@ -232,7 +225,6 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');
         $result = $p->run(self::PARAMS);
-        echo var_export($result, true);
         self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
         self::assertTrue(array_key_exists('values', $result));
