@@ -19,6 +19,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
             'financial-type-id' => '',
             'payment-instrument-id' => '',
             'request-limit' => 1,
+            'tag-id' => '',
+            'group-id' => '',
         ],
         'state' => 'do-nothing',
         'import-params' => [
@@ -132,6 +134,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
             'requestLimit' => $cfg['settings']['request-limit'],
             'paymentInstrumentId' => $cfg['settings']['payment-instrument-id'],
             'financialTypeId' => $cfg['settings']['financial-type-id'],
+            'tagId' => $cfg['settings']['tag-id'],
+            'groupId' => $cfg['settings']['group-id'],
             'action' => 0,
         ];
         self::assertSame($expectedConfig, $form->setDefaultValues());
@@ -168,6 +172,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 0;
+        $_POST['tagId'] = '';
+        $_POST['groupId'] = '';
         $this->setupTestConfig();
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -188,6 +194,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 1;
+        $_POST['tagId'] = '';
+        $_POST['groupId'] = '';
         $this->setupTestConfig();
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -212,6 +220,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 1;
+        $_POST['tagId'] = '';
+        $_POST['groupId'] = '';
         $this->setupTestConfig();
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         $config->updateState('import');
