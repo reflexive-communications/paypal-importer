@@ -21,8 +21,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '',
             'payment-instrument-id' => '',
             'request-limit' => 1,
-            'tag-id' => '',
-            'group-id' => '',
+            'tag-id' => 0,
+            'group-id' => 0,
         ],
         'state' => 'do-nothing',
         'import-params' => [
@@ -129,8 +129,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
-            'tag-id' => '',
-            'group-id' => '',
+            'tag-id' => 0,
+            'group-id' => 0,
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsNoTransactionMock');
@@ -183,8 +183,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
-            'tag-id' => '',
-            'group-id' => '',
+            'tag-id' => 0,
+            'group-id' => 0,
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMissingEmailMock');
@@ -210,11 +210,6 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
     }
     public function testRunTransactionWithTransactions()
     {
-        /*
-         * According to my tests, the monetary settings are not set well.
-         * '5TY05013RG002845M | Failed to create Contribution, reason: Function money_format() is deprecated',
-         * I'm thinking about something like i have in the local dev installer script.
-         */
         $this->setupTestConfig();
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         $config->updateState('import-init');
@@ -227,8 +222,47 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
-            'tag-id' => '',
-            'group-id' => '',
+            'tag-id' => 0,
+            'group-id' => 0,
+        ];
+        $config->updateSettings($settings);
+        $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');
+        $result = $p->run(self::PARAMS);
+        self::assertTrue(array_key_exists('is_error', $result));
+        self::assertSame(0, $result['is_error']);
+        self::assertTrue(array_key_exists('values', $result));
+        self::assertTrue(array_key_exists('stats', $result['values']));
+        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
+        self::assertIsFloat($result['values']['stats']['execution-time']);
+        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
+        self::assertSame(2, $result['values']['stats']['new-user']);
+        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
+        self::assertSame(2, $result['values']['stats']['transaction']);
+        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
+        self::assertSame([], $result['values']['stats']['errors']);
+        $config->load();
+        $cfg = $config->get();
+        // the page has to be 1 again, and the start date has to be increased with 30 days.
+        self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame('import', $cfg['state']);
+    }
+    public function testRunTransactionWithTransactionsSetupTagAndGroup()
+    {
+        $this->setupTestConfig();
+        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config->updateState('import-init');
+        $settings = [
+            'client-id' => 'clientid',
+            'client-secret' => 'clientsecret',
+            'paypal-host' => 'https://host.com',
+            'start-date' => date('Y-m-d H:i', strtotime('now - 61 days')),
+            'import-limit' => 2,
+            'financial-type-id' => '1',
+            'payment-instrument-id' => '1',
+            'request-limit' => 1,
+            'tag-id' => 0,
+            'group-id' => 0,
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');

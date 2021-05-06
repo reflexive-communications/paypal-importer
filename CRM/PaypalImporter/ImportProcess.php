@@ -116,6 +116,7 @@ class CRM_PaypalImporter_ImportProcess
         // push state to error, add log: authentication failed.
         if (intval($authResponse['code']) !== 200 || empty($this->authData['access_token'])) {
             $this->config->updateState('error');
+            $this->config->updateImportError('Paypal authentication failure');
             throw new API_Exception('Paypal authentication failure', 'paypal_auth_failure');
         }
     }
@@ -151,6 +152,7 @@ class CRM_PaypalImporter_ImportProcess
         // If the transaction search failed, set error state.
         if (intval($transactionResponse['code']) !== 200) {
             $this->config->updateState('error');
+            $this->config->updateImportError('Paypal transaction search failure');
             throw new API_Exception('Paypal transaction search failure', 'paypal_transaction_search_failure');
         }
         return json_decode($transactionResponse['data'], true);
@@ -202,14 +204,14 @@ class CRM_PaypalImporter_ImportProcess
             }
         }
         // Add the tag to the user and also subscribe it to the group.
-        if ($cfg['settings']['tag-id'] !== '') {
+        if ($cfg['settings']['tag-id'] > 0) {
             try {
                 CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
             } catch (Exception $e) {
                 $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
             }
         }
-        if ($cfg['settings']['group-id'] !== '') {
+        if ($cfg['settings']['group-id'] > 0) {
             try {
                 $this->groupContact($contactId, $cfg['settings']['group-id']);
             } catch (Exception $e) {

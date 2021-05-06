@@ -19,8 +19,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
             'financial-type-id' => '',
             'payment-instrument-id' => '',
             'request-limit' => 1,
-            'tag-id' => '',
-            'group-id' => '',
+            'tag-id' => 0,
+            'group-id' => 0,
         ],
         'state' => 'do-nothing',
         'import-params' => [
@@ -172,8 +172,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 0;
-        $_POST['tagId'] = '';
-        $_POST['groupId'] = '';
+        $_POST['tagId'] = 0;
+        $_POST['groupId'] = 0;
         $this->setupTestConfig();
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -194,8 +194,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 1;
-        $_POST['tagId'] = '';
-        $_POST['groupId'] = '';
+        $_POST['tagId'] = 0;
+        $_POST['groupId'] = 0;
         $this->setupTestConfig();
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -220,8 +220,8 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
         $_POST['action'] = 1;
-        $_POST['tagId'] = '';
-        $_POST['groupId'] = '';
+        $_POST['tagId'] = 0;
+        $_POST['groupId'] = 0;
         $this->setupTestConfig();
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         $config->updateState('import');
