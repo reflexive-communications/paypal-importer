@@ -2,6 +2,9 @@
 
 use CRM_PaypalImporter_ExtensionUtil as E;
 
+use Civi\Api4\Tag;
+use Civi\Api4\Group;
+
 /**
  * Import process test cases.
  *
@@ -252,6 +255,15 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $this->setupTestConfig();
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         $config->updateState('import-init');
+        $tagId = Tag::create()
+            ->addValue('name', 'My Tag')
+            ->addValue('used_for', ['civicrm_contact'])
+            ->addValue('is_selectable', true)
+            ->execute();
+        $groupId = Group::create()
+            ->addValue('title', 'My Group')
+            ->addValue('is_active', true)
+            ->execute();
         $settings = [
             'client-id' => 'clientid',
             'client-secret' => 'clientsecret',
@@ -261,8 +273,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             'financial-type-id' => '1',
             'payment-instrument-id' => '1',
             'request-limit' => 1,
-            'tag-id' => 0,
-            'group-id' => 0,
+            'tag-id' => (int)$tagId->first()['id'],
+            'group-id' => (int)$groupId->first()['id'],
         ];
         $config->updateSettings($settings);
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');
@@ -274,7 +286,8 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
         self::assertIsFloat($result['values']['stats']['execution-time']);
         self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
-        self::assertSame(2, $result['values']['stats']['new-user']);
+        // the transaction search mock is reused, so that the users will be the same.
+        self::assertSame(0, $result['values']['stats']['new-user']);
         self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(2, $result['values']['stats']['transaction']);
         self::assertTrue(array_key_exists('errors', $result['values']['stats']));
@@ -285,5 +298,21 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
         self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
         self::assertSame('import', $cfg['state']);
+        // Run the same import again, to check the tag, group logic is not failing.
+        $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');
+        $result = $p->run(self::PARAMS);
+        self::assertTrue(array_key_exists('is_error', $result));
+        self::assertSame(0, $result['is_error']);
+        self::assertTrue(array_key_exists('values', $result));
+        self::assertTrue(array_key_exists('stats', $result['values']));
+        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
+        self::assertIsFloat($result['values']['stats']['execution-time']);
+        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
+        // the transaction search mock is reused, so that the users will be the same.
+        self::assertSame(0, $result['values']['stats']['new-user']);
+        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
+        self::assertSame(2, $result['values']['stats']['transaction']);
+        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
+        self::assertSame([], $result['values']['stats']['errors']);
     }
 }
