@@ -1,5 +1,6 @@
 <?php
 
+use CRM_PaypalImporter_ExtensionUtil as E;
 use Civi\Test\HeadlessInterface;
 use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
@@ -13,6 +14,26 @@ class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase im
 {
     use \Civi\Test\Api3TestTrait;
 
+    const TEST_SETTINGS = [
+        'settings' => [
+            'client-id' => '',
+            'client-secret' => '',
+            'paypal-host' => '',
+            'start-date' => '',
+            'import-limit' => 1,
+            'financial-type-id' => '',
+            'payment-instrument-id' => '',
+            'request-limit' => 1,
+            'tag-id' => 0,
+            'group-id' => 0,
+        ],
+        'state' => 'do-nothing',
+        'import-params' => [
+        ],
+        'import-stats' => [
+        ],
+        'import-error' => '',
+    ];
     /**
      * Set up for headless tests.
      *
@@ -42,5 +63,17 @@ class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase im
     public function tearDown(): void
     {
         parent::tearDown();
+    }
+    /**
+     * Simple example test case.
+     *
+     * Just call the endpoint. Due to the default state, it will do nothing.
+     */
+    public function testApiCall()
+    {
+        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        self::assertTrue($config->update(self::TEST_SETTINGS), 'Config update has to be successful.');
+        $result = civicrm_api3('PaypalDataImport', 'process', []);
+        $this->assertEquals(self::TEST_SETTINGS['state'], $result['values']['state']);
     }
 }
