@@ -315,4 +315,44 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
     }
+    public function testRunTransactionWithTransactionsPaging()
+    {
+        $this->setupTestConfig();
+        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config->updateState('import-init');
+        $settings = [
+            'client-id' => 'clientid',
+            'client-secret' => 'clientsecret',
+            'paypal-host' => 'https://host.com',
+            'start-date' => date('Y-m-d H:i', strtotime('now - 61 days')),
+            'import-limit' => 2,
+            'financial-type-id' => '1',
+            'payment-instrument-id' => '1',
+            'request-limit' => 1,
+            'tag-id' => 0,
+            'group-id' => 0,
+        ];
+        $config->updateSettings($settings);
+        $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsPagingMock');
+        $result = $p->run(self::PARAMS);
+        self::assertTrue(array_key_exists('is_error', $result));
+        self::assertSame(0, $result['is_error']);
+        self::assertTrue(array_key_exists('values', $result));
+        self::assertTrue(array_key_exists('stats', $result['values']));
+        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
+        self::assertIsFloat($result['values']['stats']['execution-time']);
+        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
+        // the transaction search mock is reused, so that the users will be the same.
+        self::assertSame(0, $result['values']['stats']['new-user']);
+        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
+        self::assertSame(2, $result['values']['stats']['transaction']);
+        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
+        self::assertSame([], $result['values']['stats']['errors']);
+        $config->load();
+        $cfg = $config->get();
+        // the page has to be 1 again, and the start date has to be increased with 30 days.
+        self::assertSame(2, $cfg['import-params']['page'], 'Invalid page after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'])), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame('import', $cfg['state']);
+    }
 }
