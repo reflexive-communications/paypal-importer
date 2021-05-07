@@ -17,6 +17,8 @@
         <file>./CRM/PaypalImporter/Upgrader/Base.php</file>
         <!-- Skip the mock files -->
         <directory suffix="Mock.php">./CRM/PaypalImporter/Request/</directory>
+        <!-- Skip the mgd files managed database record -->
+        <directory suffix="mgd.php">./api/v3/PaypalDataImport/</directory>
       </exclude>
     </whitelist>
   </filter>
