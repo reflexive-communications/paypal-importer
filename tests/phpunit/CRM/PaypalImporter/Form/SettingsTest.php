@@ -112,6 +112,21 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         }
         self::assertSame('Paypal data importer', $form->getTitle(), 'Invalid form title.');
     }
+    public function testBuildQuickFormImportStats()
+    {
+        $this->setupTestConfig();
+        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config->updateState('import-init');
+        $form = new CRM_PaypalImporter_Form_Settings();
+        $config->updateImportStats(['new-user' => 2, 'transaction' => 2, 'error' => ['Something went wrong.']]);
+        self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
+        try {
+            self::assertEmpty($form->buildQuickForm());
+        } catch (Exception $e) {
+            self::fail('It shouldn\'t throw exception. '.$e->getMessage());
+        }
+        self::assertSame('Paypal data importer', $form->getTitle(), 'Invalid form title.');
+    }
 
     /**
      * setDefaultValues test case.
