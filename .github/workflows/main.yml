@@ -85,6 +85,7 @@ jobs:
       run: |
           sudo mv dsg/apache2.conf ${{ env.APACHE_DIR }}/apache2.conf
           ./dsg/scripts.sh ci-build --project-base-path "${PROJECT_BASE_PATH}" --project-name "${SITE_NAME}" --db-name "${DB_NAME}" --db-user-name "${DB_USER}" --site-admin-user-name "${SITE_ADMIN_NAME}" --site-admin-password "${SITE_ADMIN_PW}" --apache-conf-dir "${APACHE_CONF_DIR}" --db-host "${DB_HOST}" --db-port "${DB_PORT}" --root-db-user-pw "${MYSQL_DB_PASS}" --local-deploy-target "${LOCAL_DEPLOY_TARGET}" -s --composer-app "${COMPOSER_APP}"
+          sudo chmod -R 777 ${{ env.LOCAL_DEPLOY_TARGET }}"/"${{ env.SITE_NAME }}"/web/sites/default/files/civicrm/ConfigAndLog/"
 
     - name: Get rc-base as it is required for this.
       uses: actions/checkout@v2
@@ -103,17 +104,13 @@ jobs:
       with:
           path: ${{ env.EXTENSION_NAME }}
 
-    - name: Move code under extensions directory
+    - name: Move code under extensions directory and enable extension
       run: |
           sudo mv ${{ env.EXTENSION_NAME }} ${{ env.LOCAL_DEPLOY_TARGET }}"/"${{ env.SITE_NAME }}"/web/sites/default/files/civicrm/ext"
-
-    - name: Enable extension
-      run: |
           cd ${{ env.LOCAL_DEPLOY_TARGET }}"/"${{ env.SITE_NAME }}
           cv --no-interaction --cwd=${{ env.LOCAL_DEPLOY_TARGET }}/${{ env.SITE_NAME }} ext:enable ${{ env.EXTENSION_NAME }}
 
     - name: Run unit tests
       run: |
-          sudo chmod -R 777 ${{ env.LOCAL_DEPLOY_TARGET }}"/"${{ env.SITE_NAME }}"/web/sites/default/files/civicrm/ConfigAndLog
           cd ${{ env.LOCAL_DEPLOY_TARGET }}"/"${{ env.SITE_NAME }}"/web/sites/default/files/civicrm/ext/"${{ env.EXTENSION_NAME }}
           XDEBUG_MODE=coverage XDEBUG_MODE_COVERAGE=coverage phpunit --verbose --coverage-text
