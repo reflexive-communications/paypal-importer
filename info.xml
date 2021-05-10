@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <extension key="paypal-importer" type="module">
     <file>paypal_importer</file>
-    <name>Civicrm Paypal Importer</name>
+    <name>CiviCRM Paypal Importer</name>
     <description>This extension provides a Paypal transaction import process.</description>
     <license>AGPL-3.0</license>
     <maintainer>
