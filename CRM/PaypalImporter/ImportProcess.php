@@ -263,7 +263,7 @@ class CRM_PaypalImporter_ImportProcess
     }
 
     /**
-     * It sets the process state to sync. It is called after the 
+     * It sets the process state to sync. It is called after the
      * import process is finished.
      *
      * @param string lastRefreshedDate.
@@ -279,7 +279,7 @@ class CRM_PaypalImporter_ImportProcess
     }
 
     /**
-     * Updates the search params and the db config for the next import iteration. 
+     * Updates the search params and the db config for the next import iteration.
      */
     private function stepStartDate(): void
     {
