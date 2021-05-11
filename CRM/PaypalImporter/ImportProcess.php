@@ -322,7 +322,6 @@ class CRM_PaypalImporter_ImportProcess
         $this->initImportParams();
         $this->config->load();
         $cfg = $this->config->get();
-        $this->stats['transaction-data'] = [];
 
         // Authenticate - get access token
         $this->authenticate();
@@ -334,7 +333,6 @@ class CRM_PaypalImporter_ImportProcess
             }
             // if we need paging (transaction total_pages > import-params.page), page increase, save import params.
             // If we are on the last page, we increase the start date and end date and set the page to 1 for the next api call.
-            $this->stats['transaction-data'][] = ['data' => $transactionData, 'import-params' => $cfg['import-params']];
             if ($transactionData['total_pages'] > $cfg['import-params']['page']) {
                 $this->searchParams['page'] = $this->pagingForTransactionSearch();
             } else {
