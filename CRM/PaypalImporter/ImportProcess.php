@@ -183,7 +183,9 @@ class CRM_PaypalImporter_ImportProcess
         // Check email first. If missing, the process will be skipped.
         $emailData = CRM_PaypalImporter_Transformer::paypalTransactionToEmail($transaction);
         if (empty($emailData['email'])) {
-            $this->stats['errors'][] = $transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.';
+            $message = $transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.';
+            $this->stats['errors'][] = $message;
+            Civi::log()->info('Paypal-Importer | ' . $message);
             return;
         }
         // Try to find a contact to the email. If not found, we have to insert a contact and also the email.
@@ -194,13 +196,17 @@ class CRM_PaypalImporter_ImportProcess
                 $contactId = CRM_PaypalImporter_Loader::contact($contactData);
                 $this->stats['new-user'] += 1;
             } catch (Exception $e) {
-                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $message = $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $this->stats['errors'][] = $message;
+                Civi::log()->error('Paypal-Importer | ' . $message);
                 return;
             }
             try {
                 CRM_PaypalImporter_Loader::email($contactId, $emailData);
             } catch (Exception $e) {
-                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $message = $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $this->stats['errors'][] = $message;
+                Civi::log()->error('Paypal-Importer | ' . $message);
             }
         }
         // Add the tag to the user and also subscribe it to the group.
@@ -208,14 +214,18 @@ class CRM_PaypalImporter_ImportProcess
             try {
                 CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
             } catch (Exception $e) {
-                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $message = $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $this->stats['errors'][] = $message;
+                Civi::log()->error('Paypal-Importer | ' . $message);
             }
         }
         if ($cfg['settings']['group-id'] > 0) {
             try {
                 $this->groupContact($contactId, $cfg['settings']['group-id']);
             } catch (Exception $e) {
-                $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $message = $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+                $this->stats['errors'][] = $message;
+                Civi::log()->error('Paypal-Importer | ' . $message);
             }
         }
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
@@ -226,7 +236,9 @@ class CRM_PaypalImporter_ImportProcess
             CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
         } catch (Exception $e) {
-            $this->stats['errors'][] =  $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+            $message = $transaction['transaction_info']['transaction_id'].' | '.$e->getMessage();
+            $this->stats['errors'][] = $message;
+            Civi::log()->error('Paypal-Importer | ' . $message);
         }
     }
 
@@ -351,9 +363,6 @@ class CRM_PaypalImporter_ImportProcess
         $this->stats['execution-time'] = $this->getExecutionTime();
         $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
-        foreach ($this->stats['errors'] as $message) {
-            Civi::log()->info('Paypal-Importer | ' . $message);
-        }
         return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalDataImport', 'Process');
     }
 }
