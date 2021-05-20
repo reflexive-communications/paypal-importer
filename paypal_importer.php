@@ -179,11 +179,12 @@ function paypal_importer_civicrm_themes(&$themes)
 function paypal_importer_civicrm_navigationMenu(&$menu)
 {
     _paypal_importer_civix_insert_navigation_menu($menu, 'Contributions', [
-        "label" => E::ts('Paypal Importer'),
-        "name" => "paypal_importer",
-        "url" => "civicrm/contribute/paypal-import",
-        "permission" => "administer CiviCRM",
-        "separator" => 0,
+        'label' => E::ts('Paypal Importer'),
+        'name' => 'paypal_importer',
+        'url' => 'civicrm/contribute/paypal-import',
+        'permission' => 'administer CiviCRM,access CiviContribute,edit contributions',
+        'operator' => 'AND',
+        'separator' => 0,
     ]);
     _paypal_importer_civix_navigationMenu($menu);
 }
