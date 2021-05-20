@@ -54,3 +54,7 @@ The importer application is state based. The state manages the behaviour of the 
 - `import` state is followed by the `impost-init` state. In this state it maintains internal parameters for the transaction search API calls. If the end time of the search is in the future, it pushes the state to `sync`.
 - `sync` state is followed by the `import` state. This state behaves exactly the same as the `import` state.
 - `error` state could be set if the communication to the Paypal API fails. It means the application could enter this error state from the `import` and the `sync` states. On the admin form, you have to push the state back to `do-nothing` from this state. In this state the import process does nothing.
+
+### Check issues.
+
+The import process stores some information about the problems of the last import iteration. But sometimes we might need to know the details of the import issues of the previous iterations also. This tool uses `Civi::log` for file logging. The missing emails are logged out as info, the CRM related exceptions are logged out as errors. The lines are prefixed with the `Paypal-Importer | ` string. The prefix is followed by the `transaction id | ` and the message of issue.
