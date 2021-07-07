@@ -65,7 +65,7 @@ class CRM_PaypalImporter_Transformer
             'contribution_status_id' => self::paypalTransactionStatusToCivicrmContributionStatus($transaction['transaction_info']['transaction_status']),
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
-        if ($contributionData['contribution_status_id'] === self::mapCivicrmContributionLabelToStatus('Refunded')) {
+        if ($contributionData['contribution_status_id'] === self::mapCivicrmContributionLabelToStatus(ts('Refunded'))) {
             $contributionData['contribution_cancel_date'] = $transaction['transaction_info']['transaction_updated_date'];
         }
 
@@ -89,7 +89,7 @@ class CRM_PaypalImporter_Transformer
             'V' => 'Refunded',
         ];
         if (array_key_exists($status, $statusMapping)) {
-            return self::mapCivicrmContributionLabelToStatus($statusMapping[$status]);
+            return self::mapCivicrmContributionLabelToStatus(ts($statusMapping[$status]));
         }
         return 0;
     }
@@ -97,7 +97,7 @@ class CRM_PaypalImporter_Transformer
     /**
      * Map civicrm contribution label to contribution status id.
      *
-     * @param string $label contribution label
+     * @param string $label contribution label. It has to be the localized label.
      *
      * @return int civicrm contribution status id
     */
