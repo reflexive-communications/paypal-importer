@@ -2,6 +2,10 @@
 
 class CRM_PaypalImporter_Transformer
 {
+    const CRM_FAILED_STATUS_ID = 4;
+    const CRM_REFUNDED_STATUS_ID = 7;
+    const CRM_PENDING_STATUS_ID = 2;
+    const CRM_COMPLETED_STATUS_ID = 1;
     /**
      * Transform paypal transaction data to civicrm contact data
      *
@@ -65,7 +69,7 @@ class CRM_PaypalImporter_Transformer
             'contribution_status_id' => self::paypalTransactionStatusToCivicrmContributionStatus($transaction['transaction_info']['transaction_status']),
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
-        if ($contributionData['contribution_status_id'] === self::mapCivicrmContributionLabelToStatus(ts('Refunded'))) {
+        if ($contributionData['contribution_status_id'] ===  self::CRM_REFUNDED_STATUS_ID) {
             $contributionData['contribution_cancel_date'] = $transaction['transaction_info']['transaction_updated_date'];
         }
 
@@ -82,35 +86,20 @@ class CRM_PaypalImporter_Transformer
     private static function paypalTransactionStatusToCivicrmContributionStatus(string $status): int
     {
         $statusMapping = [
-            'D' => 'Failed',
-            'F' => 'Refunded',
-            'P' => 'Pending',
-            'S' => 'Completed',
-            'V' => 'Refunded',
+            // Failed status
+            'D' => self::CRM_FAILED_STATUS_ID,
+            // Refunded status
+            'F' => self::CRM_REFUNDED_STATUS_ID,
+            // Pending status
+            'P' => self::CRM_PENDING_STATUS_ID,
+            // Completed status
+            'S' => self::CRM_COMPLETED_STATUS_ID,
+            // Refunded status
+            'V' => self::CRM_REFUNDED_STATUS_ID,
         ];
         if (array_key_exists($status, $statusMapping)) {
-            return self::mapCivicrmContributionLabelToStatus(ts($statusMapping[$status]));
+            return $statusMapping[$status];
         }
         return 0;
-    }
-
-    /**
-     * Map civicrm contribution label to contribution status id.
-     *
-     * @param string $label contribution label. It has to be the localized label.
-     *
-     * @return int civicrm contribution status id
-    */
-    private static function mapCivicrmContributionLabelToStatus(string $label): int
-    {
-        $statusId = 0;
-        $contributionStatuses = CRM_Contribute_BAO_Contribution::buildOptions('contribution_status_id', 'search');
-        foreach ($contributionStatuses as $id => $l) {
-            if ($l === $label) {
-                $statusId =  $id;
-                break;
-            }
-        }
-        return $statusId;
     }
 }
