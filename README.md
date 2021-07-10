@@ -1,6 +1,6 @@
 # paypal-importer
 
-This module provides paypal data import functionality. This extension contains an API endpoint for starting the transaction process, a cron job for triggering the endpoint every hour, and an admin form to be able to setup the necessary parameters for the Paypal API and for the import process.
+This module provides paypal data import functionality. This extension contains an API endpoint for starting the transaction process, a cron job for triggering the endpoint every hour, and an admin form to be able to setup the necessary parameters for the Paypal API and for the import process. Currently the contribution status id mapping is based on hardcoded ids.
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
