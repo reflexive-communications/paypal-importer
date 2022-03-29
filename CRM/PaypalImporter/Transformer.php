@@ -22,8 +22,8 @@ class CRM_PaypalImporter_Transformer
         ];
         if (isset($transaction['payer_info']['payer_name'])) {
             $payer = $transaction['payer_info']['payer_name'];
-            $contactData['first_name'] = $payer['given_name'] ?: '';
-            $contactData['last_name'] = $payer['surname'] ?: '';
+            $contactData['first_name'] = $payer['given_name'] ?? '';
+            $contactData['last_name'] = $payer['surname'] ?? '';
         }
 
         return $contactData;
@@ -42,7 +42,7 @@ class CRM_PaypalImporter_Transformer
             'location_type_id' => CRM_RcBase_Api_Get::defaultLocationTypeID() ?? 1,
         ];
         if (isset($transaction['payer_info'])) {
-            $emailData['email'] = $transaction['payer_info']['email_address'] ?: '';
+            $emailData['email'] = $transaction['payer_info']['email_address'] ?? '';
         }
 
         return $emailData;
@@ -64,8 +64,8 @@ class CRM_PaypalImporter_Transformer
             'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'],
             'trxn_id' => $transaction['transaction_info']['transaction_id'],
             'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
-            'invoice_number' => $transaction['transaction_info']['invoice_id'],
-            'source' => $transaction['cart_info']['item_details'][0]['item_name'] ?: '' ,
+            'invoice_number' => $transaction['transaction_info']['invoice_id'] ?? '',
+            'source' => $transaction['cart_info']['item_details'][0]['item_name'] ?? '',
             'contribution_status_id' => self::paypalTransactionStatusToCivicrmContributionStatus($transaction['transaction_info']['transaction_status']),
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
