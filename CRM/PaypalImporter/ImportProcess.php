@@ -117,6 +117,7 @@ class CRM_PaypalImporter_ImportProcess
         if (intval($authResponse['code']) !== 200 || empty($this->authData['access_token'])) {
             $this->config->updateState('error');
             $this->config->updateImportError('Paypal authentication failure');
+            CRM_PaypalImporter_Upgrader::logError('Paypal authentication failure');
             throw new API_Exception('Paypal authentication failure', 'paypal_auth_failure');
         }
     }
@@ -153,6 +154,7 @@ class CRM_PaypalImporter_ImportProcess
         if (intval($transactionResponse['code']) !== 200) {
             $this->config->updateState('error');
             $this->config->updateImportError('Paypal transaction search failure');
+            CRM_PaypalImporter_Upgrader::logError('Paypal transaction search failure');
             throw new API_Exception('Paypal transaction search failure', 'paypal_transaction_search_failure');
         }
         return json_decode($transactionResponse['data'], true);

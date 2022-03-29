@@ -27,6 +27,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
         $config = new CRM_PaypalImporter_Config($this->extensionName);
         // Create default configs
         if (!$config->create()) {
+            CRM_PaypalImporter_Upgrader::logError($this->extensionName.ts(' could not create configs in database'));
             throw new CRM_Core_Exception($this->extensionName.ts(' could not create configs in database'));
         }
     }
@@ -41,6 +42,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
         $config = new CRM_PaypalImporter_Config($this->extensionName);
         // delete current configs
         if (!$config->remove()) {
+            CRM_PaypalImporter_Upgrader::logError($this->extensionName.ts(' could not remove configs from database'));
             throw new CRM_Core_Exception($this->extensionName.ts(' could not remove configs from database'));
         }
     }
