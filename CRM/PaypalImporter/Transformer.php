@@ -6,6 +6,7 @@ class CRM_PaypalImporter_Transformer
     const CRM_REFUNDED_STATUS_ID = 7;
     const CRM_PENDING_STATUS_ID = 2;
     const CRM_COMPLETED_STATUS_ID = 1;
+
     /**
      * Transform paypal transaction data to civicrm contact data
      *
@@ -60,7 +61,7 @@ class CRM_PaypalImporter_Transformer
     {
         $contributionData = [
             'total_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value'], 10)*-1,
+            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value'], 10) * -1,
             'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'],
             'trxn_id' => $transaction['transaction_info']['transaction_id'],
             'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
@@ -69,7 +70,7 @@ class CRM_PaypalImporter_Transformer
             'contribution_status_id' => self::paypalTransactionStatusToCivicrmContributionStatus($transaction['transaction_info']['transaction_status']),
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
-        if ($contributionData['contribution_status_id'] ===  self::CRM_REFUNDED_STATUS_ID) {
+        if ($contributionData['contribution_status_id'] === self::CRM_REFUNDED_STATUS_ID) {
             $contributionData['contribution_cancel_date'] = $transaction['transaction_info']['transaction_updated_date'];
         }
 
@@ -82,7 +83,7 @@ class CRM_PaypalImporter_Transformer
      * @param string $status paypal transaction status
      *
      * @return int civicrm contribution status id
-    */
+     */
     private static function paypalTransactionStatusToCivicrmContributionStatus(string $status): int
     {
         $statusMapping = [

@@ -9,30 +9,37 @@ class CRM_PaypalImporter_ImportProcess
      * @var CRM_PaypalImporter_Config config
      */
     private $config;
+
     /**
      * @var float executionStartTime
      */
     private $executionStartTime;
+
     /**
      * @var array authData
      */
     private $authData;
+
     /**
      * @var int numberOfRequests
      */
     private $numberOfRequests;
+
     /**
      * @var array stats
      */
     private $stats;
+
     /**
      * @var array searchParams
      */
     private $searchParams;
+
     /**
      * @var string authenticatorClass
      */
     private $authenticatorClass;
+
     /**
      * @var string authenticatorClass
      */
@@ -132,7 +139,7 @@ class CRM_PaypalImporter_ImportProcess
             'page_size' => $cfg['settings']['import-limit'],
             'page' => $cfg['import-params']['page'],
             'start_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'])),
-            'end_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'] . ' +30 days')),
+            'end_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'].' +30 days')),
             'fields' => 'transaction_info,payer_info,cart_info',
         ];
     }
@@ -169,7 +176,7 @@ class CRM_PaypalImporter_ImportProcess
     private function addInfo(string $message): void
     {
         $this->stats['errors'][] = $message;
-        Civi::log()->info('Paypal-Importer | ' . $message);
+        Civi::log()->info('Paypal-Importer | '.$message);
     }
 
     /**
@@ -181,7 +188,7 @@ class CRM_PaypalImporter_ImportProcess
     private function addError(string $message): void
     {
         $this->stats['errors'][] = $message;
-        Civi::log()->error('Paypal-Importer | ' . $message);
+        Civi::log()->error('Paypal-Importer | '.$message);
     }
 
     /**
@@ -247,7 +254,7 @@ class CRM_PaypalImporter_ImportProcess
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
         $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
         $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
-        $contributionData['source'] = "paypal-importer-extension - " . $contributionData['source'];
+        $contributionData['source'] = "paypal-importer-extension - ".$contributionData['source'];
         try {
             CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
@@ -315,7 +322,7 @@ class CRM_PaypalImporter_ImportProcess
         ];
         $this->config->updateImportParams($importParams);
         $this->searchParams['start_date'] = $this->searchParams['end_date'];
-        $this->searchParams['end_date'] = date(DATE_ISO8601, strtotime($importParams['start-date'] . ' +30 days'));
+        $this->searchParams['end_date'] = date(DATE_ISO8601, strtotime($importParams['start-date'].' +30 days'));
         $this->searchParams['page'] = $importParams['page'];
     }
 
@@ -327,9 +334,9 @@ class CRM_PaypalImporter_ImportProcess
      * @return array
      *   API result descriptor
      *
+     * @throws API_Exception
      * @see civicrm_api3_create_success
      *
-     * @throws API_Exception
      */
     public function run($params)
     {
