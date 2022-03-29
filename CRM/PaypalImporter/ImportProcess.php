@@ -188,7 +188,7 @@ class CRM_PaypalImporter_ImportProcess
     private function addError(string $message): void
     {
         $this->stats['errors'][] = $message;
-        Civi::log()->error('Paypal-Importer | '.$message);
+        CRM_PaypalImporter_Upgrader::logError($message);
     }
 
     /**
@@ -227,13 +227,13 @@ class CRM_PaypalImporter_ImportProcess
                 $contactId = CRM_PaypalImporter_Loader::contact($contactData);
                 $this->stats['new-user'] += 1;
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
                 return;
             }
             try {
                 CRM_PaypalImporter_Loader::email($contactId, $emailData);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         // Add the tag to the user and also subscribe it to the group.
@@ -241,14 +241,14 @@ class CRM_PaypalImporter_ImportProcess
             try {
                 CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         if ($cfg['settings']['group-id'] > 0) {
             try {
                 $this->groupContact($contactId, $cfg['settings']['group-id']);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
@@ -259,7 +259,7 @@ class CRM_PaypalImporter_ImportProcess
             CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
         } catch (Exception $e) {
-            $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+            $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
         }
     }
 
