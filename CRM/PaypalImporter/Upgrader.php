@@ -5,6 +5,17 @@
  */
 class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
 {
+    /**
+     * Write error to Civi log
+     *
+     * @param string $message Error message
+     *
+     * @return void
+     */
+    public static function logError(string $message)
+    {
+        Civi::log()->error(sprintf('PayPal Importer: %s', $message));
+    }
 
     /**
      * Install process. Init database.
