@@ -9,30 +9,37 @@ class CRM_PaypalImporter_ImportProcess
      * @var CRM_PaypalImporter_Config config
      */
     private $config;
+
     /**
      * @var float executionStartTime
      */
     private $executionStartTime;
+
     /**
      * @var array authData
      */
     private $authData;
+
     /**
      * @var int numberOfRequests
      */
     private $numberOfRequests;
+
     /**
      * @var array stats
      */
     private $stats;
+
     /**
      * @var array searchParams
      */
     private $searchParams;
+
     /**
      * @var string authenticatorClass
      */
     private $authenticatorClass;
+
     /**
      * @var string authenticatorClass
      */
@@ -117,6 +124,7 @@ class CRM_PaypalImporter_ImportProcess
         if (intval($authResponse['code']) !== 200 || empty($this->authData['access_token'])) {
             $this->config->updateState('error');
             $this->config->updateImportError('Paypal authentication failure');
+            CRM_PaypalImporter_Upgrader::logError('Paypal authentication failure');
             throw new API_Exception('Paypal authentication failure', 'paypal_auth_failure');
         }
     }
@@ -131,7 +139,7 @@ class CRM_PaypalImporter_ImportProcess
             'page_size' => $cfg['settings']['import-limit'],
             'page' => $cfg['import-params']['page'],
             'start_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'])),
-            'end_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'] . ' +30 days')),
+            'end_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'].' +30 days')),
             'fields' => 'transaction_info,payer_info,cart_info',
         ];
     }
@@ -153,6 +161,7 @@ class CRM_PaypalImporter_ImportProcess
         if (intval($transactionResponse['code']) !== 200) {
             $this->config->updateState('error');
             $this->config->updateImportError('Paypal transaction search failure');
+            CRM_PaypalImporter_Upgrader::logError('Paypal transaction search failure');
             throw new API_Exception('Paypal transaction search failure', 'paypal_transaction_search_failure');
         }
         return json_decode($transactionResponse['data'], true);
@@ -167,7 +176,7 @@ class CRM_PaypalImporter_ImportProcess
     private function addInfo(string $message): void
     {
         $this->stats['errors'][] = $message;
-        Civi::log()->info('Paypal-Importer | ' . $message);
+        Civi::log()->info('Paypal-Importer | '.$message);
     }
 
     /**
@@ -179,7 +188,7 @@ class CRM_PaypalImporter_ImportProcess
     private function addError(string $message): void
     {
         $this->stats['errors'][] = $message;
-        Civi::log()->error('Paypal-Importer | ' . $message);
+        CRM_PaypalImporter_Upgrader::logError($message);
     }
 
     /**
@@ -218,13 +227,13 @@ class CRM_PaypalImporter_ImportProcess
                 $contactId = CRM_PaypalImporter_Loader::contact($contactData);
                 $this->stats['new-user'] += 1;
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
                 return;
             }
             try {
                 CRM_PaypalImporter_Loader::email($contactId, $emailData);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         // Add the tag to the user and also subscribe it to the group.
@@ -232,25 +241,25 @@ class CRM_PaypalImporter_ImportProcess
             try {
                 CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         if ($cfg['settings']['group-id'] > 0) {
             try {
                 $this->groupContact($contactId, $cfg['settings']['group-id']);
             } catch (Exception $e) {
-                $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
         $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
         $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
-        $contributionData['source'] = "paypal-importer-extension - " . $contributionData['source'];
+        $contributionData['source'] = "paypal-importer-extension - ".$contributionData['source'];
         try {
             CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
         } catch (Exception $e) {
-            $this->addError($transaction['transaction_info']['transaction_id'].' | '.$e->getMessage());
+            $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
         }
     }
 
@@ -313,7 +322,7 @@ class CRM_PaypalImporter_ImportProcess
         ];
         $this->config->updateImportParams($importParams);
         $this->searchParams['start_date'] = $this->searchParams['end_date'];
-        $this->searchParams['end_date'] = date(DATE_ISO8601, strtotime($importParams['start-date'] . ' +30 days'));
+        $this->searchParams['end_date'] = date(DATE_ISO8601, strtotime($importParams['start-date'].' +30 days'));
         $this->searchParams['page'] = $importParams['page'];
     }
 
@@ -325,9 +334,9 @@ class CRM_PaypalImporter_ImportProcess
      * @return array
      *   API result descriptor
      *
+     * @throws API_Exception
      * @see civicrm_api3_create_success
      *
-     * @throws API_Exception
      */
     public function run($params)
     {

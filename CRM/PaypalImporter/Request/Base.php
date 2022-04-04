@@ -63,6 +63,7 @@ class CRM_PaypalImporter_Request_Base
     public function __construct(string $host, string $endpoint = "", array $options = [], array $headers = [], array $data = [])
     {
         if (!function_exists("curl_init")) {
+            CRM_PaypalImporter_Upgrader::logError("Curl module is not available on this system");
             throw new Exception("Curl module is not available on this system");
         }
         $this->host = $host;
