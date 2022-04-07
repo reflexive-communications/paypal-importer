@@ -1,5 +1,7 @@
 # paypal-importer
 
+[![CI](https://github.com/reflexive-communications/paypal-importer/actions/workflows/main.yml/badge.svg)](https://github.com/reflexive-communications/paypal-importer/actions/workflows/main.yml)
+
 This module provides paypal data import functionality. This extension contains an API endpoint for starting the transaction process, a cron job for triggering the endpoint every hour, and an admin form to be able to setup the necessary parameters for the Paypal API and for the import process. Currently the contribution status id mapping is based on hardcoded ids.
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
@@ -41,7 +43,7 @@ To be able to communicate with the Paypal API, You have to setup a couple parame
 ### Dashboard on the admin form
 
 - The current state of the application is always visible on the top box.
-- The stats of the last import iteration is also always visible (If we have any stats). 
+- The stats of the last import iteration is also always visible (If we have any stats).
 - The soft issues of the last iteration is also visible if we have any. Soft issues are the ones that doesn't block the import process. Eg: for some reason we can't add the tag to the contact.
 - On case of error state, the cause of the error is shown on the state box.
 
