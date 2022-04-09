@@ -41,7 +41,7 @@ class CRM_PaypalImporter_Request_TransactionsTest extends CRM_PaypalImporter_Req
         CURLOPT_USERAGENT => 'PayPal-Civicrm-Importer',
         CURLOPT_SSL_VERIFYHOST => 2,
         CURLOPT_SSL_VERIFYPEER => 1,
-        CURLOPT_SSL_CIPHER_LIST => 'TLSv1:TLSv1.2',
+        CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
         CURLOPT_FOLLOWLOCATION => true,
     ];
 
