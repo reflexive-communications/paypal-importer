@@ -4,7 +4,6 @@ use Civi\Api4\GroupContact;
 
 class CRM_PaypalImporter_ImportProcess
 {
-
     /**
      * @var CRM_PaypalImporter_Config config
      */
