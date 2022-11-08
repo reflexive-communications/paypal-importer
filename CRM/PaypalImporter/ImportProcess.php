@@ -63,22 +63,6 @@ class CRM_PaypalImporter_ImportProcess
     }
 
     /**
-     * It returns true if the import process has to be skipped.
-     * If the state is do-nothing, it returns true.
-     * If the state is error, it returns true.
-     * For other states it returns false, so that the import process
-     * will continue.
-     *
-     * @param string $state the current state from the config
-     *
-     * @return bool
-     */
-    private static function standByState(string $state): bool
-    {
-        return $state === 'do-nothing' || $state === 'error';
-    }
-
-    /**
      * It returns the current execution time.
      *
      * @return float the execution time
@@ -346,8 +330,8 @@ class CRM_PaypalImporter_ImportProcess
         $this->config->load();
         $cfg = $this->config->get();
 
-        // Check the config. if the state is do-nothing or error, return.
-        if (self::standByState($cfg['state'])) {
+        // Check the config. if the state is do-nothing, return.
+        if ($cfg['state'] == 'do-nothing') {
             return civicrm_api3_create_success(['state' => $cfg['state'], 'stats' => ['execution-time' => $this->getExecutionTime()]], $params, 'PaypalDataImport', 'Process');
         }
 

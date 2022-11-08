@@ -48,7 +48,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
     public function testRunStandByStates()
     {
         $this->setupTestConfig();
-        $states = ['do-nothing', 'error'];
+        $states = ['do-nothing'];
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         foreach ($states as $state) {
             $config->updateState($state);
