@@ -1,16 +1,13 @@
 <?php
 
 use CRM_PaypalImporter_ExtensionUtil as E;
-use Civi\Test\HeadlessInterface;
-use Civi\Test\HookInterface;
-use Civi\Test\TransactionalInterface;
 
 /**
  * PaypalDataImport.Process API Test Case
  * This is a generic test class implemented with PHPUnit.
  * @group headless
  */
-class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, HookInterface, TransactionalInterface
+class api_v3_PaypalDataImport_ProcessTest extends CRM_PaypalImporter_HeadlessBase
 {
     use \Civi\Test\Api3TestTrait;
 
@@ -34,39 +31,9 @@ class api_v3_PaypalDataImport_ProcessTest extends \PHPUnit\Framework\TestCase im
         ],
         'import-error' => '',
     ];
-    /**
-     * Set up for headless tests.
-     *
-     * Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
-     *
-     * See: https://docs.civicrm.org/dev/en/latest/testing/phpunit/#civitest
-     */
-    public function setUpHeadless()
-    {
-        return \Civi\Test::headless()
-      ->installMe(__DIR__)
-      ->apply();
-    }
 
-    /**
-     * The setup() method is executed before the test is executed (optional).
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    /**
-     * The tearDown() method is executed after the test was executed (optional)
-     * This can be used for cleanup.
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-    }
     /**
      * Simple example test case.
-     *
      * Just call the endpoint. Due to the default state, it will do nothing.
      */
     public function testApiCall()
