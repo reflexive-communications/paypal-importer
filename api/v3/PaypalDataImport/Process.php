@@ -1,4 +1,5 @@
 <?php
+
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
@@ -20,13 +21,12 @@ function _civicrm_api3_paypal_data_import_Process_spec(&$spec)
  *
  * @return array
  *   API result descriptor
- *
- * @see civicrm_api3_create_success
- *
  * @throws API_Exception
+ * @see civicrm_api3_create_success
  */
 function civicrm_api3_paypal_data_import_Process($params)
 {
     $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, CRM_PaypalImporter_Request_Auth::class, CRM_PaypalImporter_Request_Transactions::class);
+
     return $p->run($params);
 }

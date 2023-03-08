@@ -196,7 +196,7 @@ class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $cfg['import-stats'] = [
             'new-user' => 1,
             'transaction' => 2,
-            'errors' => []
+            'errors' => [],
         ];
         self::assertTrue($config->updateImportStats($cfg['import-stats']), 'Update config has to be successful.');
         $cfgUpdated = $config->get();

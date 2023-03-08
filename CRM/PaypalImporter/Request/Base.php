@@ -7,6 +7,7 @@
 class CRM_PaypalImporter_Request_Base
 {
     public const ACCEPT_HEADER = 'application/json';
+
     public const ACCEPT_LANGUAGE_HEADER = 'en_US';
 
     /**
@@ -93,7 +94,7 @@ class CRM_PaypalImporter_Request_Base
             return strlen($data);
         }
 
-        list($key, $value) = explode(":", $trimmedData, 2);
+        [$key, $value] = explode(":", $trimmedData, 2);
 
         $key = trim($key);
         $value = trim($value);
@@ -145,7 +146,7 @@ class CRM_PaypalImporter_Request_Base
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->requestData));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'parseResponseHeaders'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'parseResponseHeaders']);
         //Execute Curl Request
         $this->responseData = curl_exec($ch);
         //Retrieve Response Status
@@ -170,7 +171,7 @@ class CRM_PaypalImporter_Request_Base
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->requestHeaders);
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'parseResponseHeaders'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'parseResponseHeaders']);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         //Execute Curl Request
         $this->responseData = curl_exec($ch);

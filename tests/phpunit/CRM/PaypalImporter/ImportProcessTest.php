@@ -14,6 +14,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
 {
     // We don't use the params in the process script.
     const PARAMS = [];
+
     const TEST_SETTINGS = [
         'settings' => [
             'client-id' => '',
@@ -34,6 +35,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         ],
         'import-error' => '',
     ];
+
     private function setupTestConfig()
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
@@ -67,6 +69,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
             self::assertIsFloat($result['values']['stats']['execution-time']);
         }
     }
+
     public function testRunFailedAuthWrongCode()
     {
         $this->setupTestConfig();
@@ -76,6 +79,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::expectException(API_Exception::class);
         $p->run(self::PARAMS);
     }
+
     public function testRunFailedAuthMissingToken()
     {
         $this->setupTestConfig();
@@ -85,6 +89,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::expectException(API_Exception::class);
         $p->run(self::PARAMS);
     }
+
     public function testRunSuccessfulAuth()
     {
         $this->setupTestConfig();
@@ -109,6 +114,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
     }
+
     public function testRunTransactionSearchFail()
     {
         $this->setupTestConfig();
@@ -118,6 +124,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::expectException(API_Exception::class);
         $p->run(self::PARAMS);
     }
+
     public function testRunTransactionSearchNoTransactionsAfterInit()
     {
         $this->setupTestConfig();
@@ -154,7 +161,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $cfg = $config->get();
         // the page has to be 1 again, and the start date has to be increased with 30 days.
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
-        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'].' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
         self::assertSame('import', $cfg['state']);
         // next iteration, page 1, date increased with 30 days again.
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsNoTransactionMock');
@@ -162,7 +169,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $config->load();
         $cfg = $config->get();
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the second iteration');
-        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 60 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the second iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'].' + 60 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the second iteration');
         self::assertSame('import', $cfg['state']);
         // last iteration, sync state.
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsNoTransactionMock');
@@ -172,6 +179,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the last iteration');
         self::assertSame('sync', $cfg['state'], 'Invalid final state.');
     }
+
     public function testRunTransactionWithoutEmailData()
     {
         $this->setupTestConfig();
@@ -208,9 +216,10 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $cfg = $config->get();
         // the page has to be 1 again, and the start date has to be increased with 30 days.
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
-        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'].' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
         self::assertSame('import', $cfg['state']);
     }
+
     public function testRunTransactionWithTransactions()
     {
         $this->setupTestConfig();
@@ -247,9 +256,10 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $cfg = $config->get();
         // the page has to be 1 again, and the start date has to be increased with 30 days.
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
-        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'].' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
         self::assertSame('import', $cfg['state']);
     }
+
     public function testRunTransactionWithTransactionsSetupTagAndGroup()
     {
         $this->setupTestConfig();
@@ -296,7 +306,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         $cfg = $config->get();
         // the page has to be 1 again, and the start date has to be increased with 30 days.
         self::assertSame(1, $cfg['import-params']['page'], 'Invalid page after the first iteration');
-        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'] .' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
+        self::assertSame(date('Y-m-d H:i', strtotime($settings['start-date'].' + 30 days')), $cfg['import-params']['start-date'], 'Invalid start-date after the first iteration');
         self::assertSame('import', $cfg['state']);
         // Run the same import again, to check the tag, group logic is not failing.
         $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, 'CRM_PaypalImporter_Request_AuthMock', 'CRM_PaypalImporter_Request_TransactionsMock');
@@ -315,6 +325,7 @@ class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_Te
         self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
     }
+
     public function testRunTransactionWithTransactionsPaging()
     {
         $this->setupTestConfig();

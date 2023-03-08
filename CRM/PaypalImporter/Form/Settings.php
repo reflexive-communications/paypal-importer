@@ -78,10 +78,10 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->add('datepicker', 'startDate', ts('Transactions later than'), [], true, ['minDate' => date('Y-m-d', strtotime('-3 years', strtotime(date('Y-m-d')))), 'maxDate' => date('Y-m-d')]);
         $this->add('text', 'importLimit', ts('Import limit'), [], true);
         $this->add('text', 'requestLimit', ts('Request limit'), [], true);
-        $this->add('select', 'paymentInstrumentId', ts('Payment method'), [''=>ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('payment_instrument_id', 'search'), true);
-        $this->add('select', 'financialTypeId', ts('Financial Type'), [''=>ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('financial_type_id', 'search'), true);
-        $this->add('select', 'tagId', ts('Tag contact'), [0=>ts('- select -')] + CRM_Core_BAO_EntityTag::buildOptions('tag_id', 'search', ['entity_table' => 'civicrm_contact']), false);
-        $this->add('select', 'groupId', ts('Group contact'), [0=>ts('- select -')] +  CRM_Contact_BAO_GroupContact::buildOptions('group_id', 'search', []), false);
+        $this->add('select', 'paymentInstrumentId', ts('Payment method'), ['' => ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('payment_instrument_id', 'search'), true);
+        $this->add('select', 'financialTypeId', ts('Financial Type'), ['' => ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('financial_type_id', 'search'), true);
+        $this->add('select', 'tagId', ts('Tag contact'), [0 => ts('- select -')] + CRM_Core_BAO_EntityTag::buildOptions('tag_id', 'search', ['entity_table' => 'civicrm_contact']), false);
+        $this->add('select', 'groupId', ts('Group contact'), [0 => ts('- select -')] + CRM_Contact_BAO_GroupContact::buildOptions('group_id', 'search', []), false);
         // checkbox for triggering the state change of the application.
         // - if current state is do-nothing, start action, if set bumps the state to import-init
         if ($config['state'] == 'do-nothing') {
@@ -143,7 +143,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             if (!$this->config->updateSettings($submitData)) {
                 CRM_Core_Session::setStatus(ts('Error during save process'), 'Paypal Importer', 'error');
             } else {
-                CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000,]);
+                CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000]);
                 // on case of the action is selected, handle it. if the current state is do-nothing, push it to import-init
                 // else setup the do-nothing state.
                 if ($this->_submitValues['action']) {

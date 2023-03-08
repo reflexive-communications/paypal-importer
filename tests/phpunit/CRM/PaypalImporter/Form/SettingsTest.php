@@ -29,6 +29,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         ],
         'import-error' => '',
     ];
+
     private function setupTestConfig()
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
@@ -84,6 +85,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         }
         self::assertSame('Paypal data importer', $form->getTitle(), 'Invalid form title.');
     }
+
     public function testBuildQuickFormImportInitState()
     {
         $this->setupTestConfig();
@@ -98,6 +100,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         }
         self::assertSame('Paypal data importer', $form->getTitle(), 'Invalid form title.');
     }
+
     public function testBuildQuickFormImportError()
     {
         $this->setupTestConfig();
@@ -112,6 +115,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         }
         self::assertSame('Paypal data importer', $form->getTitle(), 'Invalid form title.');
     }
+
     public function testBuildQuickFormImportStats()
     {
         $this->setupTestConfig();
@@ -198,6 +202,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
             self::fail('It shouldn\'t throw exception. '.$e->getMessage());
         }
     }
+
     public function testPostProcessWithActionDefaultState()
     {
         $_POST['clientId'] = 'client-id';
@@ -224,6 +229,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBa
         $cfg = $config->get();
         self::assertSame('import-init', $cfg['state'], 'Invalid state after start the action.');
     }
+
     public function testPostProcessWithActionImportState()
     {
         $_POST['clientId'] = 'client-id';

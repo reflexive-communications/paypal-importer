@@ -20,6 +20,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $contactId = CRM_PaypalImporter_Loader::contact($contactData);
         self::assertIsInt($contactId);
     }
+
     public function testContactValidData()
     {
         $contactData = [
@@ -49,6 +50,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::expectExceptionMessage('Argument 1 passed to CRM_PaypalImporter_Loader::email() must be of the type int, null given');
         $emailId = CRM_PaypalImporter_Loader::email(null, $emailData);
     }
+
     public function testEmailInvalidContactId()
     {
         $emailData = ['email' => 'testlooser@email.com'];
@@ -56,6 +58,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::expectExceptionMessage('Invalid ID');
         $emailId = CRM_PaypalImporter_Loader::email(-1, $emailData);
     }
+
     public function testEmailMissingEmailData()
     {
         // create contact with the loader
@@ -70,6 +73,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::expectExceptionMessage('Failed to create Email, reason: Mandatory values missing from Api4 Email::create: email');
         $emailId = CRM_PaypalImporter_Loader::email($contactId, $emailData);
     }
+
     public function testEmailValidData()
     {
         // create contact with the loader
@@ -101,6 +105,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::expectExceptionMessage('Argument 1 passed to CRM_PaypalImporter_Loader::contribution() must be of the type int, null given');
         $contributionId = CRM_PaypalImporter_Loader::contribution(null, $contribData);
     }
+
     public function testContributionInvalidContactId()
     {
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
@@ -108,6 +113,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::expectExceptionMessage('Invalid ID');
         $emailId = CRM_PaypalImporter_Loader::contribution(-1, $contribData);
     }
+
     public function testContributionValidDataInsert()
     {
         // create contact with the loader
@@ -138,6 +144,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         $contribution = $contributions->first();
         self::assertSame($contribData['trxn_id'], $contribution['trxn_id'], 'Invalid transaction has been returned');
     }
+
     public function testContributionValidDataUpdate()
     {
         // create contact with the loader
