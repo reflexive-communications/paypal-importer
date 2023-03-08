@@ -131,7 +131,6 @@ class CRM_PaypalImporter_ImportProcess
      * It returns the resultset of the transaction search.
      *
      * @return array API result
-     *
      * @throws API_Exception
      */
     private function getTransactionData(): array
@@ -147,6 +146,7 @@ class CRM_PaypalImporter_ImportProcess
             CRM_PaypalImporter_Upgrader::logError('Paypal transaction search failure');
             throw new API_Exception('Paypal transaction search failure', 'paypal_transaction_search_failure');
         }
+
         return json_decode($transactionResponse['data'], true);
     }
 
@@ -200,6 +200,7 @@ class CRM_PaypalImporter_ImportProcess
         $emailData = CRM_PaypalImporter_Transformer::paypalTransactionToEmail($transaction);
         if (empty($emailData['email'])) {
             $this->addInfo($transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.');
+
             return;
         }
         // Try to find a contact to the email. If not found, we have to insert a contact and also the email.
@@ -211,6 +212,7 @@ class CRM_PaypalImporter_ImportProcess
                 $this->stats['new-user'] += 1;
             } catch (Exception $e) {
                 $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
+
                 return;
             }
             try {
@@ -275,6 +277,7 @@ class CRM_PaypalImporter_ImportProcess
         ];
         $this->config->updateImportParams($importParams);
         $cfg = $this->config->get();
+
         return $cfg['import-params']['page'];
     }
 
@@ -316,10 +319,8 @@ class CRM_PaypalImporter_ImportProcess
      *
      * @return array
      *   API result descriptor
-     *
      * @throws API_Exception
      * @see civicrm_api3_create_success
-     *
      */
     public function run($params)
     {
@@ -367,6 +368,7 @@ class CRM_PaypalImporter_ImportProcess
         $this->stats['execution-time'] = $this->getExecutionTime();
         $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
+
         return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalDataImport', 'Process');
     }
 }

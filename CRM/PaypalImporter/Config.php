@@ -37,7 +37,6 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
      * @param array $settings the data to save
      *
      * @return bool the status of the update process.
-     *
      * @throws CRM_Core_Exception.
      */
     public function updateSettings(array $settings): bool
@@ -46,6 +45,7 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['settings'] = $settings;
+
         return parent::update($configuration);
     }
 
@@ -55,7 +55,6 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
      * @param string $state the state name to save
      *
      * @return bool the status of the update process.
-     *
      * @throws CRM_Core_Exception.
      */
     public function updateState(string $state): bool
@@ -64,6 +63,7 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['state'] = $state;
+
         return parent::update($configuration);
     }
 
@@ -73,7 +73,6 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
      * @param array $params the data to save
      *
      * @return bool the status of the update process.
-     *
      * @throws CRM_Core_Exception.
      */
     public function updateImportParams(array $params): bool
@@ -82,6 +81,7 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['import-params'] = $params;
+
         return parent::update($configuration);
     }
 
@@ -91,7 +91,6 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
      * @param array $stats the data to save
      *
      * @return bool the status of the update process.
-     *
      * @throws CRM_Core_Exception.
      */
     public function updateImportStats(array $stats): bool
@@ -100,6 +99,7 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['import-stats'] = $stats;
+
         return parent::update($configuration);
     }
 
@@ -109,7 +109,6 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
      * @param string $error the data to save
      *
      * @return bool the status of the update process.
-     *
      * @throws CRM_Core_Exception.
      */
     public function updateImportError(string $error): bool
@@ -118,6 +117,7 @@ class CRM_PaypalImporter_Config extends CRM_RcBase_Config
         parent::load();
         $configuration = parent::get();
         $configuration['import-error'] = $error;
+
         return parent::update($configuration);
     }
 }

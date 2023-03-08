@@ -27,6 +27,7 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
             'clientSecret' => '',
         ],
     ];
+
     const EXPECTED_OPTIONS = [
         CURLOPT_SSLVERSION => 6,
         CURLOPT_CONNECTTIMEOUT => 10,
@@ -38,6 +39,7 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
         CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2,
         CURLOPT_FOLLOWLOCATION => true,
     ];
+
     const EXPECTED_DATA = [
         'grant_type' => 'client_credentials',
     ];
@@ -53,6 +55,7 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($settings['host'], $req->getHost(), 'Invalid host configuration has been returned.');
         }
     }
+
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -60,6 +63,7 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame(CRM_PaypalImporter_Request_Auth::ENDPOINT, $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
         }
     }
+
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -67,12 +71,13 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame(self::EXPECTED_OPTIONS, $req->getOptions(), 'Invalid options configuration has been returned.');
         }
     }
+
     public function testGetRequestHeaders()
     {
         $expectedHeaderBase = [
-            'Accept: '. CRM_PaypalImporter_Request_Base::ACCEPT_HEADER,
-            'Accept-Language: '. CRM_PaypalImporter_Request_Base::ACCEPT_LANGUAGE_HEADER,
-            'Content-Type: '. CRM_PaypalImporter_Request_Auth::CONTENT_TYPE_HEADER,
+            'Accept: '.CRM_PaypalImporter_Request_Base::ACCEPT_HEADER,
+            'Accept-Language: '.CRM_PaypalImporter_Request_Base::ACCEPT_LANGUAGE_HEADER,
+            'Content-Type: '.CRM_PaypalImporter_Request_Auth::CONTENT_TYPE_HEADER,
             'Authorization: Basic ',
         ];
         foreach (self::TEST_DATA as $settings) {
@@ -81,6 +86,7 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($expectedHeaderBase, $req->getRequestHeaders(), 'Invalid headers configuration has been returned.');
         }
     }
+
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {

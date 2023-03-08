@@ -14,7 +14,6 @@ class CRM_PaypalImporter_Request_TransactionsCodeMock
     {
     }
 
-
     /**
      * Performs a post request.
      */

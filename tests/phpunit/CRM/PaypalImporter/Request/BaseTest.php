@@ -67,6 +67,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($settings['host'], $req->getHost(), 'Invalid host configuration has been returned.');
         }
     }
+
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -74,6 +75,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($settings['endpoint'], $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
         }
     }
+
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -81,6 +83,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($settings['options'], $req->getOptions(), 'Invalid options configuration has been returned.');
         }
     }
+
     public function testGetRequestHeaders()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -88,6 +91,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             self::assertSame($settings['headers'], $req->getRequestHeaders(), 'Invalid headers configuration has been returned.');
         }
     }
+
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -106,6 +110,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             self::assertEmpty($req->get());
         }
     }
+
     public function testPost()
     {
         foreach (self::TEST_DATA as $settings) {

@@ -10,7 +10,6 @@ class CRM_PaypalImporter_Loader
      * @param array $contactData Contact data
      *
      * @return int Contact ID
-     *
      * @throws CRM_Core_Exception
      */
     public static function contact(array $contactData): int
@@ -25,7 +24,6 @@ class CRM_PaypalImporter_Loader
      * @param array $emailData email data
      *
      * @return int Email ID
-     *
      * @throws CRM_Core_Exception
      */
     public static function email(int $contactId, array $emailData): int
@@ -40,7 +38,6 @@ class CRM_PaypalImporter_Loader
      * @param array $contributionData contribution data
      *
      * @return int Contribution ID
-     *
      * @throws CRM_Core_Exception
      */
     public static function contribution(int $contactId, array $contributionData): int
@@ -57,6 +54,7 @@ class CRM_PaypalImporter_Loader
             return CRM_RcBase_Api_Create::contribution($contactId, $contributionData, false);
         } else {
             CRM_RcBase_Api_Update::entity('Contribution', $contribution['id'], $contributionData, false);
+
             return $contribution['id'];
         }
     }

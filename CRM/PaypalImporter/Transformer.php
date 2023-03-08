@@ -3,8 +3,11 @@
 class CRM_PaypalImporter_Transformer
 {
     const CRM_FAILED_STATUS_ID = 4;
+
     const CRM_REFUNDED_STATUS_ID = 7;
+
     const CRM_PENDING_STATUS_ID = 2;
+
     const CRM_COMPLETED_STATUS_ID = 1;
 
     /**
@@ -101,6 +104,7 @@ class CRM_PaypalImporter_Transformer
         if (array_key_exists($status, $statusMapping)) {
             return $statusMapping[$status];
         }
+
         return 0;
     }
 }

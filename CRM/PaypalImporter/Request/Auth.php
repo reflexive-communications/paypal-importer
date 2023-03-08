@@ -3,6 +3,7 @@
 class CRM_PaypalImporter_Request_Auth extends CRM_PaypalImporter_Request_Base
 {
     public const ENDPOINT = '/v1/oauth2/token';
+
     public const CONTENT_TYPE_HEADER = 'multipart/form-data';
 
     /**
@@ -30,9 +31,9 @@ class CRM_PaypalImporter_Request_Auth extends CRM_PaypalImporter_Request_Base
     private static function curlHeaders(string $clientId, string $clientSecret): array
     {
         return [
-            'Accept: '. parent::ACCEPT_HEADER,
-            'Accept-Language: '. parent::ACCEPT_LANGUAGE_HEADER,
-            'Content-Type: '. self::CONTENT_TYPE_HEADER,
+            'Accept: '.parent::ACCEPT_HEADER,
+            'Accept-Language: '.parent::ACCEPT_LANGUAGE_HEADER,
+            'Content-Type: '.self::CONTENT_TYPE_HEADER,
             'Authorization: Basic '.base64_encode($clientId.':'.$clientSecret),
         ];
     }

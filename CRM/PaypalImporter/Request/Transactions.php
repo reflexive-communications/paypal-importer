@@ -3,6 +3,7 @@
 class CRM_PaypalImporter_Request_Transactions extends CRM_PaypalImporter_Request_Base
 {
     public const ENDPOINT = '/v1/reporting/transactions';
+
     public const CONTENT_TYPE_HEADER = 'application/json';
 
     /**
@@ -29,9 +30,9 @@ class CRM_PaypalImporter_Request_Transactions extends CRM_PaypalImporter_Request
     private static function curlHeaders(string $accessToken): array
     {
         return [
-            'Accept: '. parent::ACCEPT_HEADER,
-            'Accept-Language: '. parent::ACCEPT_LANGUAGE_HEADER,
-            'Content-Type: '. self::CONTENT_TYPE_HEADER,
+            'Accept: '.parent::ACCEPT_HEADER,
+            'Accept-Language: '.parent::ACCEPT_LANGUAGE_HEADER,
+            'Content-Type: '.self::CONTENT_TYPE_HEADER,
             'Authorization: Bearer '.$accessToken,
         ];
     }
