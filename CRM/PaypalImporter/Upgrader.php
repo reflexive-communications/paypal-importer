@@ -3,7 +3,7 @@
 /**
  * Collection of upgrade steps.
  */
-class CRM_PaypalImporter_Upgrader extends CRM_PaypalImporter_Upgrader_Base
+class CRM_PaypalImporter_Upgrader extends CRM_Extension_Upgrader_Base
 {
     /**
      * Write error to Civi log
