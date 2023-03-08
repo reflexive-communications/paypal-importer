@@ -143,7 +143,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             if (!$this->config->updateSettings($submitData)) {
                 CRM_Core_Session::setStatus(ts('Error during save process'), 'Paypal Importer', 'error');
             } else {
-                CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000,]);
+                CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000]);
                 // on case of the action is selected, handle it. if the current state is do-nothing, push it to import-init
                 // else setup the do-nothing state.
                 if ($this->_submitValues['action']) {
