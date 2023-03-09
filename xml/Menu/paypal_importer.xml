@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <menu>
-  <item>
-    <path>civicrm/contribute/paypal-import</path>
-    <page_callback>CRM_PaypalImporter_Form_Settings</page_callback>
-    <title>Settings</title>
-    <access_arguments>administer CiviCRM,access CiviContribute,edit contributions</access_arguments>
-  </item>
+    <item>
+        <path>civicrm/contribute/paypal-import</path>
+        <page_callback>CRM_PaypalImporter_Form_Settings</page_callback>
+        <title>Settings</title>
+        <access_arguments>administer CiviCRM,access CiviContribute,edit contributions</access_arguments>
+    </item>
 </menu>
