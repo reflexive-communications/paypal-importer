@@ -5,7 +5,7 @@
  *
  * @group headless
  */
-class CRM_PaypalImporter_TransformerHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_TransformerTest extends CRM_PaypalImporter_HeadlessBase
 {
     const PAYPAL_SAMPLE_DATA = [
         "transaction_info" => [

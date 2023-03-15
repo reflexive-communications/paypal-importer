@@ -5,7 +5,7 @@
  *
  * @group headless
  */
-class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_ConfigTest extends CRM_PaypalImporter_HeadlessBase
 {
     /**
      * It checks that the create function works well.

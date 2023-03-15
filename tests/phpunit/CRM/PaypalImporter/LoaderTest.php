@@ -9,7 +9,7 @@ use Civi\Api4\Email;
  *
  * @group headless
  */
-class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_LoaderTest extends CRM_PaypalImporter_HeadlessBase
 {
     /**
      * It checks that the contact function works well.

@@ -5,7 +5,7 @@
  *
  * @group headless
  */
-class CRM_PaypalImporter_UpgraderHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_UpgraderTest extends CRM_PaypalImporter_HeadlessBase
 {
     /**
      * Test the install process.
