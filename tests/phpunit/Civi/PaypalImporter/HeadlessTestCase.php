@@ -2,6 +2,7 @@
 
 namespace Civi\PaypalImporter;
 
+use Civi\Test;
 use Civi\Test\HeadlessInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -13,10 +14,6 @@ use PHPUnit\Framework\TestCase;
  */
 class HeadlessTestCase extends TestCase implements HeadlessInterface
 {
-    public function setUpHeadless()
-    {
-    }
-
     /**
      * Apply a forced rebuild of DB, thus
      * create a clean DB before running tests
@@ -25,10 +22,17 @@ class HeadlessTestCase extends TestCase implements HeadlessInterface
      */
     public static function setUpBeforeClass(): void
     {
-        // Resets DB and install depended extension
-        \Civi\Test::headless()
+        // Resets DB
+        Test::headless()
             ->install('rc-base')
             ->installMe(__DIR__)
             ->apply(true);
+    }
+
+    /**
+     * @return void
+     */
+    public function setUpHeadless(): void
+    {
     }
 }
