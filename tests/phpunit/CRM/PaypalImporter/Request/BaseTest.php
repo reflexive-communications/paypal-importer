@@ -1,9 +1,11 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
  * @group headless
  */
-class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
 {
     const TEST_DATA = [
         [

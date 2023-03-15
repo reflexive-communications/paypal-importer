@@ -3,13 +3,14 @@
 use Civi\Api4\Contact;
 use Civi\Api4\Contribution;
 use Civi\Api4\Email;
+use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
  * Loader class headless tests.
  *
  * @group headless
  */
-class CRM_PaypalImporter_LoaderTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
 {
     /**
      * It checks that the contact function works well.

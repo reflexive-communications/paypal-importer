@@ -1,11 +1,13 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
  * Transformer class headless tests.
  *
  * @group headless
  */
-class CRM_PaypalImporter_TransformerTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
 {
     const PAYPAL_SAMPLE_DATA = [
         "transaction_info" => [

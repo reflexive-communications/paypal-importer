@@ -1,5 +1,6 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
@@ -8,7 +9,7 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  *
  * @group headless
  */
-class api_v3_PaypalDataImport_ProcessTest extends CRM_PaypalImporter_HeadlessBase
+class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase
 {
     use \Civi\Test\Api3TestTrait;
 

@@ -1,11 +1,13 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
  * Installer application tests.
  *
  * @group headless
  */
-class CRM_PaypalImporter_UpgraderTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_UpgraderTest extends HeadlessTestCase
 {
     /**
      * Test the install process.

@@ -1,5 +1,6 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
@@ -7,7 +8,7 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  *
  * @group headless
  */
-class CRM_PaypalImporter_Form_SettingsTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
 {
     const TEST_SETTINGS = [
         'settings' => [
