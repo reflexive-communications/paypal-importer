@@ -4,9 +4,6 @@ use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
- * PaypalDataImport.Process API Test Case
- * This is a generic test class implemented with PHPUnit.
- *
  * @group headless
  */
 class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase

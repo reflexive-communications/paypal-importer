@@ -3,8 +3,6 @@
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
- * Installer application tests.
- *
  * @group headless
  */
 class CRM_PaypalImporter_UpgraderTest extends HeadlessTestCase

@@ -3,8 +3,6 @@
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
- * Transformer class headless tests.
- *
  * @group headless
  */
 class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase

@@ -6,8 +6,6 @@ use Civi\Api4\Email;
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
- * Loader class headless tests.
- *
  * @group headless
  */
 class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase

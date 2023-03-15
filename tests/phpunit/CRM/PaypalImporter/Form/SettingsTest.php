@@ -4,8 +4,6 @@ use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
- * Settings form tests.
- *
  * @group headless
  */
 class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
