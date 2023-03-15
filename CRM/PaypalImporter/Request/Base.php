@@ -119,7 +119,6 @@ class CRM_PaypalImporter_Request_Base
     protected static function curlOptions(): array
     {
         return [
-            CURLOPT_SSLVERSION => 6,
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 60,    // maximum number of seconds to allow cURL functions to execute

@@ -1,7 +1,6 @@
 <?php
 
 use Civi\Test\HeadlessInterface;
-use Civi\Test\TransactionalInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @group headless
  */
-class CRM_PaypalImporter_HeadlessBase extends TestCase implements HeadlessInterface, TransactionalInterface
+class CRM_PaypalImporter_HeadlessBase extends TestCase implements HeadlessInterface
 {
     public function setUpHeadless()
     {

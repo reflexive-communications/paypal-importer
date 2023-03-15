@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Unit tests for the transactions request class.
+ * @group headless
  */
-class CRM_PaypalImporter_Request_TransactionsTest extends CRM_PaypalImporter_Request_TestBase
+class CRM_PaypalImporter_Request_TransactionsTest extends CRM_PaypalImporter_HeadlessBase
 {
     const TEST_DATA = [
         [
@@ -35,7 +35,6 @@ class CRM_PaypalImporter_Request_TransactionsTest extends CRM_PaypalImporter_Req
     ];
 
     const EXPECTED_OPTIONS = [
-        CURLOPT_SSLVERSION => 6,
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 60,

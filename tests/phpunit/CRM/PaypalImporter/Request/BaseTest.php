@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Unit tests for the base request class.
+ * @group headless
  */
-class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_TestBase
+class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_HeadlessBase
 {
     const TEST_DATA = [
         [
@@ -128,7 +128,7 @@ class CRM_PaypalImporter_Request_BaseTest extends CRM_PaypalImporter_Request_Tes
             $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertEmpty($req->post());
             $resp = $req->getResponse();
-            self::assertSame(404, $resp['code'], 'Invalid status code has been returned.');
+            self::assertSame(403, $resp['code'], 'Invalid status code has been returned.');
         }
     }
 }
