@@ -8,8 +8,6 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  */
 class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase
 {
-    use \Civi\Test\Api3TestTrait;
-
     const TEST_SETTINGS = [
         'settings' => [
             'client-id' => '',
