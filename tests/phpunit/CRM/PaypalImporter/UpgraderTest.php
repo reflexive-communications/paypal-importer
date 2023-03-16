@@ -1,22 +1,22 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
- * Installer application tests.
- *
  * @group headless
  */
-class CRM_PaypalImporter_UpgraderHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_UpgraderTest extends HeadlessTestCase
 {
     /**
      * Test the install process.
      */
     public function testInstall()
     {
-        $installer = new CRM_PaypalImporter_Upgrader("paypal_test", ".");
+        $installer = new CRM_PaypalImporter_Upgrader();
         try {
             $this->assertEmpty($installer->install());
         } catch (Exception $e) {
-            $this->fail("Should not throw exception.");
+            $this->fail('Should not throw exception.');
         }
     }
 
@@ -25,12 +25,12 @@ class CRM_PaypalImporter_UpgraderHeadlessTest extends CRM_PaypalImporter_Headles
      */
     public function testUninstall()
     {
-        $installer = new CRM_PaypalImporter_Upgrader("paypal_test", ".");
+        $installer = new CRM_PaypalImporter_Upgrader();
         $this->assertEmpty($installer->install());
         try {
             $this->assertEmpty($installer->uninstall());
         } catch (Exception $e) {
-            $this->fail("Should not throw exception.");
+            $this->fail('Should not throw exception.');
         }
     }
 }

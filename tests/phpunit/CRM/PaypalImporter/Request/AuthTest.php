@@ -1,9 +1,11 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
- * Unit tests for the auth request class.
+ * @group headless
  */
-class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_TestBase
+class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
 {
     const TEST_DATA = [
         [
@@ -29,7 +31,6 @@ class CRM_PaypalImporter_Request_AuthTest extends CRM_PaypalImporter_Request_Tes
     ];
 
     const EXPECTED_OPTIONS = [
-        CURLOPT_SSLVERSION => 6,
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 60,

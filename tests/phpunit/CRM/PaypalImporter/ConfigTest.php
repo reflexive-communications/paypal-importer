@@ -1,11 +1,11 @@
 <?php
 
+use Civi\PaypalImporter\HeadlessTestCase;
+
 /**
- * Testcases for the configuration.
- *
  * @group headless
  */
-class CRM_PaypalImporter_ConfigHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
 {
     /**
      * It checks that the create function works well.

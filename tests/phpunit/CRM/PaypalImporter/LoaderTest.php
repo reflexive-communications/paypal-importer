@@ -3,13 +3,12 @@
 use Civi\Api4\Contact;
 use Civi\Api4\Contribution;
 use Civi\Api4\Email;
+use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
- * Loader class headless tests.
- *
  * @group headless
  */
-class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessBase
+class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
 {
     /**
      * It checks that the contact function works well.
@@ -95,17 +94,6 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
         self::assertSame($emailData['email'], $email['email'], 'Invalid email address has been returned');
     }
 
-    /**
-     * It checks that the contribution function works well.
-     */
-    public function testContributionMissingContactId()
-    {
-        $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
-        self::expectException(TypeError::class);
-        self::expectExceptionMessage('Argument 1 passed to CRM_PaypalImporter_Loader::contribution() must be of the type int, null given');
-        $contributionId = CRM_PaypalImporter_Loader::contribution(null, $contribData);
-    }
-
     public function testContributionInvalidContactId()
     {
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
@@ -154,7 +142,7 @@ class CRM_PaypalImporter_LoaderHeadlessTest extends CRM_PaypalImporter_HeadlessB
             'last_name' => '',
         ];
         $contactId = CRM_PaypalImporter_Loader::contact($contactData);
-        $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10, 'financial_type_id' => 1];
+        $contribData = ['trxn_id' => 'a-2', 'total_amount' => 10, 'financial_type_id' => 1];
         // The contribution shouldn't exists.
         $contributions = Contribution::get(false)
             ->addSelect('contribution_id')

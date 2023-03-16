@@ -1,16 +1,14 @@
 <?php
 
+use Civi\Api4\Group;
+use Civi\Api4\Tag;
+use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
-use Civi\Api4\Tag;
-use Civi\Api4\Group;
-
 /**
- * Import process test cases.
- *
  * @group headless
  */
-class CRM_PaypalImporter_ImportProcessTest extends CRM_PaypalImporter_Request_TestBase
+class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
 {
     // We don't use the params in the process script.
     const PARAMS = [];
