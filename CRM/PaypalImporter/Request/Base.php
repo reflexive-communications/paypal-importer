@@ -133,7 +133,7 @@ class CRM_PaypalImporter_Request_Base
     /**
      * Performs a post request.
      */
-    public function post()
+    public function post(): void
     {
         //Initialize Curl Options
         $ch = curl_init($this->host.$this->endpoint);
@@ -157,7 +157,7 @@ class CRM_PaypalImporter_Request_Base
     /**
      * Performs a get request.
      */
-    public function get()
+    public function get(): void
     {
         //Initialize Curl Options
         $ch = curl_init();

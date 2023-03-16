@@ -21,7 +21,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
      *
      * @throws CRM_Core_Exception
      */
-    public function preProcess()
+    public function preProcess(): void
     {
         // Get current settings
         $this->config = new CRM_PaypalImporter_Config(E::LONG_NAME);
@@ -33,7 +33,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
      *
      * @return array
      */
-    public function setDefaultValues()
+    public function setDefaultValues(): array
     {
         $config = $this->config->get();
         // Set defaults
@@ -56,7 +56,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
      * Register validation rules
      * The import limit has to be numeric value. Client + server side validation.
      */
-    public function addRules()
+    public function addRules(): void
     {
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric', null, 'client');
         $this->addRule('importLimit', ts('The import limit has to be numeric.'), 'numeric');
@@ -67,7 +67,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     /**
      * Build form
      */
-    public function buildQuickForm()
+    public function buildQuickForm(): void
     {
         // get the current configuration object
         $config = $this->config->get();
@@ -125,7 +125,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     /**
      * Process post data
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $submitData = [
             'client-id' => $this->_submitValues['clientId'],

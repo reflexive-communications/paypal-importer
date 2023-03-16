@@ -94,7 +94,7 @@ class CRM_PaypalImporter_ImportProcess
      *
      * @throws API_Exception
      */
-    private function authenticate()
+    private function authenticate(): void
     {
         $cfg = $this->config->get();
         // Authenticate - get access token
@@ -322,7 +322,7 @@ class CRM_PaypalImporter_ImportProcess
      * @throws API_Exception
      * @see civicrm_api3_create_success
      */
-    public function run($params)
+    public function run($params): array
     {
         // For calculating the execution time that we insert to the stats.
         $this->executionStartTime = microtime(true);

@@ -16,14 +16,14 @@ class CRM_PaypalImporter_Request_AuthTokenMock
     /**
      * Performs a post request.
      */
-    public function post()
+    public function post(): void
     {
     }
 
     /**
      * Performs a get request.
      */
-    public function get()
+    public function get(): void
     {
     }
 
