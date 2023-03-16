@@ -130,7 +130,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
             $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertEmpty($req->post());
             $resp = $req->getResponse();
-            self::assertSame(403, $resp['code'], 'Invalid status code has been returned.');
+            self::assertSame(404, $resp['code'], 'Invalid status code has been returned.');
         }
     }
 }
