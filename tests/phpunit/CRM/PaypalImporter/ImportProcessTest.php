@@ -34,16 +34,19 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         'import-error' => '',
     ];
 
+    /**
+     * @return void
+     */
     private function setupTestConfig()
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         self::assertTrue($config->update(self::TEST_SETTINGS), 'Config update has to be successful.');
     }
 
-    /*
-     * The run function is the only public, so that
-     * the private function needs to be tested with
-     * preset configs.
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
      */
     public function testRunStandByStates()
     {
@@ -68,6 +71,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunFailedAuthWrongCode()
     {
         $this->setupTestConfig();
@@ -78,6 +86,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         $p->run(self::PARAMS);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunFailedAuthMissingToken()
     {
         $this->setupTestConfig();
@@ -88,6 +101,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         $p->run(self::PARAMS);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunSuccessfulAuth()
     {
         $this->setupTestConfig();
@@ -113,6 +131,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         self::assertSame([], $result['values']['stats']['errors']);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunTransactionSearchFail()
     {
         $this->setupTestConfig();
@@ -123,6 +146,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         $p->run(self::PARAMS);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunTransactionSearchNoTransactionsAfterInit()
     {
         $this->setupTestConfig();
@@ -178,6 +206,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         self::assertSame('sync', $cfg['state'], 'Invalid final state.');
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunTransactionWithoutEmailData()
     {
         $this->setupTestConfig();
@@ -218,6 +251,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         self::assertSame('import', $cfg['state']);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunTransactionWithTransactions()
     {
         $this->setupTestConfig();
@@ -258,6 +296,12 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         self::assertSame('import', $cfg['state']);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testRunTransactionWithTransactionsSetupTagAndGroup()
     {
         $this->setupTestConfig();
@@ -324,6 +368,11 @@ class CRM_PaypalImporter_ImportProcessTest extends HeadlessTestCase
         self::assertSame([], $result['values']['stats']['errors']);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     */
     public function testRunTransactionWithTransactionsPaging()
     {
         $this->setupTestConfig();

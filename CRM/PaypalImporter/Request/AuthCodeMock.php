@@ -8,7 +8,7 @@ class CRM_PaypalImporter_Request_AuthCodeMock
      * @param string $host
      * @param string $clientId
      * @param string $clientSecret
-     * */
+     */
     public function __construct(string $host, string $clientId, string $clientSecret)
     {
     }

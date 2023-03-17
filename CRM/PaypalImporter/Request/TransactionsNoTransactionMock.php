@@ -7,7 +7,8 @@ class CRM_PaypalImporter_Request_TransactionsNoTransactionMock
      *
      * @param string $host
      * @param string $accessToken
-     * */
+     * @param array $searchParams
+     */
     public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
     }

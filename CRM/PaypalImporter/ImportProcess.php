@@ -48,6 +48,8 @@ class CRM_PaypalImporter_ImportProcess
      * Default Constructor
      *
      * @param string $configName
+     * @param string $authenticatorClassName
+     * @param string $transactionSearchClassName
      */
     public function __construct(string $configName, string $authenticatorClassName, string $transactionSearchClassName)
     {
@@ -75,6 +77,8 @@ class CRM_PaypalImporter_ImportProcess
     /**
      * If the import is just started (import-init)
      * we have to reset the import params configuration.
+     *
+     * @throws \CRM_Core_Exception
      */
     private function initImportParams(): void
     {
@@ -114,6 +118,8 @@ class CRM_PaypalImporter_ImportProcess
 
     /**
      * It builds the search params array from the current config values.
+     *
+     * @throws \CRM_Core_Exception
      */
     private function setupTransactionSearchParamsFromConfig(): void
     {
@@ -248,6 +254,15 @@ class CRM_PaypalImporter_ImportProcess
         }
     }
 
+    /**
+     * @param int $contactId
+     * @param int $groupId
+     *
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     private function groupContact(int $contactId, int $groupId): void
     {
         $result = GroupContact::get(false)
@@ -267,6 +282,7 @@ class CRM_PaypalImporter_ImportProcess
      * It updates the searchParams config for processing a paging.
      *
      * @return int the new page.
+     * @throws \CRM_Core_Exception
      */
     private function pagingForTransactionSearch(): int
     {
@@ -285,7 +301,9 @@ class CRM_PaypalImporter_ImportProcess
      * It sets the process state to sync. It is called after the
      * import process is finished.
      *
-     * @param string lastRefreshedDate.
+     * @param string $lastRefreshedDate.
+     *
+     * @throws \CRM_Core_Exception
      */
     private function pushToSyncState(string $lastRefreshedDate): void
     {

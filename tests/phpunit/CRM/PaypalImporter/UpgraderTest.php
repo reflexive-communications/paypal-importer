@@ -8,7 +8,7 @@ use Civi\PaypalImporter\HeadlessTestCase;
 class CRM_PaypalImporter_UpgraderTest extends HeadlessTestCase
 {
     /**
-     * Test the install process.
+     * @return void
      */
     public function testInstall()
     {
@@ -21,7 +21,8 @@ class CRM_PaypalImporter_UpgraderTest extends HeadlessTestCase
     }
 
     /**
-     * Test the uninstall process.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUninstall()
     {

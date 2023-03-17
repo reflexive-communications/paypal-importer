@@ -59,8 +59,9 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         ],
     ];
 
-    /*
-     * Tests for the getter functions.
+    /**
+     * @return void
+     * @throws \Exception
      */
     public function testGetHost()
     {
@@ -70,6 +71,10 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -78,6 +83,10 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -86,6 +95,10 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetRequestHeaders()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -94,6 +107,10 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -102,8 +119,9 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
-    /*
-     * Tests the request functions.
+    /**
+     * @return void
+     * @throws \Exception
      */
     public function testGet()
     {
@@ -113,6 +131,10 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testPost()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -121,8 +143,9 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
         }
     }
 
-    /*
-     * Tests the getResponse functions.
+    /**
+     * @return void
+     * @throws \Exception
      */
     public function testGetResponse()
     {

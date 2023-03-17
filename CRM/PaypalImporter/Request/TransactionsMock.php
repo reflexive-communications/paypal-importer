@@ -9,9 +9,8 @@ class CRM_PaypalImporter_Request_TransactionsMock
      *
      * @param string $host
      * @param string $accessToken
-     *
-     * @throws Exception
-     * */
+     * @param array $searchParams
+     */
     public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
     }

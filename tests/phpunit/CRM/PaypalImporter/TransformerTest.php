@@ -144,7 +144,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
     ];
 
     /**
-     * It checks that the paypalTransactionToContact function works well.
+     * @return void
      */
     public function testPaypalTransactionToContact()
     {
@@ -158,7 +158,9 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the paypalTransactionToEmail function works well.
+     * @return void
+     * @throws \API_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
      */
     public function testPaypalTransactionToEmail()
     {
@@ -171,7 +173,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the paypalTransactionToContribution function works well.
+     * @return void
      */
     public function testPaypalTransactionToCivicrmContributionIncomindMoney()
     {
@@ -189,6 +191,9 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
         self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
     }
 
+    /**
+     * @return void
+     */
     public function testPaypalTransactionToCivicrmContributionRefund()
     {
         $expectedContributionData = [
@@ -208,6 +213,9 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
         self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
     }
 
+    /**
+     * @return void
+     */
     public function testPaypalTransactionToCivicrmContributionNotMappedStatus()
     {
         $expectedContributionData = [

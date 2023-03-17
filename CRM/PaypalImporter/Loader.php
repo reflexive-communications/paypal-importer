@@ -20,7 +20,7 @@ class CRM_PaypalImporter_Loader
     /**
      * Import new email
      *
-     * @param int Contact ID
+     * @param int $contactId Contact ID
      * @param array $emailData email data
      *
      * @return int Email ID
@@ -34,7 +34,7 @@ class CRM_PaypalImporter_Loader
     /**
      * Import new contribution
      *
-     * @param int Contact ID
+     * @param int $contactId Contact ID
      * @param array $contributionData contribution data
      *
      * @return int Contribution ID

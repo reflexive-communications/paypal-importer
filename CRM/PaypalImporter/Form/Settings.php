@@ -17,9 +17,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     private $config;
 
     /**
-     * Preprocess form
-     *
-     * @throws CRM_Core_Exception
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function preProcess(): void
     {
@@ -29,9 +28,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     }
 
     /**
-     * Set default values
-     *
      * @return array
+     * @throws \CRM_Core_Exception
      */
     public function setDefaultValues(): array
     {
@@ -53,8 +51,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     }
 
     /**
-     * Register validation rules
-     * The import limit has to be numeric value. Client + server side validation.
+     * @return void
      */
     public function addRules(): void
     {
@@ -65,7 +62,8 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     }
 
     /**
-     * Build form
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function buildQuickForm(): void
     {
@@ -123,7 +121,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     }
 
     /**
-     * Process post data
+     * @return void
      */
     public function postProcess(): void
     {
