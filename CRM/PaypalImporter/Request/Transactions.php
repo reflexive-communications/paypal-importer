@@ -11,9 +11,10 @@ class CRM_PaypalImporter_Request_Transactions extends CRM_PaypalImporter_Request
      *
      * @param string $host
      * @param string $accessToken
+     * @param array $searchParams
      *
-     * @throws Exception
-     * */
+     * @throws \Exception
+     */
     public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
         parent::__construct($host, self::ENDPOINT, parent::curlOptions(), self::curlHeaders($accessToken), $searchParams);
@@ -22,11 +23,10 @@ class CRM_PaypalImporter_Request_Transactions extends CRM_PaypalImporter_Request
     /**
      * Curl headers for the auth requests.
      *
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param string $accessToken
      *
      * @return array
-     * */
+     */
     private static function curlHeaders(string $accessToken): array
     {
         return [

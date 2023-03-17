@@ -39,6 +39,8 @@ class CRM_PaypalImporter_Transformer
      * @param array $transaction paypal transaction object
      *
      * @return array EmailData
+     * @throws \API_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
      */
     public static function paypalTransactionToEmail(array $transaction): array
     {

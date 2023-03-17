@@ -14,7 +14,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_Extension_Upgrader_Base
      *
      * @return void
      */
-    public static function logError(string $message)
+    public static function logError(string $message): void
     {
         Civi::log()->error(sprintf('PayPal Importer: %s', $message));
     }
@@ -24,7 +24,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_Extension_Upgrader_Base
      *
      * @throws CRM_Core_Exception
      */
-    public function install()
+    public function install(): void
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         // Create default configs
@@ -39,7 +39,7 @@ class CRM_PaypalImporter_Upgrader extends CRM_Extension_Upgrader_Base
      *
      * @throws CRM_Core_Exception
      */
-    public function uninstall()
+    public function uninstall(): void
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         // delete current configs

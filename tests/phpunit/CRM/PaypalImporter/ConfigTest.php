@@ -8,7 +8,8 @@ use Civi\PaypalImporter\HeadlessTestCase;
 class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
 {
     /**
-     * It checks that the create function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testCreate()
     {
@@ -49,7 +50,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the remove function works well.
+     * @return void
      */
     public function testRemove()
     {
@@ -59,7 +60,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the get function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testGet()
     {
@@ -103,7 +105,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the update function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdate()
     {
@@ -117,7 +120,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the load function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testLoad()
     {
@@ -141,7 +145,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateSettings function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdateSettings()
     {
@@ -155,7 +160,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateSettings function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function updateState()
     {
@@ -169,7 +175,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateImportParams function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdateImportParams()
     {
@@ -186,7 +193,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateImportStats function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdateImportStats()
     {
@@ -204,7 +212,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateImportError function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdateImportError()
     {
@@ -218,7 +227,8 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the updateState function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testUpdateState()
     {

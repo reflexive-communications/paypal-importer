@@ -11,7 +11,8 @@ use Civi\PaypalImporter\HeadlessTestCase;
 class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
 {
     /**
-     * It checks that the contact function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testContactMissingData()
     {
@@ -20,6 +21,12 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         self::assertIsInt($contactId);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testContactValidData()
     {
         $contactData = [
@@ -40,7 +47,8 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
     }
 
     /**
-     * It checks that the email function works well.
+     * @return void
+     * @throws \CRM_Core_Exception
      */
     public function testEmailMissingContactId()
     {
@@ -50,6 +58,10 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $emailId = CRM_PaypalImporter_Loader::email(null, $emailData);
     }
 
+    /**
+     * @return void
+     * @throws \CRM_Core_Exception
+     */
     public function testEmailInvalidContactId()
     {
         $emailData = ['email' => 'testlooser@email.com'];
@@ -58,6 +70,10 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $emailId = CRM_PaypalImporter_Loader::email(-1, $emailData);
     }
 
+    /**
+     * @return void
+     * @throws \CRM_Core_Exception
+     */
     public function testEmailMissingEmailData()
     {
         // create contact with the loader
@@ -73,6 +89,12 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $emailId = CRM_PaypalImporter_Loader::email($contactId, $emailData);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testEmailValidData()
     {
         // create contact with the loader
@@ -94,6 +116,10 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         self::assertSame($emailData['email'], $email['email'], 'Invalid email address has been returned');
     }
 
+    /**
+     * @return void
+     * @throws \CRM_Core_Exception
+     */
     public function testContributionInvalidContactId()
     {
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
@@ -102,6 +128,12 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $emailId = CRM_PaypalImporter_Loader::contribution(-1, $contribData);
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testContributionValidDataInsert()
     {
         // create contact with the loader
@@ -133,6 +165,12 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         self::assertSame($contribData['trxn_id'], $contribution['trxn_id'], 'Invalid transaction has been returned');
     }
 
+    /**
+     * @return void
+     * @throws \API_Exception
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public function testContributionValidDataUpdate()
     {
         // create contact with the loader

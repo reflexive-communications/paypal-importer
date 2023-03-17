@@ -9,9 +9,8 @@ class CRM_PaypalImporter_Request_TransactionsMissingEmailMock
      *
      * @param string $host
      * @param string $accessToken
-     *
-     * @throws Exception
-     * */
+     * @param array $searchParams
+     */
     public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
     }
@@ -19,14 +18,14 @@ class CRM_PaypalImporter_Request_TransactionsMissingEmailMock
     /**
      * Performs a post request.
      */
-    public function post()
+    public function post(): void
     {
     }
 
     /**
      * Performs a get request.
      */
-    public function get()
+    public function get(): void
     {
     }
 
@@ -42,7 +41,7 @@ class CRM_PaypalImporter_Request_TransactionsMissingEmailMock
             'headers' => [],
             'data' => '{"transaction_details":[{"transaction_info":{"transaction_id":"'.self::TRANSACTION_ID
                 .'","transaction_initiation_date":"2014-07-11T04:03:52+0000","transaction_amount":{"value":"1000","currency_code":"USD"}},"payer_info":{}}], "total_pages":1, "last_refreshed_datetime": "'
-                .date(DATE_ISO8601, strtotime("now -12 hours")).'"}',
+                .date(DATE_ISO8601, strtotime('now -12 hours')).'"}',
         ];
     }
 }

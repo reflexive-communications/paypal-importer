@@ -45,9 +45,9 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
         'grant_type' => 'client_credentials',
     ];
 
-    /*
-     * Tests for the setup of the Requests
-     * with the getter methods.
+    /**
+     * @return void
+     * @throws \Exception
      */
     public function testGetHost()
     {
@@ -57,6 +57,10 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -65,6 +69,10 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
@@ -73,6 +81,10 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetRequestHeaders()
     {
         $expectedHeaderBase = [
@@ -88,6 +100,10 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
         }
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {

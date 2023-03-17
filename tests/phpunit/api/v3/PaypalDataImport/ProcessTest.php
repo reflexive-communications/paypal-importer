@@ -30,8 +30,8 @@ class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase
     ];
 
     /**
-     * Simple example test case.
-     * Just call the endpoint. Due to the default state, it will do nothing.
+     * @return void
+     * @throws \CiviCRM_API3_Exception
      */
     public function testApiCall()
     {

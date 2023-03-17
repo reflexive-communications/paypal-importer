@@ -7,9 +7,8 @@ class CRM_PaypalImporter_Request_TransactionsCodeMock
      *
      * @param string $host
      * @param string $accessToken
-     *
-     * @throws Exception
-     * */
+     * @param array $searchParams
+     */
     public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
     }
@@ -17,14 +16,14 @@ class CRM_PaypalImporter_Request_TransactionsCodeMock
     /**
      * Performs a post request.
      */
-    public function post()
+    public function post(): void
     {
     }
 
     /**
      * Performs a get request.
      */
-    public function get()
+    public function get(): void
     {
     }
 

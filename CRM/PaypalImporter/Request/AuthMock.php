@@ -8,7 +8,7 @@ class CRM_PaypalImporter_Request_AuthMock
      * @param string $host
      * @param string $clientId
      * @param string $clientSecret
-     * */
+     */
     public function __construct(string $host, string $clientId, string $clientSecret)
     {
     }
@@ -16,14 +16,14 @@ class CRM_PaypalImporter_Request_AuthMock
     /**
      * Performs a post request.
      */
-    public function post()
+    public function post(): void
     {
     }
 
     /**
      * Performs a get request.
      */
-    public function get()
+    public function get(): void
     {
     }
 
