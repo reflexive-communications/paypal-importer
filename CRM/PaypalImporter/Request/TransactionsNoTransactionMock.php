@@ -37,7 +37,7 @@ class CRM_PaypalImporter_Request_TransactionsNoTransactionMock
         return [
             'code' => 200,
             'headers' => [],
-            'data' => '{"transaction_details":[], "total_pages":0, "last_refreshed_datetime": "'.date(DATE_ISO8601, strtotime("now -12 hours")).'"}',
+            'data' => '{"transaction_details":[], "total_pages":0, "last_refreshed_datetime": "'.date(DATE_ISO8601, strtotime('now -12 hours')).'"}',
         ];
     }
 }

@@ -245,7 +245,7 @@ class CRM_PaypalImporter_ImportProcess
         $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
         $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
         $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
-        $contributionData['source'] = "paypal-importer-extension - ".$contributionData['source'];
+        $contributionData['source'] = 'paypal-importer-extension - '.$contributionData['source'];
         try {
             CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
@@ -301,7 +301,7 @@ class CRM_PaypalImporter_ImportProcess
      * It sets the process state to sync. It is called after the
      * import process is finished.
      *
-     * @param string $lastRefreshedDate.
+     * @param string $lastRefreshedDate
      *
      * @throws \CRM_Core_Exception
      */

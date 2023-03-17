@@ -61,11 +61,11 @@ class CRM_PaypalImporter_Request_Base
      *
      * @throws Exception
      */
-    public function __construct(string $host, string $endpoint = "", array $options = [], array $headers = [], array $data = [])
+    public function __construct(string $host, string $endpoint = '', array $options = [], array $headers = [], array $data = [])
     {
-        if (!function_exists("curl_init")) {
-            CRM_PaypalImporter_Upgrader::logError("Curl module is not available on this system");
-            throw new Exception("Curl module is not available on this system");
+        if (!function_exists('curl_init')) {
+            CRM_PaypalImporter_Upgrader::logError('Curl module is not available on this system');
+            throw new Exception('Curl module is not available on this system');
         }
         $this->host = $host;
         $this->endpoint = $endpoint;
@@ -90,11 +90,11 @@ class CRM_PaypalImporter_Request_Base
         }
 
         // Added condition to ignore extra header which dont have colon ( : )
-        if (strpos($trimmedData, ":") == false) {
+        if (strpos($trimmedData, ':') == false) {
             return strlen($data);
         }
 
-        [$key, $value] = explode(":", $trimmedData, 2);
+        [$key, $value] = explode(':', $trimmedData, 2);
 
         $key = trim($key);
         $value = trim($value);
