@@ -6,7 +6,7 @@ use CRM_PaypalImporter_ExtensionUtil as E;
 /**
  * @group headless
  */
-class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase
+class api_v3_PaypalImporter_ImportTest extends HeadlessTestCase
 {
     const TEST_SETTINGS = [
         'settings' => [
@@ -37,7 +37,7 @@ class api_v3_PaypalDataImport_ProcessTest extends HeadlessTestCase
     {
         $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
         self::assertTrue($config->update(self::TEST_SETTINGS), 'Config update has to be successful.');
-        $result = civicrm_api3('PaypalDataImport', 'process', []);
+        $result = civicrm_api3('PaypalImporter', 'import');
         $this->assertEquals(self::TEST_SETTINGS['state'], $result['values']['state']);
     }
 }
