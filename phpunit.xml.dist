@@ -18,7 +18,6 @@
             <!-- Skip generated files -->
             <file>./paypal_importer.php</file>
             <file>./paypal_importer.civix.php</file>
-            <file>./CRM/PaypalImporter/Upgrader/Base.php</file>
             <!-- Skip mock files -->
             <directory suffix="Mock.php">./CRM/PaypalImporter/Request/</directory>
             <!-- Skip mgd files managed database record -->
