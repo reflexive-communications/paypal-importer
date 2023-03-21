@@ -6,6 +6,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          convertDeprecationsToExceptions="true"
+         failOnRisky="true"
          bootstrap="tests/phpunit/bootstrap.php"
          testdox="true">
     <coverage>
@@ -19,13 +20,13 @@
             <file>./paypal_importer.php</file>
             <file>./paypal_importer.civix.php</file>
             <!-- Skip mock files -->
-            <directory suffix="Mock.php">./CRM/PaypalImporter/Request/</directory>
+            <directory suffix="Mock.php">./CRM/PaypalImporter/Request</directory>
             <!-- Skip mgd files managed database record -->
-            <directory suffix="mgd.php">./api/v3/PaypalDataImport/</directory>
+            <directory suffix="mgd.php">./api/v3/PaypalDataImport</directory>
         </exclude>
     </coverage>
     <testsuites>
-        <testsuite name="My Test Suite">
+        <testsuite name="all">
             <directory>./tests/phpunit</directory>
         </testsuite>
     </testsuites>
