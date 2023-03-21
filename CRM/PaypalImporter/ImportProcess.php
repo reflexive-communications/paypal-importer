@@ -351,7 +351,7 @@ class CRM_PaypalImporter_ImportProcess
 
         // Check the config. if the state is do-nothing, return.
         if ($cfg['state'] == 'do-nothing') {
-            return civicrm_api3_create_success(['state' => $cfg['state'], 'stats' => ['execution-time' => $this->getExecutionTime()]], $params, 'PaypalDataImport', 'Process');
+            return civicrm_api3_create_success(['state' => $cfg['state'], 'stats' => ['execution-time' => $this->getExecutionTime()]], $params, 'PaypalImporter', 'import');
         }
 
         $this->initImportParams();
@@ -387,6 +387,6 @@ class CRM_PaypalImporter_ImportProcess
         $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
 
-        return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalDataImport', 'Process');
+        return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalImporter', 'import');
     }
 }
