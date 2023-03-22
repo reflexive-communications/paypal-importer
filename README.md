@@ -15,8 +15,7 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 ## Installation
 
-Sysadmins and developers may clone the [Git](https://en.wikipedia.org/wiki/Git) repo for this extension and
-install it with the command-line tool [cv](https://github.com/civicrm/cv).
+Sysadmins and developers may clone the [Git](https://en.wikipedia.org/wiki/Git) repo for this extension and install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
 git clone git@github.com:reflexive-communications/paypal-importer.git
