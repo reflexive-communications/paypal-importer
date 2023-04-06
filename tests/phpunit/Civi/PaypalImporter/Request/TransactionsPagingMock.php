@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_TransactionsPagingMock
+namespace Civi\PaypalImporter\Request;
+
+class TransactionsPagingMock
 {
     public const TRANSACTION_IDS = ['5TY05013RG002848M', '5TY05013RG002849M'];
 

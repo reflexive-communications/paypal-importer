@@ -1,11 +1,11 @@
 <?php
 
-use Civi\PaypalImporter\HeadlessTestCase;
+namespace Civi\PaypalImporter;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
+class TransformerTest extends HeadlessTestCase
 {
     const PAYPAL_SAMPLE_DATA = [
         'transaction_info' => [
@@ -153,7 +153,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
             'first_name' => self::PAYPAL_SAMPLE_DATA['payer_info']['payer_name']['given_name'],
             'last_name' => self::PAYPAL_SAMPLE_DATA['payer_info']['payer_name']['surname'],
         ];
-        $transformedContact = CRM_PaypalImporter_Transformer::paypalTransactionToContact(self::PAYPAL_SAMPLE_DATA);
+        $transformedContact = Transformer::paypalTransactionToContact(self::PAYPAL_SAMPLE_DATA);
         self::assertSame($expectedContactData, $transformedContact, 'Invalid transformed data.');
     }
 
@@ -168,7 +168,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
             'location_type_id' => 1,
             'email' => self::PAYPAL_SAMPLE_DATA['payer_info']['email_address'],
         ];
-        $transformedEmail = CRM_PaypalImporter_Transformer::paypalTransactionToEmail(self::PAYPAL_SAMPLE_DATA);
+        $transformedEmail = Transformer::paypalTransactionToEmail(self::PAYPAL_SAMPLE_DATA);
         self::assertSame($expectedEmailData, $transformedEmail, 'Invalid transformed data.');
     }
 
@@ -187,7 +187,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
             'source' => self::PAYPAL_SAMPLE_DATA['cart_info']['item_details'][0]['item_name'] ?: '',
             'contribution_status_id' => 1,
         ];
-        $transformedContribution = CRM_PaypalImporter_Transformer::paypalTransactionToContribution(self::PAYPAL_SAMPLE_DATA);
+        $transformedContribution = Transformer::paypalTransactionToContribution(self::PAYPAL_SAMPLE_DATA);
         self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
     }
 
@@ -209,7 +209,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
         ];
         $refundTransaction = self::PAYPAL_SAMPLE_DATA;
         $refundTransaction['transaction_info']['transaction_status'] = 'V';
-        $transformedContribution = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($refundTransaction);
+        $transformedContribution = Transformer::paypalTransactionToContribution($refundTransaction);
         self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
     }
 
@@ -230,7 +230,7 @@ class CRM_PaypalImporter_TransformerTest extends HeadlessTestCase
         ];
         $refundTransaction = self::PAYPAL_SAMPLE_DATA;
         $refundTransaction['transaction_info']['transaction_status'] = 'XX';
-        $transformedContribution = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($refundTransaction);
+        $transformedContribution = Transformer::paypalTransactionToContribution($refundTransaction);
         self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
     }
 }

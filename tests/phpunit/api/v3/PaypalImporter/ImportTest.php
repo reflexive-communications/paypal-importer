@@ -1,5 +1,6 @@
 <?php
 
+use Civi\PaypalImporter\Config;
 use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
@@ -35,7 +36,7 @@ class api_v3_PaypalImporter_ImportTest extends HeadlessTestCase
      */
     public function testApiCall()
     {
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         self::assertTrue($config->update(self::TEST_SETTINGS), 'Config update has to be successful.');
         $result = civicrm_api3('PaypalImporter', 'import');
         $this->assertEquals(self::TEST_SETTINGS['state'], $result['values']['state']);

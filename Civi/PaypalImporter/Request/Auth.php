@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_Auth extends CRM_PaypalImporter_Request_Base
+namespace Civi\PaypalImporter\Request;
+
+class Auth extends Base
 {
     public const ENDPOINT = '/v1/oauth2/token';
 

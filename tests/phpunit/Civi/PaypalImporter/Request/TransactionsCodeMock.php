@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_TransactionsNoTransactionMock
+namespace Civi\PaypalImporter\Request;
+
+class TransactionsCodeMock
 {
     /**
      * Default Constructor
@@ -35,9 +37,9 @@ class CRM_PaypalImporter_Request_TransactionsNoTransactionMock
     public function getResponse(): array
     {
         return [
-            'code' => 200,
+            'code' => 401,
             'headers' => [],
-            'data' => '{"transaction_details":[], "total_pages":0, "last_refreshed_datetime": "'.date(DATE_ISO8601, strtotime('now -12 hours')).'"}',
+            'data' => '',
         ];
     }
 }

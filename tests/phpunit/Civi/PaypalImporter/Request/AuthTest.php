@@ -1,11 +1,13 @@
 <?php
 
+namespace Civi\PaypalImporter\Request;
+
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
+class AuthTest extends HeadlessTestCase
 {
     const TEST_DATA = [
         [
@@ -52,7 +54,7 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
     public function testGetHost()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
+            $req = new Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
             self::assertSame($settings['host'], $req->getHost(), 'Invalid host configuration has been returned.');
         }
     }
@@ -64,8 +66,8 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
-            self::assertSame(CRM_PaypalImporter_Request_Auth::ENDPOINT, $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
+            $req = new Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
+            self::assertSame(Auth::ENDPOINT, $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
         }
     }
 
@@ -76,7 +78,7 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
+            $req = new Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
             self::assertSame(self::EXPECTED_OPTIONS, $req->getOptions(), 'Invalid options configuration has been returned.');
         }
     }
@@ -88,14 +90,14 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
     public function testGetRequestHeaders()
     {
         $expectedHeaderBase = [
-            'Accept: '.CRM_PaypalImporter_Request_Base::ACCEPT_HEADER,
-            'Accept-Language: '.CRM_PaypalImporter_Request_Base::ACCEPT_LANGUAGE_HEADER,
-            'Content-Type: '.CRM_PaypalImporter_Request_Auth::CONTENT_TYPE_HEADER,
+            'Accept: '.Base::ACCEPT_HEADER,
+            'Accept-Language: '.Base::ACCEPT_LANGUAGE_HEADER,
+            'Content-Type: '.Auth::CONTENT_TYPE_HEADER,
             'Authorization: Basic ',
         ];
         foreach (self::TEST_DATA as $settings) {
             $expectedHeaderBase[3] = 'Authorization: Basic '.base64_encode($settings['clientId'].':'.$settings['clientSecret']);
-            $req = new CRM_PaypalImporter_Request_Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
+            $req = new Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
             self::assertSame($expectedHeaderBase, $req->getRequestHeaders(), 'Invalid headers configuration has been returned.');
         }
     }
@@ -107,7 +109,7 @@ class CRM_PaypalImporter_Request_AuthTest extends HeadlessTestCase
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
+            $req = new Auth($settings['host'], $settings['clientId'], $settings['clientSecret']);
             self::assertSame(self::EXPECTED_DATA, $req->getRequestData(), 'Invalid data configuration has been returned.');
         }
     }

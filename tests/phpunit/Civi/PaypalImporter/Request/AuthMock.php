@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_AuthCodeMock
+namespace Civi\PaypalImporter\Request;
+
+class AuthMock
 {
     /**
      * Default Constructor
@@ -35,9 +37,9 @@ class CRM_PaypalImporter_Request_AuthCodeMock
     public function getResponse(): array
     {
         return [
-            'code' => 401,
+            'code' => 200,
             'headers' => [],
-            'data' => '',
+            'data' => '{"access_token":"fakeToken"}',
         ];
     }
 }

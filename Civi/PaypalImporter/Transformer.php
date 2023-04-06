@@ -1,6 +1,10 @@
 <?php
 
-class CRM_PaypalImporter_Transformer
+namespace Civi\PaypalImporter;
+
+use CRM_RcBase_Api_Get;
+
+class Transformer
 {
     const CRM_FAILED_STATUS_ID = 4;
 

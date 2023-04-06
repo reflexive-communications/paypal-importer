@@ -1,5 +1,6 @@
 <?php
 
+use Civi\PaypalImporter\Config;
 use Civi\PaypalImporter\HeadlessTestCase;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
@@ -34,7 +35,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
      */
     private function setupTestConfig()
     {
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         self::assertTrue($config->update(self::TEST_SETTINGS), 'Config update has to be successful.');
     }
 
@@ -59,7 +60,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
     public function testPreProcessMissingConfig()
     {
         $form = new CRM_PaypalImporter_Form_Settings();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->remove();
         self::expectException(CRM_Core_Exception::class);
         self::expectExceptionMessage(E::LONG_NAME.'_config config invalid.');
@@ -90,7 +91,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
     public function testBuildQuickFormImportInitState()
     {
         $this->setupTestConfig();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->updateState('import-init');
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -109,7 +110,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
     public function testBuildQuickFormImportError()
     {
         $this->setupTestConfig();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->updateState('error');
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -128,7 +129,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
     public function testBuildQuickFormImportStats()
     {
         $this->setupTestConfig();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->updateState('import-init');
         $form = new CRM_PaypalImporter_Form_Settings();
         $config->updateImportStats(['new-user' => 2, 'transaction' => 2, 'error' => ['Something went wrong.']]);
@@ -148,7 +149,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
     public function testSetDefaultValues()
     {
         $this->setupTestConfig();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->updateState('error');
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -239,7 +240,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         } catch (Exception $e) {
             self::fail('It shouldn\'t throw exception. '.$e->getMessage());
         }
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->load();
         $cfg = $config->get();
         self::assertSame('import-init', $cfg['state'], 'Invalid state after start the action.');
@@ -263,7 +264,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         $_POST['tagId'] = 0;
         $_POST['groupId'] = 0;
         $this->setupTestConfig();
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->updateState('import');
         $form = new CRM_PaypalImporter_Form_Settings();
         self::assertEmpty($form->preProcess(), 'PreProcess supposed to be empty.');
@@ -272,7 +273,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         } catch (Exception $e) {
             self::fail('It shouldn\'t throw exception. '.$e->getMessage());
         }
-        $config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $config = new Config(E::LONG_NAME);
         $config->load();
         $cfg = $config->get();
         self::assertSame('do-nothing', $cfg['state'], 'Invalid state after start the action.');

@@ -1,8 +1,13 @@
 <?php
 
-use Civi\Api4\Contribution;
+namespace Civi\PaypalImporter;
 
-class CRM_PaypalImporter_Loader
+use Civi\Api4\Contribution;
+use CRM_Core_Exception;
+use CRM_RcBase_Api_Create;
+use CRM_RcBase_Api_Update;
+
+class Loader
 {
     /**
      * Import new contact

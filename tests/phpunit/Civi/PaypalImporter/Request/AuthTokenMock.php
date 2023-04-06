@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_AuthTokenMock
+namespace Civi\PaypalImporter\Request;
+
+class AuthTokenMock
 {
     /**
      * Default Constructor
