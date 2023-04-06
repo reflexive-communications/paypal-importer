@@ -14,9 +14,9 @@ use CRM_PaypalImporter_ExtensionUtil as E;
 class ImportProcessTest extends HeadlessTestCase
 {
     // We don't use the params in the process script.
-    const PARAMS = [];
+    public const PARAMS = [];
 
-    const TEST_SETTINGS = [
+    public const TEST_SETTINGS = [
         'settings' => [
             'client-id' => '',
             'client-secret' => '',

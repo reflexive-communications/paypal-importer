@@ -7,7 +7,7 @@ namespace Civi\PaypalImporter;
  */
 class TransformerTest extends HeadlessTestCase
 {
-    const PAYPAL_SAMPLE_DATA = [
+    public const PAYPAL_SAMPLE_DATA = [
         'transaction_info' => [
             'paypal_account_id' => '6STWC2LSUYYYE',
             'transaction_id' => '5TY05013RG002845M',

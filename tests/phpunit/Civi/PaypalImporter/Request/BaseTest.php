@@ -9,7 +9,7 @@ use Civi\PaypalImporter\HeadlessTestCase;
  */
 class BaseTest extends HeadlessTestCase
 {
-    const TEST_DATA = [
+    public const TEST_DATA = [
         [
             'host' => 'localhost',
             'endpoint' => '/api.php',

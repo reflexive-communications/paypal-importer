@@ -9,7 +9,7 @@ use Civi\PaypalImporter\HeadlessTestCase;
  */
 class AuthTest extends HeadlessTestCase
 {
-    const TEST_DATA = [
+    public const TEST_DATA = [
         [
             'host' => 'localhost',
             'clientId' => '',
@@ -32,7 +32,7 @@ class AuthTest extends HeadlessTestCase
         ],
     ];
 
-    const EXPECTED_OPTIONS = [
+    public const EXPECTED_OPTIONS = [
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 60,
@@ -43,7 +43,7 @@ class AuthTest extends HeadlessTestCase
         CURLOPT_FOLLOWLOCATION => true,
     ];
 
-    const EXPECTED_DATA = [
+    public const EXPECTED_DATA = [
         'grant_type' => 'client_credentials',
     ];
 

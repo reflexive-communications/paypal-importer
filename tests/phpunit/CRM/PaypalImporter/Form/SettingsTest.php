@@ -9,7 +9,7 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  */
 class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
 {
-    const TEST_SETTINGS = [
+    public const TEST_SETTINGS = [
         'settings' => [
             'client-id' => '',
             'client-secret' => '',
