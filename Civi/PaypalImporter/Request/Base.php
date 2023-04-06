@@ -3,6 +3,7 @@
 namespace Civi\PaypalImporter\Request;
 
 use CRM_PaypalImporter_Upgrader;
+use Exception;
 
 /**
  * HTTP request class. It is responsible for the curl call. Based on the deprecated sdk.
