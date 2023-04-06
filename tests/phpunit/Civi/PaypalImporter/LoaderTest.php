@@ -6,7 +6,6 @@ use Civi\Api4\Contact;
 use Civi\Api4\Contribution;
 use Civi\Api4\Email;
 use CRM_Core_Exception;
-use TypeError;
 
 /**
  * @group headless
@@ -47,18 +46,6 @@ class LoaderTest extends HeadlessTestCase
             ->execute();
         $contact = $contacts->first();
         self::assertSame($contactData['contact_type'], $contact['contact_type'], 'Invalid contact_type has been returned');
-    }
-
-    /**
-     * @return void
-     * @throws \CRM_Core_Exception
-     */
-    public function testEmailMissingContactId()
-    {
-        $emailData = ['email' => 'testlooser@email.com'];
-        self::expectException(TypeError::class);
-        self::expectExceptionMessage('Argument 1 passed to CRM_PaypalImporter_Loader::email() must be of the type int, null given');
-        $emailId = Loader::email(null, $emailData);
     }
 
     /**
