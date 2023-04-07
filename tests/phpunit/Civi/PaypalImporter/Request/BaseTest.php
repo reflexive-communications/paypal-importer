@@ -1,13 +1,15 @@
 <?php
 
+namespace Civi\PaypalImporter\Request;
+
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
+class BaseTest extends HeadlessTestCase
 {
-    const TEST_DATA = [
+    public const TEST_DATA = [
         [
             'host' => 'localhost',
             'endpoint' => '/api.php',
@@ -66,7 +68,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetHost()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertSame($settings['host'], $req->getHost(), 'Invalid host configuration has been returned.');
         }
     }
@@ -78,7 +80,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertSame($settings['endpoint'], $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
         }
     }
@@ -90,7 +92,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertSame($settings['options'], $req->getOptions(), 'Invalid options configuration has been returned.');
         }
     }
@@ -102,7 +104,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetRequestHeaders()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertSame($settings['headers'], $req->getRequestHeaders(), 'Invalid headers configuration has been returned.');
         }
     }
@@ -114,7 +116,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertSame($settings['data'], $req->getRequestData(), 'Invalid data configuration has been returned.');
         }
     }
@@ -126,7 +128,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGet()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertEmpty($req->get());
         }
     }
@@ -138,7 +140,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testPost()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertEmpty($req->post());
         }
     }
@@ -150,7 +152,7 @@ class CRM_PaypalImporter_Request_BaseTest extends HeadlessTestCase
     public function testGetResponse()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
+            $req = new Base($settings['host'], $settings['endpoint'], $settings['options'], $settings['headers'], $settings['data']);
             self::assertEmpty($req->post());
             $resp = $req->getResponse();
             self::assertSame(404, $resp['code'], 'Invalid status code has been returned.');

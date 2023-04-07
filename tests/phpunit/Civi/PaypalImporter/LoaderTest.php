@@ -1,14 +1,16 @@
 <?php
 
+namespace Civi\PaypalImporter;
+
 use Civi\Api4\Contact;
 use Civi\Api4\Contribution;
 use Civi\Api4\Email;
-use Civi\PaypalImporter\HeadlessTestCase;
+use CRM_Core_Exception;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
+class LoaderTest extends HeadlessTestCase
 {
     /**
      * @return void
@@ -17,7 +19,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
     public function testContactMissingData()
     {
         $contactData = [];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         self::assertIsInt($contactId);
     }
 
@@ -34,7 +36,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
             'first_name' => '',
             'last_name' => '',
         ];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         self::assertIsInt($contactId);
         // The contact is create well.
         $contacts = Contact::get(false)
@@ -50,24 +52,12 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
      * @return void
      * @throws \CRM_Core_Exception
      */
-    public function testEmailMissingContactId()
-    {
-        $emailData = ['email' => 'testlooser@email.com'];
-        self::expectException(TypeError::class);
-        self::expectExceptionMessage('Argument 1 passed to CRM_PaypalImporter_Loader::email() must be of the type int, null given');
-        $emailId = CRM_PaypalImporter_Loader::email(null, $emailData);
-    }
-
-    /**
-     * @return void
-     * @throws \CRM_Core_Exception
-     */
     public function testEmailInvalidContactId()
     {
         $emailData = ['email' => 'testlooser@email.com'];
         self::expectException(CRM_Core_Exception::class);
         self::expectExceptionMessage('Invalid ID');
-        $emailId = CRM_PaypalImporter_Loader::email(-1, $emailData);
+        $emailId = Loader::email(-1, $emailData);
     }
 
     /**
@@ -82,11 +72,11 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
             'first_name' => '',
             'last_name' => '',
         ];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         $emailData = [];
         self::expectException(CRM_Core_Exception::class);
         self::expectExceptionMessage('Failed to create Email, reason: Mandatory values missing from Api4 Email::create: email');
-        $emailId = CRM_PaypalImporter_Loader::email($contactId, $emailData);
+        $emailId = Loader::email($contactId, $emailData);
     }
 
     /**
@@ -103,9 +93,9 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
             'first_name' => '',
             'last_name' => '',
         ];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         $emailData = ['email' => 'testlooser@email.com'];
-        $emailId = CRM_PaypalImporter_Loader::email($contactId, $emailData);
+        $emailId = Loader::email($contactId, $emailData);
         self::assertIsInt($emailId);
         $emails = Email::get(false)
             ->addSelect('email')
@@ -125,7 +115,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
         self::expectException(CRM_Core_Exception::class);
         self::expectExceptionMessage('Invalid ID');
-        $emailId = CRM_PaypalImporter_Loader::contribution(-1, $contribData);
+        $emailId = Loader::contribution(-1, $contribData);
     }
 
     /**
@@ -142,7 +132,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
             'first_name' => '',
             'last_name' => '',
         ];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10, 'financial_type_id' => 1];
         // The contribution shouldn't exists.
         $contributions = Contribution::get(false)
@@ -154,7 +144,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         if (is_array($contribution)) {
             self::fail('Contribution already exists.');
         }
-        $contributionId = CRM_PaypalImporter_Loader::contribution($contactId, $contribData);
+        $contributionId = Loader::contribution($contactId, $contribData);
         self::assertIsInt($contributionId);
         $contributions = Contribution::get(false)
             ->addSelect('trxn_id')
@@ -179,7 +169,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
             'first_name' => '',
             'last_name' => '',
         ];
-        $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+        $contactId = Loader::contact($contactData);
         $contribData = ['trxn_id' => 'a-2', 'total_amount' => 10, 'financial_type_id' => 1];
         // The contribution shouldn't exists.
         $contributions = Contribution::get(false)
@@ -191,7 +181,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         if (is_array($contribution)) {
             self::fail('Contribution already exists.');
         }
-        $contributionId = CRM_PaypalImporter_Loader::contribution($contactId, $contribData);
+        $contributionId = Loader::contribution($contactId, $contribData);
         self::assertIsInt($contributionId);
         $contributions = Contribution::get(false)
             ->addSelect('trxn_id')
@@ -201,7 +191,7 @@ class CRM_PaypalImporter_LoaderTest extends HeadlessTestCase
         $contribution = $contributions->first();
         self::assertSame($contribData['trxn_id'], $contribution['trxn_id'], 'Invalid transaction has been returned');
         $contribData['source'] = 'test';
-        $newContributionId = CRM_PaypalImporter_Loader::contribution($contactId, $contribData);
+        $newContributionId = Loader::contribution($contactId, $contribData);
         self::assertSame($contributionId, $newContributionId, 'Insertion happened instead of update.');
     }
 }

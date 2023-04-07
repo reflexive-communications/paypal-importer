@@ -1,11 +1,13 @@
 <?php
 
-use Civi\PaypalImporter\HeadlessTestCase;
+namespace Civi\PaypalImporter;
+
+use CRM_Core_Exception;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
+class ConfigTest extends HeadlessTestCase
 {
     /**
      * @return void
@@ -13,7 +15,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testCreate()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         self::assertTrue(array_key_exists('settings', $cfg), 'settings key is missing from the config.');
@@ -54,7 +56,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testRemove()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         self::assertTrue($config->remove(), 'Remove config has to be successful.');
     }
@@ -65,7 +67,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testGet()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         self::assertTrue(array_key_exists('settings', $cfg), 'settings key is missing from the config.');
@@ -110,7 +112,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdate()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['settings']['client-id'] = 'new-client-id';
@@ -125,20 +127,20 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testLoad()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['settings']['client-id'] = 'new-client-id';
         self::assertTrue($config->update($cfg), 'Update config has to be successful.');
         $cfgUpdated = $config->get();
         self::assertEquals($cfg, $cfgUpdated, 'Invalid updated configuration.');
-        $otherConfig = new CRM_PaypalImporter_Config('paypal_test');
+        $otherConfig = new Config('paypal_test');
         self::assertEmpty($otherConfig->load(), 'Load result supposed to be empty.');
 
         $cfgLoaded = $otherConfig->get();
         self::assertEquals($cfg, $cfgLoaded, 'Invalid loaded configuration.');
 
-        $missingConfig = new CRM_PaypalImporter_Config('paypal_test_missing_config');
+        $missingConfig = new Config('paypal_test_missing_config');
         self::expectException(CRM_Core_Exception::class);
         self::expectExceptionMessage('paypal_test_missing_config_config config invalid.');
         self::assertEmpty($missingConfig->load(), 'Load result supposed to be empty.');
@@ -150,7 +152,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdateSettings()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['settings']['client-id'] = 'new-client-id';
@@ -165,7 +167,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function updateState()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['state'] = 'error';
@@ -180,7 +182,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdateImportParams()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['import-params'] = [
@@ -198,7 +200,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdateImportStats()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['import-stats'] = [
@@ -217,7 +219,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdateImportError()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['import-error'] = 'new-issue something went wrong.';
@@ -232,7 +234,7 @@ class CRM_PaypalImporter_ConfigTest extends HeadlessTestCase
      */
     public function testUpdateState()
     {
-        $config = new CRM_PaypalImporter_Config('paypal_test');
+        $config = new Config('paypal_test');
         self::assertTrue($config->create(), 'Create config has to be successful.');
         $cfg = $config->get();
         $cfg['state'] = 'import';

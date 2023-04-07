@@ -1,5 +1,6 @@
 <?php
 
+use Civi\PaypalImporter\Config;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
@@ -12,7 +13,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     /**
      * Configdb
      *
-     * @var CRM_PaypalImporter_Config
+     * @var Config
      */
     private $config;
 
@@ -23,7 +24,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
     public function preProcess(): void
     {
         // Get current settings
-        $this->config = new CRM_PaypalImporter_Config(E::LONG_NAME);
+        $this->config = new Config(E::LONG_NAME);
         $this->config->load();
     }
 

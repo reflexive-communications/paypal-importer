@@ -1,13 +1,15 @@
 <?php
 
+namespace Civi\PaypalImporter\Request;
+
 use Civi\PaypalImporter\HeadlessTestCase;
 
 /**
  * @group headless
  */
-class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
+class TransactionsTest extends HeadlessTestCase
 {
-    const TEST_DATA = [
+    public const TEST_DATA = [
         [
             'host' => 'localhost',
             'token' => '',
@@ -36,7 +38,7 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
         ],
     ];
 
-    const EXPECTED_OPTIONS = [
+    public const EXPECTED_OPTIONS = [
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 60,
@@ -54,7 +56,7 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
     public function testGetHost()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Transactions($settings['host'], $settings['token'], $settings['data']);
+            $req = new Transactions($settings['host'], $settings['token'], $settings['data']);
             self::assertSame($settings['host'], $req->getHost(), 'Invalid host configuration has been returned.');
         }
     }
@@ -66,8 +68,8 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
     public function testGetEndpoint()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Transactions($settings['host'], $settings['token'], $settings['data']);
-            self::assertSame(CRM_PaypalImporter_Request_Transactions::ENDPOINT, $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
+            $req = new Transactions($settings['host'], $settings['token'], $settings['data']);
+            self::assertSame(Transactions::ENDPOINT, $req->getEndpoint(), 'Invalid endpoint configuration has been returned.');
         }
     }
 
@@ -78,7 +80,7 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
     public function testGetOptions()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Transactions($settings['host'], $settings['token'], $settings['data']);
+            $req = new Transactions($settings['host'], $settings['token'], $settings['data']);
             self::assertSame(self::EXPECTED_OPTIONS, $req->getOptions(), 'Invalid options configuration has been returned.');
         }
     }
@@ -90,14 +92,14 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
     public function testGetRequestHeaders()
     {
         $expectedHeaderBase = [
-            'Accept: '.CRM_PaypalImporter_Request_Base::ACCEPT_HEADER,
-            'Accept-Language: '.CRM_PaypalImporter_Request_Base::ACCEPT_LANGUAGE_HEADER,
-            'Content-Type: '.CRM_PaypalImporter_Request_Transactions::CONTENT_TYPE_HEADER,
+            'Accept: '.Base::ACCEPT_HEADER,
+            'Accept-Language: '.Base::ACCEPT_LANGUAGE_HEADER,
+            'Content-Type: '.Transactions::CONTENT_TYPE_HEADER,
             'Authorization: Basic ',
         ];
         foreach (self::TEST_DATA as $settings) {
             $expectedHeaderBase[3] = 'Authorization: Bearer '.$settings['token'];
-            $req = new CRM_PaypalImporter_Request_Transactions($settings['host'], $settings['token'], $settings['data']);
+            $req = new Transactions($settings['host'], $settings['token'], $settings['data']);
             self::assertSame($expectedHeaderBase, $req->getRequestHeaders(), 'Invalid headers configuration has been returned.');
         }
     }
@@ -109,7 +111,7 @@ class CRM_PaypalImporter_Request_TransactionsTest extends HeadlessTestCase
     public function testGetRequestData()
     {
         foreach (self::TEST_DATA as $settings) {
-            $req = new CRM_PaypalImporter_Request_Transactions($settings['host'], $settings['token'], $settings['data']);
+            $req = new Transactions($settings['host'], $settings['token'], $settings['data']);
             self::assertSame($settings['data'], $req->getRequestData(), 'Invalid data configuration has been returned.');
         }
     }

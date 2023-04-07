@@ -1,5 +1,8 @@
 <?php
 
+use Civi\PaypalImporter\ImportProcess;
+use Civi\PaypalImporter\Request\Auth;
+use Civi\PaypalImporter\Request\Transactions;
 use CRM_PaypalImporter_ExtensionUtil as E;
 
 /**
@@ -13,7 +16,7 @@ use CRM_PaypalImporter_ExtensionUtil as E;
  */
 function civicrm_api3_paypal_importer_Import($params): array
 {
-    $p = new CRM_PaypalImporter_ImportProcess(E::LONG_NAME, CRM_PaypalImporter_Request_Auth::class, CRM_PaypalImporter_Request_Transactions::class);
+    $p = new ImportProcess(E::LONG_NAME, Auth::class, Transactions::class);
 
     return $p->run($params);
 }

@@ -1,15 +1,17 @@
 <?php
 
-class CRM_PaypalImporter_Request_TransactionsCodeMock
+namespace Civi\PaypalImporter\Request;
+
+class AuthCodeMock
 {
     /**
      * Default Constructor
      *
      * @param string $host
-     * @param string $accessToken
-     * @param array $searchParams
+     * @param string $clientId
+     * @param string $clientSecret
      */
-    public function __construct(string $host, string $accessToken, array $searchParams = [])
+    public function __construct(string $host, string $clientId, string $clientSecret)
     {
     }
 

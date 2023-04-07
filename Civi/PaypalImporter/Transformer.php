@@ -1,14 +1,18 @@
 <?php
 
-class CRM_PaypalImporter_Transformer
+namespace Civi\PaypalImporter;
+
+use CRM_RcBase_Api_Get;
+
+class Transformer
 {
-    const CRM_FAILED_STATUS_ID = 4;
+    public const CRM_FAILED_STATUS_ID = 4;
 
-    const CRM_REFUNDED_STATUS_ID = 7;
+    public const CRM_REFUNDED_STATUS_ID = 7;
 
-    const CRM_PENDING_STATUS_ID = 2;
+    public const CRM_PENDING_STATUS_ID = 2;
 
-    const CRM_COMPLETED_STATUS_ID = 1;
+    public const CRM_COMPLETED_STATUS_ID = 1;
 
     /**
      * Transform paypal transaction data to civicrm contact data

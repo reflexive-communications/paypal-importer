@@ -1,10 +1,15 @@
 <?php
 
+namespace Civi\PaypalImporter\Request;
+
+use CRM_PaypalImporter_Upgrader;
+use Exception;
+
 /**
  * HTTP request class. It is responsible for the curl call. Based on the deprecated sdk.
  * https://github.com/paypal/PayPal-PHP-SDK/blob/1a2ed767bb09374a8a222069930e94fccf99009e/lib/PayPal/Core/PayPalHttpConnection.php
  */
-class CRM_PaypalImporter_Request_Base
+class Base
 {
     public const ACCEPT_HEADER = 'application/json';
 

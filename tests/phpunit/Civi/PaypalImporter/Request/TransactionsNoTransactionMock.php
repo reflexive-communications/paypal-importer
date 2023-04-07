@@ -1,15 +1,17 @@
 <?php
 
-class CRM_PaypalImporter_Request_AuthMock
+namespace Civi\PaypalImporter\Request;
+
+class TransactionsNoTransactionMock
 {
     /**
      * Default Constructor
      *
      * @param string $host
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param string $accessToken
+     * @param array $searchParams
      */
-    public function __construct(string $host, string $clientId, string $clientSecret)
+    public function __construct(string $host, string $accessToken, array $searchParams = [])
     {
     }
 
@@ -37,7 +39,7 @@ class CRM_PaypalImporter_Request_AuthMock
         return [
             'code' => 200,
             'headers' => [],
-            'data' => '{"access_token":"fakeToken"}',
+            'data' => '{"transaction_details":[], "total_pages":0, "last_refreshed_datetime": "'.date(DATE_ISO8601, strtotime('now -12 hours')).'"}',
         ];
     }
 }

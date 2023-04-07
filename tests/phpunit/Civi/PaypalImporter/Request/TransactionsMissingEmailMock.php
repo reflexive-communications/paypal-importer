@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_TransactionsMissingEmailMock
+namespace Civi\PaypalImporter\Request;
+
+class TransactionsMissingEmailMock
 {
     public const TRANSACTION_ID = '5TY05013RG002845M';
 

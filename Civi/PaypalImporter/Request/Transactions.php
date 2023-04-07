@@ -1,6 +1,8 @@
 <?php
 
-class CRM_PaypalImporter_Request_Transactions extends CRM_PaypalImporter_Request_Base
+namespace Civi\PaypalImporter\Request;
+
+class Transactions extends Base
 {
     public const ENDPOINT = '/v1/reporting/transactions';
 

@@ -1,11 +1,20 @@
 <?php
 
-use Civi\Api4\GroupContact;
+namespace Civi\PaypalImporter;
 
-class CRM_PaypalImporter_ImportProcess
+use API_Exception;
+use Civi;
+use Civi\Api4\GroupContact;
+use CRM_PaypalImporter_Upgrader;
+use CRM_RcBase_Api_Create;
+use CRM_RcBase_Api_Get;
+use CRM_RcBase_Api_Save;
+use Exception;
+
+class ImportProcess
 {
     /**
-     * @var CRM_PaypalImporter_Config config
+     * @var Config config
      */
     private $config;
 
@@ -53,7 +62,7 @@ class CRM_PaypalImporter_ImportProcess
      */
     public function __construct(string $configName, string $authenticatorClassName, string $transactionSearchClassName)
     {
-        $this->config = new CRM_PaypalImporter_Config($configName);
+        $this->config = new Config($configName);
         $this->numberOfRequests = 0;
         $this->stats = [
             'new-user' => 0,
@@ -203,7 +212,7 @@ class CRM_PaypalImporter_ImportProcess
         ];
         $cfg = $this->config->get();
         // Check email first. If missing, the process will be skipped.
-        $emailData = CRM_PaypalImporter_Transformer::paypalTransactionToEmail($transaction);
+        $emailData = Transformer::paypalTransactionToEmail($transaction);
         if (empty($emailData['email'])) {
             $this->addInfo($transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.');
 
@@ -212,9 +221,9 @@ class CRM_PaypalImporter_ImportProcess
         // Try to find a contact to the email. If not found, we have to insert a contact and also the email.
         $contactId = CRM_RcBase_Api_Get::contactIDFromEmail($emailData['email']);
         if (is_null($contactId)) {
-            $contactData = CRM_PaypalImporter_Transformer::paypalTransactionToContact($transaction);
+            $contactData = Transformer::paypalTransactionToContact($transaction);
             try {
-                $contactId = CRM_PaypalImporter_Loader::contact($contactData);
+                $contactId = Loader::contact($contactData);
                 $this->stats['new-user'] += 1;
             } catch (Exception $e) {
                 $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
@@ -222,7 +231,7 @@ class CRM_PaypalImporter_ImportProcess
                 return;
             }
             try {
-                CRM_PaypalImporter_Loader::email($contactId, $emailData);
+                Loader::email($contactId, $emailData);
             } catch (Exception $e) {
                 $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
@@ -242,12 +251,12 @@ class CRM_PaypalImporter_ImportProcess
                 $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
             }
         }
-        $contributionData = CRM_PaypalImporter_Transformer::paypalTransactionToContribution($transaction);
+        $contributionData = Transformer::paypalTransactionToContribution($transaction);
         $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
         $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
         $contributionData['source'] = 'paypal-importer-extension - '.$contributionData['source'];
         try {
-            CRM_PaypalImporter_Loader::contribution($contactId, $contributionData);
+            Loader::contribution($contactId, $contributionData);
             $this->stats['transaction'] += 1;
         } catch (Exception $e) {
             $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
