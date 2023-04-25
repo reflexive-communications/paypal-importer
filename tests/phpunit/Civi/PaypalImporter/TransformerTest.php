@@ -175,7 +175,7 @@ class TransformerTest extends HeadlessTestCase
     /**
      * @return void
      */
-    public function testPaypalTransactionToCivicrmContributionIncomindMoney()
+    public function testPaypalTransactionToCivicrmContributionIncomingMoney()
     {
         $expectedContributionData = [
             'total_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
