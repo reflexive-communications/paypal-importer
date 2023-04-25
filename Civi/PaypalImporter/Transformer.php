@@ -2,7 +2,7 @@
 
 namespace Civi\PaypalImporter;
 
-use CRM_RcBase_Api_Get;
+use Civi\RcBase\ApiWrapper\Get;
 
 class Transformer
 {
@@ -28,8 +28,9 @@ class Transformer
             'first_name' => '',
             'last_name' => '',
         ];
-        if (isset($transaction['payer_info']['payer_name'])) {
-            $payer = $transaction['payer_info']['payer_name'];
+
+        $payer = $transaction['payer_info']['payer_name'] ?? [];
+        if (!empty($payer)) {
             $contactData['first_name'] = $payer['given_name'] ?? '';
             $contactData['last_name'] = $payer['surname'] ?? '';
         }
@@ -49,10 +50,12 @@ class Transformer
     public static function paypalTransactionToEmail(array $transaction): array
     {
         $emailData = [
-            'location_type_id' => CRM_RcBase_Api_Get::defaultLocationTypeID() ?? 1,
+            'location_type_id' => Get::defaultLocationTypeID() ?? 1,
         ];
-        if (isset($transaction['payer_info'])) {
-            $emailData['email'] = $transaction['payer_info']['email_address'] ?? '';
+
+        $payerInfo = $transaction['payer_info'] ?? [];
+        if (!empty($payerInfo)) {
+            $emailData['email'] = $payerInfo['email_address'] ?? '';
         }
 
         return $emailData;
@@ -70,7 +73,7 @@ class Transformer
     {
         $contributionData = [
             'total_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value'], 10) * -1,
+            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value']) * -1,
             'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'],
             'trxn_id' => $transaction['transaction_info']['transaction_id'],
             'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
