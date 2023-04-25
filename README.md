@@ -25,8 +25,3 @@ cv en paypal-importer
 ## Getting Started
 
 To be able to communicate with Paypal API you have to config the importer on the admin form **Contributions > Paypal Importer**.
-
-## Known Issues
-
-Currently the contribution status ID mapping is based on hardcoded IDs.
-For details check the [Developer Notes](DEVELOPER.md).

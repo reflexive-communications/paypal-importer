@@ -5,7 +5,8 @@ namespace Civi\PaypalImporter;
 use Civi\Api4\Contact;
 use Civi\Api4\Contribution;
 use Civi\Api4\Email;
-use CRM_Core_Exception;
+use Civi\RcBase\Exception\APIException;
+use Civi\RcBase\Exception\InvalidArgumentException;
 
 /**
  * @group headless
@@ -55,9 +56,9 @@ class LoaderTest extends HeadlessTestCase
     public function testEmailInvalidContactId()
     {
         $emailData = ['email' => 'testlooser@email.com'];
-        self::expectException(CRM_Core_Exception::class);
-        self::expectExceptionMessage('Invalid ID');
-        $emailId = Loader::email(-1, $emailData);
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid contact ID');
+        Loader::email(-1, $emailData);
     }
 
     /**
@@ -74,9 +75,9 @@ class LoaderTest extends HeadlessTestCase
         ];
         $contactId = Loader::contact($contactData);
         $emailData = [];
-        self::expectException(CRM_Core_Exception::class);
-        self::expectExceptionMessage('Failed to create Email, reason: Mandatory values missing from Api4 Email::create: email');
-        $emailId = Loader::email($contactId, $emailData);
+        self::expectException(APIException::class);
+        self::expectExceptionMessage('Failed to execute API: Email.create Reason: Mandatory values missing');
+        Loader::email($contactId, $emailData);
     }
 
     /**
@@ -113,9 +114,9 @@ class LoaderTest extends HeadlessTestCase
     public function testContributionInvalidContactId()
     {
         $contribData = ['trxn_id' => 'a-1', 'total_amount' => 10];
-        self::expectException(CRM_Core_Exception::class);
-        self::expectExceptionMessage('Invalid ID');
-        $emailId = Loader::contribution(-1, $contribData);
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid contact ID');
+        Loader::contribution(-1, $contribData);
     }
 
     /**

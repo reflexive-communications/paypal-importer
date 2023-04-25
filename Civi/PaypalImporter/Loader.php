@@ -2,10 +2,10 @@
 
 namespace Civi\PaypalImporter;
 
-use Civi\Api4\Contribution;
+use Civi\RcBase\ApiWrapper\Create;
+use Civi\RcBase\ApiWrapper\Get;
+use Civi\RcBase\ApiWrapper\Update;
 use CRM_Core_Exception;
-use CRM_RcBase_Api_Create;
-use CRM_RcBase_Api_Update;
 
 class Loader
 {
@@ -19,7 +19,7 @@ class Loader
      */
     public static function contact(array $contactData): int
     {
-        return CRM_RcBase_Api_Create::contact($contactData, false);
+        return Create::contact($contactData);
     }
 
     /**
@@ -33,7 +33,7 @@ class Loader
      */
     public static function email(int $contactId, array $emailData): int
     {
-        return CRM_RcBase_Api_Create::email($contactId, $emailData, false);
+        return Create::email($contactId, $emailData);
     }
 
     /**
@@ -47,20 +47,14 @@ class Loader
      */
     public static function contribution(int $contactId, array $contributionData): int
     {
-        $contributions = Contribution::get(false)
-            ->addSelect('contribution_id')
-            ->addWhere('trxn_id', '=', $contributionData['trxn_id'])
-            ->setLimit(1)
-            ->execute();
-        // Get first result row
-        $contribution = $contributions->first();
-        if (!is_array($contribution)) {
+        $contribution_id = Get::contributionIDByTransactionID($contributionData['trxn_id']);
+        if (is_null($contribution_id)) {
             // Question: What should we do if the transaction is active in paypal, but refunded in civi?
-            return CRM_RcBase_Api_Create::contribution($contactId, $contributionData, false);
+            return Create::contribution($contactId, $contributionData);
         } else {
-            CRM_RcBase_Api_Update::entity('Contribution', $contribution['id'], $contributionData, false);
+            Update::contribution($contribution_id, $contributionData);
 
-            return $contribution['id'];
+            return $contribution_id;
         }
     }
 }
