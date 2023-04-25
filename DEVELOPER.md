@@ -6,10 +6,10 @@
 -   The host of the Paypal environment. In case of sandbox, it supposed to be `https://api-m.sandbox.paypal.com`, the live supposed to be `https://api-m.paypal.com`.
 -   The initial start date and limit parameters for the [transaction search API](https://developer.paypal.com/docs/api/transaction-search/v1/).
 -   The request limit, that is the maximum number of transaction search API calls for one import iteration.
--   The payment method that will be used as the payment method of the contribution. The options are the payment methods provided by the current civicrm system.
--   The financial type that will be used as the financial type of the contribution. The options are the financial types provided by the current civicrm system.
--   The optional tag that will be added to the contributor contact. The options are the tags provided by the current civicrm system.
--   The optional group that will receive the contributor contact. The options are the groups provided by the current civicrm system.
+-   The payment method that will be used as the payment method of the contribution.
+-   The financial type that will be used as the financial type of the contribution.
+-   The optional tag that will be added to the contributor contact.
+-   The optional group that will receive the contributor contact.
 -   Start, stop or verify checkbox for changing the state of the importer application.
 
 ### Dashboard on the admin form
@@ -31,4 +31,7 @@ The importer application is state based. The state manages the behaviour of the 
 
 ### Check issues.
 
-The import process stores some information about the problems of the last import iteration. But sometimes we might need to know the details of the import issues of the previous iterations also. This tool uses `Civi::log` for file logging. The missing emails are logged out as info, the CRM related exceptions are logged out as errors. The lines are prefixed with the `Paypal-Importer |` string. The prefix is followed by the `transaction id |` and the message of issue.
+The import process stores some information about the problems of the last import iteration.
+But sometimes we might need to know the details of the import issues of the previous iterations also.
+This tool uses `Civi::log` for file logging. The missing emails are logged out as info, the CRM related exceptions are logged out as errors.
+The lines are prefixed with the `Paypal-Importer |` string. The prefix is followed by the `transaction id |` and the message of issue.
