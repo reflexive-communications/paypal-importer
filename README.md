@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/reflexive-communications/paypal-importer/actions/workflows/main.yml/badge.svg)](https://github.com/reflexive-communications/paypal-importer/actions/workflows/main.yml)
 
+**THIS IS A LEGACY EXTENSION. CURRENTLY UNDER FEATURE FREEZE!**
+
 This extension provides a PayPal transaction importer.
 It contains an API endpoint for starting the process, a scheduled job for triggering the endpoint every hour, and an admin form to setup the necessary parameters.
 
