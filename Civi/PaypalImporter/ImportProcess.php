@@ -395,6 +395,7 @@ class ImportProcess
         $this->stats['execution-time'] = $this->getExecutionTime();
         $this->stats['number-of-requests'] = $this->numberOfRequests;
         $this->config->updateImportStats($this->stats);
+        $this->config->updateImportError('');
 
         return civicrm_api3_create_success(['stats' => $this->stats], $params, 'PaypalImporter', 'import');
     }

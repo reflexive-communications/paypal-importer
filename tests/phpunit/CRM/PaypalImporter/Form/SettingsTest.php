@@ -166,7 +166,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
             'financialTypeId' => $cfg['settings']['financial-type-id'],
             'tagId' => $cfg['settings']['tag-id'],
             'groupId' => $cfg['settings']['group-id'],
-            'action' => 0,
+            'actionCheckbox' => 0,
         ];
         self::assertSame($expectedConfig, $form->setDefaultValues());
     }
@@ -202,7 +202,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         $_POST['requestLimit'] = 5;
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
-        $_POST['action'] = 0;
+        $_POST['actionCheckbox'] = 0;
         $_POST['tagId'] = 0;
         $_POST['groupId'] = 0;
         $this->setupTestConfig();
@@ -229,7 +229,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         $_POST['requestLimit'] = 5;
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
-        $_POST['action'] = 1;
+        $_POST['actionCheckbox'] = 1;
         $_POST['tagId'] = 0;
         $_POST['groupId'] = 0;
         $this->setupTestConfig();
@@ -260,7 +260,7 @@ class CRM_PaypalImporter_Form_SettingsTest extends HeadlessTestCase
         $_POST['requestLimit'] = 5;
         $_POST['paymentInstrumentId'] = 1;
         $_POST['financialTypeId'] = 1;
-        $_POST['action'] = 1;
+        $_POST['actionCheckbox'] = 1;
         $_POST['tagId'] = 0;
         $_POST['groupId'] = 0;
         $this->setupTestConfig();

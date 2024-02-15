@@ -12,9 +12,9 @@
     {if isset($lastStatsTransaction)}
         <div>{ts}Number of imported transactions in the last iteration:{/ts} {$lastStatsTransaction}</div>{/if}
 </div>
-{if count($lastStatsErrors) > 0}
+{if isset($lastStatsErrors) && count($lastStatsErrors) > 0}
     <div class="crm-block crm-form-block">
-        <h3>{ts}Issues durint the last iteration{/ts}</h3>
+        <h3>{ts}Issues during the last iteration{/ts}</h3>
         <ul>
             {foreach from=$lastStatsErrors key=id item=error}
                 <li>{$error}</li>
@@ -85,8 +85,8 @@
             </td>
         </tr>
         <tr>
-            <td class="label">{$form.action.label}</td>
-            <td class="content">{$form.action.html}</td>
+            <td class="label">{$form.actionCheckbox.label}</td>
+            <td class="content">{$form.actionCheckbox.html}</td>
         </tr>
     </table>
     <div class="crm-submit-buttons">
