@@ -79,20 +79,20 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->add('text', 'requestLimit', ts('Request limit'), [], true);
         $this->add('select', 'paymentInstrumentId', ts('Payment method'), ['' => ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('payment_instrument_id', 'search'), true);
         $this->add('select', 'financialTypeId', ts('Financial Type'), ['' => ts('- select -')] + CRM_Contribute_BAO_Contribution::buildOptions('financial_type_id', 'search'), true);
-        $this->add('select', 'tagId', ts('Tag contact'), [0 => ts('- select -')] + CRM_Core_BAO_EntityTag::buildOptions('tag_id', 'search', ['entity_table' => 'civicrm_contact']), false);
-        $this->add('select', 'groupId', ts('Group contact'), [0 => ts('- select -')] + CRM_Contact_BAO_GroupContact::buildOptions('group_id', 'search', []), false);
+        $this->add('select', 'tagId', ts('Tag contact'), [0 => ts('- select -')] + CRM_Core_BAO_EntityTag::buildOptions('tag_id', 'search', ['entity_table' => 'civicrm_contact']));
+        $this->add('select', 'groupId', ts('Group contact'), [0 => ts('- select -')] + CRM_Contact_BAO_GroupContact::buildOptions('group_id', 'search'));
         // checkbox for triggering the state change of the application.
         // - if current state is do-nothing, start action, if set bumps the state to import-init
         if ($config['state'] == 'do-nothing') {
-            $this->add('checkbox', 'action', ts('Start Import'), [], false);
+            $this->add('checkbox', 'action', ts('Start Import'));
         }
         // - if the current state is import(-init)? sync stop action, if set bumps the state back to do-nothing
         if ($config['state'] == 'import' || $config['state'] == 'import-init' || $config['state'] == 'sync') {
-            $this->add('checkbox', 'action', ts('Stop Import'), [], false);
+            $this->add('checkbox', 'action', ts('Stop Import'));
         }
         // - if the state error, confirm action, it sets the state back to do-nothing
         if ($config['state'] == 'error') {
-            $this->add('checkbox', 'action', ts('Confirm Error'), [], false);
+            $this->add('checkbox', 'action', ts('Confirm Error'));
         }
 
         // Submit button
@@ -131,12 +131,12 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
             'client-secret' => $this->_submitValues['clientSecret'],
             'paypal-host' => $this->_submitValues['paypalHost'],
             'start-date' => $this->_submitValues['startDate'],
-            'import-limit' => intval($this->_submitValues['importLimit'], 10),
-            'request-limit' => intval($this->_submitValues['requestLimit'], 10),
-            'payment-instrument-id' => intval($this->_submitValues['paymentInstrumentId'], 10),
-            'financial-type-id' => intval($this->_submitValues['financialTypeId'], 10),
-            'tag-id' => intval($this->_submitValues['tagId'], 10),
-            'group-id' => intval($this->_submitValues['groupId'], 10),
+            'import-limit' => intval($this->_submitValues['importLimit']),
+            'request-limit' => intval($this->_submitValues['requestLimit']),
+            'payment-instrument-id' => intval($this->_submitValues['paymentInstrumentId']),
+            'financial-type-id' => intval($this->_submitValues['financialTypeId']),
+            'tag-id' => intval($this->_submitValues['tagId']),
+            'group-id' => intval($this->_submitValues['groupId']),
         ];
         try {
             if (!$this->config->updateSettings($submitData)) {
