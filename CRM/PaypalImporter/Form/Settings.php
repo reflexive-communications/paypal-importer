@@ -46,7 +46,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         $this->_defaults['financialTypeId'] = $config['settings']['financial-type-id'];
         $this->_defaults['tagId'] = $config['settings']['tag-id'];
         $this->_defaults['groupId'] = $config['settings']['group-id'];
-        $this->_defaults['action'] = 0;
+        $this->_defaults['actionCheckbox'] = 0;
 
         return $this->_defaults;
     }
@@ -84,15 +84,15 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
         // checkbox for triggering the state change of the application.
         // - if current state is do-nothing, start action, if set bumps the state to import-init
         if ($config['state'] == 'do-nothing') {
-            $this->add('checkbox', 'action', ts('Start Import'));
+            $this->add('checkbox', 'actionCheckbox', ts('Start Import'));
         }
         // - if the current state is import(-init)? sync stop action, if set bumps the state back to do-nothing
         if ($config['state'] == 'import' || $config['state'] == 'import-init' || $config['state'] == 'sync') {
-            $this->add('checkbox', 'action', ts('Stop Import'));
+            $this->add('checkbox', 'actionCheckbox', ts('Stop Import'));
         }
         // - if the state error, confirm action, it sets the state back to do-nothing
         if ($config['state'] == 'error') {
-            $this->add('checkbox', 'action', ts('Confirm Error'));
+            $this->add('checkbox', 'actionCheckbox', ts('Confirm Error'));
         }
 
         // Submit button
@@ -145,7 +145,7 @@ class CRM_PaypalImporter_Form_Settings extends CRM_Core_Form
                 CRM_Core_Session::setStatus(ts('Data has been updated.'), 'Paypal Importer', 'success', ['expires' => 5000]);
                 // on case of the action is selected, handle it. if the current state is do-nothing, push it to import-init
                 // else setup the do-nothing state.
-                if ($this->_submitValues['action']) {
+                if ($this->_submitValues['actionCheckbox']) {
                     // get the current configuration object
                     $this->config->load();
                     $config = $this->config->get();

@@ -85,8 +85,8 @@
             </td>
         </tr>
         <tr>
-            <td class="label">{$form.action.label}</td>
-            <td class="content">{$form.action.html}</td>
+            <td class="label">{$form.actionCheckbox.label}</td>
+            <td class="content">{$form.actionCheckbox.html}</td>
         </tr>
     </table>
     <div class="crm-submit-buttons">
