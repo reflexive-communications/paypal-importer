@@ -26,19 +26,11 @@ class Transformer
      */
     public static function paypalTransactionToContact(array $transaction): array
     {
-        $contactData = [
+        return [
             'contact_type' => 'Individual',
-            'first_name' => '',
-            'last_name' => '',
+            'first_name' => $transaction['payer_info']['payer_name']['given_name'] ?? '',
+            'last_name' => $transaction['payer_info']['payer_name']['surname'] ?? '',
         ];
-
-        $payer = $transaction['payer_info']['payer_name'] ?? [];
-        if (!empty($payer)) {
-            $contactData['first_name'] = $payer['given_name'] ?? '';
-            $contactData['last_name'] = $payer['surname'] ?? '';
-        }
-
-        return $contactData;
     }
 
     /**
@@ -47,21 +39,14 @@ class Transformer
      * @param array $transaction paypal transaction object
      *
      * @return array EmailData
-     * @throws \API_Exception
-     * @throws \Civi\API\Exception\UnauthorizedException
+     * @throws \Civi\RcBase\Exception\APIException
      */
     public static function paypalTransactionToEmail(array $transaction): array
     {
-        $emailData = [
+        return [
             'location_type_id' => Get::defaultLocationTypeID() ?? 1,
+            'email' => $transaction['payer_info']['email_address'] ?? '',
         ];
-
-        $payerInfo = $transaction['payer_info'] ?? [];
-        if (!empty($payerInfo)) {
-            $emailData['email'] = $payerInfo['email_address'] ?? '';
-        }
-
-        return $emailData;
     }
 
     /**
