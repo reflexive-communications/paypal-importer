@@ -61,13 +61,13 @@ class Transformer
     {
         $contributionData = [
             'total_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value']) * -1,
-            'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'trxn_id' => $transaction['transaction_info']['transaction_id'],
-            'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
+            'fee_amount' => ($transaction['transaction_info']['fee_amount']['value'] ?? 0) * -1,
+            'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'] ?? '',
+            'trxn_id' => $transaction['transaction_info']['transaction_id'] ?? '',
+            'receive_date' => $transaction['transaction_info']['transaction_initiation_date'] ?? '',
             'invoice_number' => $transaction['transaction_info']['invoice_id'] ?? '',
             'source' => $transaction['cart_info']['item_details'][0]['item_name'] ?? '',
-            'contribution_status_id:name' => self::CONTRIBUTION_STATUS_MAP[$transaction['transaction_info']['transaction_status']] ?? '',
+            'contribution_status_id:name' => self::CONTRIBUTION_STATUS_MAP[$transaction['transaction_info']['transaction_status'] ?? ''] ?? '',
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
         if ($contributionData['contribution_status_id:name'] == 'Refunded') {
