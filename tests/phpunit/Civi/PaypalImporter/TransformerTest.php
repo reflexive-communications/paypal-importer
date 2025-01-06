@@ -148,28 +148,23 @@ class TransformerTest extends HeadlessTestCase
      */
     public function testPaypalTransactionToContact()
     {
-        $expectedContactData = [
+        self::assertSame([
             'contact_type' => 'Individual',
             'first_name' => self::PAYPAL_SAMPLE_DATA['payer_info']['payer_name']['given_name'],
             'last_name' => self::PAYPAL_SAMPLE_DATA['payer_info']['payer_name']['surname'],
-        ];
-        $transformedContact = Transformer::paypalTransactionToContact(self::PAYPAL_SAMPLE_DATA);
-        self::assertSame($expectedContactData, $transformedContact, 'Invalid transformed data.');
+        ], Transformer::paypalTransactionToContact(self::PAYPAL_SAMPLE_DATA), 'Invalid transformed data.');
     }
 
     /**
      * @return void
-     * @throws \API_Exception
-     * @throws \Civi\API\Exception\UnauthorizedException
+     * @throws \Civi\RcBase\Exception\APIException
      */
     public function testPaypalTransactionToEmail()
     {
-        $expectedEmailData = [
+        self::assertSame([
             'location_type_id' => 1,
             'email' => self::PAYPAL_SAMPLE_DATA['payer_info']['email_address'],
-        ];
-        $transformedEmail = Transformer::paypalTransactionToEmail(self::PAYPAL_SAMPLE_DATA);
-        self::assertSame($expectedEmailData, $transformedEmail, 'Invalid transformed data.');
+        ], Transformer::paypalTransactionToEmail(self::PAYPAL_SAMPLE_DATA), 'Invalid transformed data.');
     }
 
     /**
@@ -177,18 +172,16 @@ class TransformerTest extends HeadlessTestCase
      */
     public function testPaypalTransactionToCivicrmContributionIncomingMoney()
     {
-        $expectedContributionData = [
+        self::assertSame([
             'total_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval(self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value']) * -1,
+            'fee_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value'] * -1,
             'non_deductible_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
             'trxn_id' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_id'],
             'receive_date' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_initiation_date'],
             'invoice_number' => self::PAYPAL_SAMPLE_DATA['transaction_info']['invoice_id'],
             'source' => self::PAYPAL_SAMPLE_DATA['cart_info']['item_details'][0]['item_name'] ?? '',
             'contribution_status_id:name' => 'Completed',
-        ];
-        $transformedContribution = Transformer::paypalTransactionToContribution(self::PAYPAL_SAMPLE_DATA);
-        self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
+        ], Transformer::paypalTransactionToContribution(self::PAYPAL_SAMPLE_DATA), 'Invalid transformed data.');
     }
 
     /**
@@ -196,9 +189,11 @@ class TransformerTest extends HeadlessTestCase
      */
     public function testPaypalTransactionToCivicrmContributionRefund()
     {
-        $expectedContributionData = [
+        $refundTransaction = self::PAYPAL_SAMPLE_DATA;
+        $refundTransaction['transaction_info']['transaction_status'] = 'V';
+        self::assertSame([
             'total_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval(self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value']) * -1,
+            'fee_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value'] * -1,
             'non_deductible_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
             'trxn_id' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_id'],
             'receive_date' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_initiation_date'],
@@ -206,11 +201,7 @@ class TransformerTest extends HeadlessTestCase
             'source' => self::PAYPAL_SAMPLE_DATA['cart_info']['item_details'][0]['item_name'] ?? '',
             'contribution_status_id:name' => 'Refunded',
             'contribution_cancel_date' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_updated_date'],
-        ];
-        $refundTransaction = self::PAYPAL_SAMPLE_DATA;
-        $refundTransaction['transaction_info']['transaction_status'] = 'V';
-        $transformedContribution = Transformer::paypalTransactionToContribution($refundTransaction);
-        self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
+        ], Transformer::paypalTransactionToContribution($refundTransaction), 'Invalid transformed data.');
     }
 
     /**
@@ -218,19 +209,17 @@ class TransformerTest extends HeadlessTestCase
      */
     public function testPaypalTransactionToCivicrmContributionNotRecognizedStatus()
     {
-        $expectedContributionData = [
+        $refundTransaction = self::PAYPAL_SAMPLE_DATA;
+        $refundTransaction['transaction_info']['transaction_status'] = 'XX';
+        self::assertSame([
             'total_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval(self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value']) * -1,
+            'fee_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['fee_amount']['value'] * -1,
             'non_deductible_amount' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_amount']['value'],
             'trxn_id' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_id'],
             'receive_date' => self::PAYPAL_SAMPLE_DATA['transaction_info']['transaction_initiation_date'],
             'invoice_number' => self::PAYPAL_SAMPLE_DATA['transaction_info']['invoice_id'],
             'source' => self::PAYPAL_SAMPLE_DATA['cart_info']['item_details'][0]['item_name'] ?? '',
             'contribution_status_id:name' => '',
-        ];
-        $refundTransaction = self::PAYPAL_SAMPLE_DATA;
-        $refundTransaction['transaction_info']['transaction_status'] = 'XX';
-        $transformedContribution = Transformer::paypalTransactionToContribution($refundTransaction);
-        self::assertSame($expectedContributionData, $transformedContribution, 'Invalid transformed data.');
+        ], Transformer::paypalTransactionToContribution($refundTransaction), 'Invalid transformed data.');
     }
 }

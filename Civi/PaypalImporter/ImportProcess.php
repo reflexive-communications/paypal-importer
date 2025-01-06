@@ -4,12 +4,12 @@ namespace Civi\PaypalImporter;
 
 use API_Exception;
 use Civi;
-use Civi\Api4\GroupContact;
+use Civi\RcBase\ApiWrapper\Create;
+use Civi\RcBase\ApiWrapper\Get;
+use Civi\RcBase\ApiWrapper\Save;
+use Civi\RcBase\ApiWrapper\Update;
 use CRM_PaypalImporter_Upgrader;
-use CRM_RcBase_Api_Create;
-use CRM_RcBase_Api_Get;
-use CRM_RcBase_Api_Save;
-use Exception;
+use Throwable;
 
 class ImportProcess
 {
@@ -205,86 +205,53 @@ class ImportProcess
      */
     private function processTransaction(array $transaction): void
     {
-        $stats = [
-            'new-user' => 0,
-            'transaction' => 0,
-            'errors' => [],
-        ];
         $cfg = $this->config->get();
-        // Check email first. If missing, the process will be skipped.
+
+        // Map PayPal transaction to CiviCRM contact, email, contribution data.
+        $contactData = Transformer::paypalTransactionToContact($transaction);
         $emailData = Transformer::paypalTransactionToEmail($transaction);
+        $contributionData = Transformer::paypalTransactionToContribution($transaction);
+        $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
+        $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
+        $contributionData['source'] = "paypal-importer-extension - {$contributionData['source']}";
+
         if (empty($emailData['email'])) {
             $this->addInfo($transaction['transaction_info']['transaction_id'].' | Skipping transaction due to missing email address.');
 
             return;
         }
-        // Try to find a contact to the email. If not found, we have to insert a contact and also the email.
-        $contactId = CRM_RcBase_Api_Get::contactIDFromEmail($emailData['email']);
-        if (is_null($contactId)) {
-            $contactData = Transformer::paypalTransactionToContact($transaction);
-            try {
-                $contactId = Loader::contact($contactData);
-                $this->stats['new-user'] += 1;
-            } catch (Exception $e) {
-                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
 
-                return;
-            }
-            try {
-                Loader::email($contactId, $emailData);
-            } catch (Exception $e) {
-                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
-            }
-        }
-        // Add the tag to the user and also subscribe it to the group.
-        if ($cfg['settings']['tag-id'] > 0) {
-            try {
-                CRM_RcBase_Api_Save::tagContact($contactId, $cfg['settings']['tag-id'], false);
-            } catch (Exception $e) {
-                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
-            }
-        }
-        if ($cfg['settings']['group-id'] > 0) {
-            try {
-                $this->groupContact($contactId, $cfg['settings']['group-id']);
-            } catch (Exception $e) {
-                $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
-            }
-        }
-        $contributionData = Transformer::paypalTransactionToContribution($transaction);
-        $contributionData['financial_type_id'] = $cfg['settings']['financial-type-id'];
-        $contributionData['payment_instrument_id'] = $cfg['settings']['payment-instrument-id'];
-        $contributionData['source'] = 'paypal-importer-extension - '.$contributionData['source'];
         try {
-            Loader::contribution($contactId, $contributionData);
-            $this->stats['transaction'] += 1;
-        } catch (Exception $e) {
-            $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
-        }
-    }
+            // Create/update contact
+            $contactId = Get::contactIDByEmail($emailData['email']);
+            if (is_null($contactId)) {
+                $contactId = Create::contact($contactData);
+                Create::email($contactId, $emailData);
+                $this->stats['new-user'] += 1;
+            } else {
+                Update::contact($contactId, $contactData);
+            }
 
-    /**
-     * @param int $contactId
-     * @param int $groupId
-     *
-     * @return void
-     * @throws \API_Exception
-     * @throws \CRM_Core_Exception
-     * @throws \Civi\API\Exception\UnauthorizedException
-     */
-    private function groupContact(int $contactId, int $groupId): void
-    {
-        $result = GroupContact::get(false)
-            ->addSelect('id')
-            ->addWhere('contact_id', '=', $contactId)
-            ->addWhere('group_id', '=', $groupId)
-            ->setLimit(1)
-            ->execute();
-        // already in the group, skip insert step.
-        if (is_array($result->first())) {
+            // Add the tag to the user and also subscribe it to the group.
+            if ($cfg['settings']['tag-id'] > 0) {
+                Save::tagContact($contactId, $cfg['settings']['tag-id']);
+            }
+            if ($cfg['settings']['group-id'] > 0) {
+                Save::addContactToGroup($contactId, $cfg['settings']['group-id']);
+            }
+
+            $contributionId = Get::contributionIDByTransactionID($contributionData['trxn_id']);
+            if (is_null($contributionId)) {
+                Create::contribution($contactId, $contributionData);
+                $this->stats['transaction'] += 1;
+            } else {
+                Update::contribution($contributionId, $contributionData);
+            }
+        } catch (Throwable $e) {
+            $this->addError(sprintf('%s (transaction_id: %s)', $e->getMessage(), $transaction['transaction_info']['transaction_id']));
+
             return;
         }
-        CRM_RcBase_Api_Create::entity('GroupContact', ['contact_id' => $contactId, 'group_id' => $groupId, 'status' => 'Added'], false);
     }
 
     /**

@@ -63,13 +63,8 @@ class ImportProcessTest extends HeadlessTestCase
             $config->load();
             $cfg = $config->get();
             self::assertSame([], $cfg['import-stats'], 'Invalid import stats. Supposed to be empty if the script is in stand-by mode.');
-            self::assertTrue(array_key_exists('is_error', $result));
             self::assertSame(0, $result['is_error']);
-            self::assertTrue(array_key_exists('values', $result));
-            self::assertTrue(array_key_exists('state', $result['values']));
             self::assertSame($state, $result['values']['state']);
-            self::assertTrue(array_key_exists('stats', $result['values']));
-            self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
             self::assertIsFloat($result['values']['stats']['execution-time']);
         }
     }
@@ -120,17 +115,9 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($cfg['settings']);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'fake_transactions_class_name');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
     }
 
@@ -174,17 +161,9 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($settings);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsNoTransactionMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
         $config->load();
         $cfg = $config->get();
@@ -234,17 +213,9 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($settings);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsMissingEmailMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(0, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([TransactionsMissingEmailMock::TRANSACTION_ID.' | Skipping transaction due to missing email address.'], $result['values']['stats']['errors']);
         $config->load();
         $cfg = $config->get();
@@ -279,17 +250,9 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($settings);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
         self::assertSame(2, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(2, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
         $config->load();
         $cfg = $config->get();
@@ -334,18 +297,7 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($settings);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
-        // the transaction search mock is reused, so that the users will be the same.
-        self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
-        self::assertSame(2, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
         $config->load();
         $cfg = $config->get();
@@ -356,18 +308,7 @@ class ImportProcessTest extends HeadlessTestCase
         // Run the same import again, to check the tag, group logic is not failing.
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
-        // the transaction search mock is reused, so that the users will be the same.
-        self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
-        self::assertSame(2, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
     }
 
@@ -396,18 +337,8 @@ class ImportProcessTest extends HeadlessTestCase
         $config->updateSettings($settings);
         $p = new ImportProcess(E::LONG_NAME, 'Civi\PaypalImporter\Request\AuthMock', 'Civi\PaypalImporter\Request\TransactionsPagingMock');
         $result = $p->run(self::PARAMS);
-        self::assertTrue(array_key_exists('is_error', $result));
         self::assertSame(0, $result['is_error']);
-        self::assertTrue(array_key_exists('values', $result));
-        self::assertTrue(array_key_exists('stats', $result['values']));
-        self::assertTrue(array_key_exists('execution-time', $result['values']['stats']));
-        self::assertIsFloat($result['values']['stats']['execution-time']);
-        self::assertTrue(array_key_exists('new-user', $result['values']['stats']));
-        // the transaction search mock is reused, so that the users will be the same.
-        self::assertSame(0, $result['values']['stats']['new-user']);
-        self::assertTrue(array_key_exists('transaction', $result['values']['stats']));
         self::assertSame(2, $result['values']['stats']['transaction']);
-        self::assertTrue(array_key_exists('errors', $result['values']['stats']));
         self::assertSame([], $result['values']['stats']['errors']);
         $config->load();
         $cfg = $config->get();

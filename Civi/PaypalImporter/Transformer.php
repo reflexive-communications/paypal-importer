@@ -26,19 +26,11 @@ class Transformer
      */
     public static function paypalTransactionToContact(array $transaction): array
     {
-        $contactData = [
+        return [
             'contact_type' => 'Individual',
-            'first_name' => '',
-            'last_name' => '',
+            'first_name' => $transaction['payer_info']['payer_name']['given_name'] ?? '',
+            'last_name' => $transaction['payer_info']['payer_name']['surname'] ?? '',
         ];
-
-        $payer = $transaction['payer_info']['payer_name'] ?? [];
-        if (!empty($payer)) {
-            $contactData['first_name'] = $payer['given_name'] ?? '';
-            $contactData['last_name'] = $payer['surname'] ?? '';
-        }
-
-        return $contactData;
     }
 
     /**
@@ -47,21 +39,14 @@ class Transformer
      * @param array $transaction paypal transaction object
      *
      * @return array EmailData
-     * @throws \API_Exception
-     * @throws \Civi\API\Exception\UnauthorizedException
+     * @throws \Civi\RcBase\Exception\APIException
      */
     public static function paypalTransactionToEmail(array $transaction): array
     {
-        $emailData = [
+        return [
             'location_type_id' => Get::defaultLocationTypeID() ?? 1,
+            'email' => $transaction['payer_info']['email_address'] ?? '',
         ];
-
-        $payerInfo = $transaction['payer_info'] ?? [];
-        if (!empty($payerInfo)) {
-            $emailData['email'] = $payerInfo['email_address'] ?? '';
-        }
-
-        return $emailData;
     }
 
     /**
@@ -76,13 +61,13 @@ class Transformer
     {
         $contributionData = [
             'total_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'fee_amount' => intval($transaction['transaction_info']['fee_amount']['value']) * -1,
-            'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'],
-            'trxn_id' => $transaction['transaction_info']['transaction_id'],
-            'receive_date' => $transaction['transaction_info']['transaction_initiation_date'],
+            'fee_amount' => ($transaction['transaction_info']['fee_amount']['value'] ?? 0) * -1,
+            'non_deductible_amount' => $transaction['transaction_info']['transaction_amount']['value'] ?? '',
+            'trxn_id' => $transaction['transaction_info']['transaction_id'] ?? '',
+            'receive_date' => $transaction['transaction_info']['transaction_initiation_date'] ?? '',
             'invoice_number' => $transaction['transaction_info']['invoice_id'] ?? '',
             'source' => $transaction['cart_info']['item_details'][0]['item_name'] ?? '',
-            'contribution_status_id:name' => self::CONTRIBUTION_STATUS_MAP[$transaction['transaction_info']['transaction_status']] ?? '',
+            'contribution_status_id:name' => self::CONTRIBUTION_STATUS_MAP[$transaction['transaction_info']['transaction_status'] ?? ''] ?? '',
         ];
         // setup contribution_cancel_date to transaction_updated_date if the contribution status is Refunded
         if ($contributionData['contribution_status_id:name'] == 'Refunded') {
