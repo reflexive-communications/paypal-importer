@@ -139,6 +139,10 @@ class ImportProcess
             'start_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'])),
             'end_date' => date(DATE_ISO8601, strtotime($cfg['import-params']['start-date'].' +30 days')),
             'fields' => 'transaction_info,payer_info,cart_info',
+            // Filter out negative transactions. PayPal API needs an upper limit, so we set a reasonable high value (999 million).
+            // Limits are inclusive.
+            // https://developer.paypal.com/api/transaction-search/v1/search-get#parameters-query
+            'transaction_amount' => '[000 TO 99999999999]',
         ];
     }
 
